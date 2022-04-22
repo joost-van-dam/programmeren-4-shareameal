@@ -72,6 +72,13 @@ app.post("/api/user", (req, res) => {
   idUser++;
 });
 
+app.get("/api/user", (req, res) => {
+  res.status(201).json({
+    result: databaseUser,
+    // databaseUser,
+  });
+});
+
 // app.post("/api/movie", (req, res) => {
 //   let movie = req.body;
 //   idMovie++;
