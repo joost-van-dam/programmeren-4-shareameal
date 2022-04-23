@@ -8,9 +8,6 @@ app.use(bodyParser.json());
 let databaseUser = [];
 let idUser = 0;
 
-// let databaseMovie = [];
-// let idMovie = 0;
-
 app.all("*", (req, res, next) => {
   const method = req.method;
   console.log(`Method ${method} is aangeroepen`);
@@ -72,8 +69,8 @@ app.get("/api/user/profile", (req, res) => {
 });
 
 // UC-204 Get single user by ID
-app.get("/api/user/:getsingleuserbyid", (req, res) => {
-  const getsingleuserbyid = req.params.getsingleuserbyid;
+app.get("/api/user/:id", (req, res) => {
+  const getsingleuserbyid = req.params.id;
   console.log(`User met ID ${getsingleuserbyid} gezocht`);
   let user = databaseUser.filter((item) => item.idUser == getsingleuserbyid);
   if (user.length > 0) {
@@ -87,14 +84,16 @@ app.get("/api/user/:getsingleuserbyid", (req, res) => {
 });
 
 // UC-205 Update a single user
-app.put("/api/user/:putsingleuserbyid", (req, res) => {
-  const putsingleuserbyid = req.params.putsingleuserbyid;
+app.put("/api/user/:id", (req, res) => {
+  const putsingleuserbyid = req.params.id;
   let updatedUser = { idUser: putsingleuserbyid, ...req.body };
   console.log(`User met ID ${putsingleuserbyid} aangepast`);
 
   let index = databaseUser.findIndex(
     (user) => user.idUser == putsingleuserbyid
   );
+
+  console.log("Index van user = " + index);
 
   if (index == -1) {
     res.status(403).send("Forbidden.");
@@ -106,30 +105,27 @@ app.put("/api/user/:putsingleuserbyid", (req, res) => {
   }
 });
 
-// app.get("/api/movie/:movieId", (req, res, next) => {
-//   const movieId = req.params.movieId;
-//   console.log(`Movie met ID ${movieId} gezocht`);
-//   let movie = databaseMovie.filter((item) => item.idMovie == movieId);
-//   if (movie.length > 0) {
-//     console.log(movie);
-//     res.status(200).json({
-//       status: 200,
-//       result: movie,
-//     });
-//   } else {
-//     res.status(401).json({
-//       status: 401,
-//       result: `Movie with ID ${movieId} not found`,
-//     });
-//   }
-// });
+// UC-206 Delete an user
+app.delete("/api/user/:id", (req, res) => {
+  const deletesingleuserbyid = req.params.id;
+  console.log(`User met ID ${deletesingleuserbyid} verwijderd`);
 
-// app.get("/api/movie", (req, res, next) => {
-//   res.status(200).json({
-//     status: 200,
-//     result: databaseMovie,
-//   });
-// });
+  let index = databaseUser.findIndex(
+    (user) => user.idUser == deletesingleuserbyid
+  );
+  let user = databaseUser.filter((item) => item.idUser == deletesingleuserbyid);
+
+  console.log("Index van user = " + index);
+
+  if (index == -1) {
+    res.status(403).send("Forbidden.");
+  } else {
+    databaseUser.splice(index, 1);
+    res.status(201).json({
+      result: user,
+    });
+  }
+});
 
 app.all("*", (req, res) => {
   res.status(401).json({
