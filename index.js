@@ -52,8 +52,8 @@ app.post("/api/user", (req, res) => {
       password: user.password,
       phoneNumber: user.phoneNumber,
     });
+    idUser++;
   }
-  idUser++;
 });
 
 // UC-202 Get all users
