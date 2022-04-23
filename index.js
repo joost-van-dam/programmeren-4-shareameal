@@ -86,6 +86,26 @@ app.get("/api/user/:getsingleuserbyid", (req, res) => {
   }
 });
 
+// UC-205 Update a single user
+app.put("/api/user/:putsingleuserbyid", (req, res) => {
+  const putsingleuserbyid = req.params.putsingleuserbyid;
+  let updatedUser = { idUser: putsingleuserbyid, ...req.body };
+  console.log(`User met ID ${putsingleuserbyid} aangepast`);
+
+  let index = databaseUser.findIndex(
+    (user) => user.idUser == putsingleuserbyid
+  );
+
+  if (index == -1) {
+    res.status(403).send("Forbidden.");
+  } else {
+    databaseUser[index] = updatedUser;
+    res.status(201).json({
+      result: updatedUser,
+    });
+  }
+});
+
 // app.get("/api/movie/:movieId", (req, res, next) => {
 //   const movieId = req.params.movieId;
 //   console.log(`Movie met ID ${movieId} gezocht`);
