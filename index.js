@@ -71,20 +71,20 @@ app.get("/api/user/profile", (req, res) => {
   res.status(401).send("Deze functionaliteit is nog niet gerealiseerd.");
 });
 
-// app.post("/api/movie", (req, res) => {
-//   let movie = req.body;
-//   idMovie++;
-//   movie = {
-//     idMovie,
-//     ...movie,
-//   };
-//   console.log(movie);
-//   databaseMovie.push(movie);
-//   res.status(201).json({
-//     status: 201,
-//     result: databaseMovie,
-//   });
-// });
+// UC-204 Get single user by ID
+app.get("/api/user/:getsingleuserbyid", (req, res) => {
+  const getsingleuserbyid = req.params.getsingleuserbyid;
+  console.log(`User met ID ${getsingleuserbyid} gezocht`);
+  let user = databaseUser.filter((item) => item.idUser == getsingleuserbyid);
+  if (user.length > 0) {
+    console.log(user);
+    res.status(201).json({
+      result: user,
+    });
+  } else {
+    res.status(403).send("Forbidden, no access.");
+  }
+});
 
 // app.get("/api/movie/:movieId", (req, res, next) => {
 //   const movieId = req.params.movieId;
