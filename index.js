@@ -24,6 +24,7 @@ app.get("/", (req, res) => {
   });
 });
 
+// UC-201 Register as a new user
 app.post("/api/user", (req, res) => {
   let user = req.body;
   // idUser++;
@@ -32,28 +33,14 @@ app.post("/api/user", (req, res) => {
     idUser,
     ...user,
   };
+
   console.log(user);
-
-  // let contains = databaseUser.filter(
-  //   (item) => item.emailAdress == user.emailAdress
-  // );
-
-  // let contains = databaseUser.filter(
-  //   (item) => item.emailAdress == user.emailAdress
-  // );
-  // console.log("Contains = " + contains);
-
   console.log(
     "Contains: " +
       databaseUser.some((item) => item.emailAdress == user.emailAdress)
   );
 
   if (databaseUser.some((item) => item.emailAdress == user.emailAdress)) {
-    // res.status(401).json({
-    //   status: 401,
-    //   result: "Forbidden.",
-    // });
-
     res.status(401).send("Forbidden.");
   } else {
     databaseUser.push(user);
@@ -72,11 +59,16 @@ app.post("/api/user", (req, res) => {
   idUser++;
 });
 
+// UC-202 Get all users
 app.get("/api/user", (req, res) => {
   res.status(201).json({
     result: databaseUser,
-    // databaseUser,
   });
+});
+
+// UC-203 Request personal user profile
+app.get("/api/user/profile", (req, res) => {
+  res.status(401).send("Deze functionaliteit is nog niet gerealiseerd.");
 });
 
 // app.post("/api/movie", (req, res) => {
