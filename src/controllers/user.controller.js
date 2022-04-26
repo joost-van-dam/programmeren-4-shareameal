@@ -1,7 +1,32 @@
+const assert = require("assert");
 let databaseUser = [];
 let idUser = 0;
 
 let controller = {
+  validateUser: (req, res, next) => {
+    let user = req.body;
+    let { emailAdress, password } = user;
+
+    try {
+      assert(typeof emailAdress === "string", "Email must be a string");
+      assert(typeof password === "string", "Password must be a string");
+      assert(typeof idUser === "number", "User id must be a number");
+      next();
+    } catch (err) {
+      const error = {
+        status: 404,
+        result: err.message,
+      };
+
+      // console.log(err.code);
+      // console.log(err.message);
+      //   console.log(err);
+      next(error);
+    }
+
+    // let {title, ...other} = user;
+  },
+
   addUser: (req, res) => {
     let user = req.body;
     // idUser++;
