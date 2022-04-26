@@ -1,3 +1,6 @@
+let databaseUser = [];
+let idUser = 0;
+
 let controller = {
   addUser: (req, res) => {
     let user = req.body;
