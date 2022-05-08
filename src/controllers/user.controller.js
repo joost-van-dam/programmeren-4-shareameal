@@ -110,6 +110,50 @@ let controller = {
       res.status(403).send("Forbidden, no access.");
     }
   },
+
+  updateUserById: (req, res) => {
+    const putsingleuserbyid = req.params.id;
+    let updatedUser = { idUser: putsingleuserbyid, ...req.body };
+    console.log(`User met ID ${putsingleuserbyid} aangepast`);
+
+    let index = databaseUser.findIndex(
+      (user) => user.idUser == putsingleuserbyid
+    );
+
+    console.log("Index van user = " + index);
+
+    if (index == -1) {
+      res.status(403).send("Forbidden.");
+    } else {
+      databaseUser[index] = updatedUser;
+      res.status(201).json({
+        result: updatedUser,
+      });
+    }
+  },
+
+  deleteUserById: (req, res) => {
+    const deletesingleuserbyid = req.params.id;
+    console.log(`User met ID ${deletesingleuserbyid} verwijderd`);
+
+    let index = databaseUser.findIndex(
+      (user) => user.idUser == deletesingleuserbyid
+    );
+    let user = databaseUser.filter(
+      (item) => item.idUser == deletesingleuserbyid
+    );
+
+    console.log("Index van user = " + index);
+
+    if (index == -1) {
+      res.status(403).send("Forbidden.");
+    } else {
+      databaseUser.splice(index, 1);
+      res.status(201).json({
+        result: user,
+      });
+    }
+  },
 };
 
 module.exports = controller;

@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/user.controller");
 
-let databaseUser = [];
-let idUser = 0;
+// let databaseUser = [];
+// let idUser = 0;
 
 router.get("/", (req, res) => {
   res.status(200).json({
@@ -27,47 +27,9 @@ router.get("/api/user/profile", (req, res) => {
 router.get("/api/user/:id", userController.getUserById);
 
 // UC-205 Update a single user
-router.put("/api/user/:id", (req, res) => {
-  const putsingleuserbyid = req.params.id;
-  let updatedUser = { idUser: putsingleuserbyid, ...req.body };
-  console.log(`User met ID ${putsingleuserbyid} aangepast`);
-
-  let index = databaseUser.findIndex(
-    (user) => user.idUser == putsingleuserbyid
-  );
-
-  console.log("Index van user = " + index);
-
-  if (index == -1) {
-    res.status(403).send("Forbidden.");
-  } else {
-    databaseUser[index] = updatedUser;
-    res.status(201).json({
-      result: updatedUser,
-    });
-  }
-});
+router.put("/api/user/:id", userController.updateUserById);
 
 // UC-206 Delete an user
-router.delete("/api/user/:id", (req, res) => {
-  const deletesingleuserbyid = req.params.id;
-  console.log(`User met ID ${deletesingleuserbyid} verwijderd`);
-
-  let index = databaseUser.findIndex(
-    (user) => user.idUser == deletesingleuserbyid
-  );
-  let user = databaseUser.filter((item) => item.idUser == deletesingleuserbyid);
-
-  console.log("Index van user = " + index);
-
-  if (index == -1) {
-    res.status(403).send("Forbidden.");
-  } else {
-    databaseUser.splice(index, 1);
-    res.status(201).json({
-      result: user,
-    });
-  }
-});
+router.delete("/api/user/:id", userController.deleteUserById);
 
 module.exports = router;
