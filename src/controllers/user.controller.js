@@ -244,16 +244,16 @@ let controller = {
           console.log(requestedUserInDatabase);
 
           if (requestedUserInDatabase) {
-            connection.query(
-              "DELETE FROM meal WHERE cookId = " + deletesingleuserbyid,
-              function (error, results, fields) {
-                // Handle error after the release.
-                if (error) throw error;
-              }
-            );
+            // connection.query(
+            //   "DELETE FROM meal WHERE cookId = " + deletesingleuserbyid,
+            //   function (error, results, fields) {
+            //     // Handle error after the release.
+            //     if (error) throw error;
+            //   }
+            // );
 
             connection.query(
-              "SELECT * FROM meal WHERE cookId = " + deletesingleuserbyid,
+              "SELECT * FROM user WHERE id = " + deletesingleuserbyid,
               function (error, results, fields) {
                 // Handle error after the release.
                 if (error) throw error;
