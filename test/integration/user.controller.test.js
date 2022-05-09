@@ -6,6 +6,8 @@ const database = [];
 chai.should();
 chai.use(chaiHttp);
 
+// hier komen alle chai testen, 500+ regels
+
 describe("Manage movies /api/user", () => {
   describe("UC-201 add user", () => {
     beforeEach(() => {

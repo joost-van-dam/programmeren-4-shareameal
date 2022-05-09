@@ -1,8 +1,10 @@
 const express = require("express");
+require("dotenv").config();
 const app = express();
 const port = process.env.PORT;
+// const port = 3000;
 const router = require("./src/routes/user.routes");
-require("dotenv").config();
+// require("dotenv").config();
 
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
