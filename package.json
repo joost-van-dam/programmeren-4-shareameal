@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "test": "mocha src/test/**/*.test.js --exit"
+    "test": "mocha test/**/*.test.js --exit"
   },
   "author": "Joost van Dam",
   "license": "ISC",
