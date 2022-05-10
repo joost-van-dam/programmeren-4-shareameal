@@ -133,11 +133,13 @@ let controller = {
           connection.release();
 
           if (results.length === 0) {
-            res.status(401).json({
-              result: "User not found",
+            res.status(404).json({
+              status: 404,
+              result: "Gebruiker-ID bestaat niet",
             });
           } else {
-            res.status(201).json({
+            res.status(200).json({
+              status: 200,
               result: results,
             });
           }
