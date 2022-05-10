@@ -94,9 +94,80 @@ let controller = {
   getUserById: (req, res) => {
     const getsingleuserbyid = req.params.id;
     console.log(`User met ID ${getsingleuserbyid} gezocht`);
-    let requestedUserInDatabase = false;
+    // let requestedUserInDatabase = false;
 
     // get all id's
+    pool.getConnection(function (err, connection) {
+      // if (err) throw err; // not connected!
+
+      // Use the connection
+      connection.query(
+        "SELECT * FROM user WHERE id = " + getsingleuserbyid,
+        function (error, results, fields) {
+          // When done with the connection, release it.
+          connection.release();
+
+          // Handle error after the release.
+          // if (error) throw error;
+
+          // Don't use the connection here, it has been returned to the pool.
+          console.log("All id's = ", results);
+
+          res.status(201).json({
+            result: results,
+          });
+
+          // results.forEach((Element) => allids.push(Object.values(Element)));
+
+          // results.forEach((Element) =>
+          //   console.log(Element.id == getsingleuserbyid)
+          // );
+
+          // console.log("test 4");
+
+          // for (let i = 0; i < results.length; i++) {
+          //   // console.log(results[i].id);
+
+          //   if (results[i].id == getsingleuserbyid) {
+          //     requestedUserInDatabase = true;
+          //   }
+          // }
+
+          // console.log(allids);
+
+          // console.log(requestedUserInDatabase);
+
+          // if (requestedUserInDatabase) {
+          //   connection.query(
+          //     "SELECT * FROM user WHERE id = " + getsingleuserbyid,
+          //     function (error, results, fields) {
+          //       // When done with the connection, release it.
+          //       connection.release();
+
+          //       // Handle error after the release.
+          //       if (error) throw error;
+
+          //       // Don't use the connection here, it has been returned to the pool.
+          //       console.log("results = ", results);
+
+          //       res.status(201).json({
+          //         result: results,
+          //       });
+          //     }
+          //   );
+          // } else {
+          //   res.status(403).send("Forbidden, no access.");
+          // }
+        }
+      );
+    });
+  },
+
+  updateUserById: (req, res) => {
+    const putsingleuserbyid = req.params.id;
+    let updatedUser = { idUser: putsingleuserbyid, ...req.body };
+    console.log(`User met ID ${putsingleuserbyid} aangepast`);
+
     pool.getConnection(function (err, connection) {
       if (err) throw err; // not connected!
 
@@ -113,18 +184,10 @@ let controller = {
           // Don't use the connection here, it has been returned to the pool.
           console.log("All id's = ", results);
 
-          // results.forEach((Element) => allids.push(Object.values(Element)));
-
-          // results.forEach((Element) =>
-          //   console.log(Element.id == getsingleuserbyid)
-          // );
-
-          // console.log("test 4");
-
           for (let i = 0; i < results.length; i++) {
             // console.log(results[i].id);
 
-            if (results[i].id == getsingleuserbyid) {
+            if (results[i].id == putsingleuserbyid) {
               requestedUserInDatabase = true;
             }
           }
@@ -135,16 +198,35 @@ let controller = {
 
           if (requestedUserInDatabase) {
             connection.query(
-              "SELECT * FROM user WHERE id = " + getsingleuserbyid,
+              "UPDATE user SET firstName=?, lastName=?, isActive=?, emailAdress=?, password=?, phoneNumber=?, street=?, city=? WHERE id = ?",
+              [
+                updatedUser.firstName,
+                updatedUser.lastName,
+                updatedUser.isActive,
+                updatedUser.emailAdress,
+                updatedUser.password,
+                updatedUser.phoneNumber,
+                updatedUser.street,
+                updatedUser.city,
+                putsingleuserbyid,
+              ],
               function (error, results, fields) {
-                // When done with the connection, release it.
-                connection.release();
+                // if (results.affectedRows > 0) {
+                //   connection.query(
+                //     "SELECT * FROM user WHERE id = " + putsingleuserbyid,
+                //     function (error, results, fields) {
+                //       res.status(201).json({
+                //         status: 201,
+                //         result: results[0],
+                //       });
+                //     }
+                //   );
+                // }
 
-                // Handle error after the release.
+                connection.release();
                 if (error) throw error;
 
-                // Don't use the connection here, it has been returned to the pool.
-                console.log("results = ", results);
+                // console.log("results = ", results);
 
                 res.status(201).json({
                   result: results,
@@ -157,27 +239,21 @@ let controller = {
         }
       );
     });
-  },
 
-  updateUserById: (req, res) => {
-    const putsingleuserbyid = req.params.id;
-    let updatedUser = { idUser: putsingleuserbyid, ...req.body };
-    console.log(`User met ID ${putsingleuserbyid} aangepast`);
+    // let index = databaseUser.findIndex(
+    //   (user) => user.idUser == putsingleuserbyid
+    // );
 
-    let index = databaseUser.findIndex(
-      (user) => user.idUser == putsingleuserbyid
-    );
+    // console.log("Index van user = " + index);
 
-    console.log("Index van user = " + index);
-
-    if (index == -1) {
-      res.status(403).send("Forbidden.");
-    } else {
-      databaseUser[index] = updatedUser;
-      res.status(201).json({
-        result: updatedUser,
-      });
-    }
+    // if (index == -1) {
+    //   res.status(403).send("Forbidden.");
+    // } else {
+    //   databaseUser[index] = updatedUser;
+    //   res.status(201).json({
+    //     result: updatedUser,
+    //   });
+    // }
   },
 
   deleteUserById: (req, res) => {
@@ -186,42 +262,53 @@ let controller = {
 
     var deletedUser = [];
 
-    // let index = databaseUser.findIndex(
-    //   (user) => user.idUser == deletesingleuserbyid
-    // );
-    // let user = databaseUser.filter(
-    //   (item) => item.idUser == deletesingleuserbyid
-    // );
-
-    // console.log("Index van user = " + index);
-
-    // if (index == -1) {
-    //   res.status(403).send("Forbidden.");
-    // } else {
-    //   databaseUser.splice(index, 1);
-    //   res.status(201).json({
-    //     result: user,
-    //   });
-    // }
-
     let requestedUserInDatabase = false;
 
     // get all id's
     pool.getConnection(function (err, connection) {
-      if (err) throw err; // not connected!
+      if (err) {
+        throw res.status(400).json({
+          status: 400,
+          error: err,
+        });
+      }
 
       // Use the connection
       connection.query(
-        "SELECT id FROM user",
+        "DELETE FROM user WHERE id = " + deletesingleuserbyid,
         function (error, results, fields) {
           // When done with the connection, release it.
           connection.release();
+          if (error) {
+            console.log(error);
+
+            let errorMessage = error.message;
+
+            if (error.errno == 1451) {
+              errorMessage = `Foreignkey error delete failed!`;
+            }
+
+            return res.status(400).json({
+              status: 400,
+              error: errorMessage,
+            });
+          }
+
+          if (results.affectedRows > 0) {
+            res.status(201).json({
+              result: results,
+            });
+          } else {
+            res.status(401).json({
+              error: "Er is een fout opgetreden bij het verwijderen.",
+            });
+          }
 
           // Handle error after the release.
-          if (error) throw error;
+          // if (error) throw error;
 
           // Don't use the connection here, it has been returned to the pool.
-          console.log("All id's = ", results);
+          // console.log("All id's = ", results);
 
           // results.forEach((Element) => allids.push(Object.values(Element)));
 
@@ -231,57 +318,57 @@ let controller = {
 
           // console.log("test 4");
 
-          for (let i = 0; i < results.length; i++) {
-            // console.log(results[i].id);
+          // for (let i = 0; i < results.length; i++) {
+          //   // console.log(results[i].id);
 
-            if (results[i].id == deletesingleuserbyid) {
-              requestedUserInDatabase = true;
-            }
-          }
+          //   if (results[i].id == deletesingleuserbyid) {
+          //     requestedUserInDatabase = true;
+          //   }
+          // }
 
           // console.log(allids);
 
-          console.log(requestedUserInDatabase);
+          // console.log(requestedUserInDatabase);
 
-          if (requestedUserInDatabase) {
-            // connection.query(
-            //   "DELETE FROM meal WHERE cookId = " + deletesingleuserbyid,
-            //   function (error, results, fields) {
-            //     // Handle error after the release.
-            //     if (error) throw error;
-            //   }
-            // );
+          // if (requestedUserInDatabase) {
+          //   // connection.query(
+          //   //   "DELETE FROM meal WHERE cookId = " + deletesingleuserbyid,
+          //   //   function (error, results, fields) {
+          //   //     // Handle error after the release.
+          //   //     if (error) throw error;
+          //   //   }
+          //   // );
 
-            connection.query(
-              "SELECT * FROM user WHERE id = " + deletesingleuserbyid,
-              function (error, results, fields) {
-                // Handle error after the release.
-                if (error) throw error;
+          //   connection.query(
+          //     "SELECT * FROM user WHERE id = " + deletesingleuserbyid,
+          //     function (error, results, fields) {
+          //       // Handle error after the release.
+          //       if (error) throw error;
 
-                databaseUser = results;
-              }
-            );
+          //       databaseUser = results;
+          //     }
+          //   );
 
-            connection.query(
-              "DELETE FROM user WHERE id = " + deletesingleuserbyid,
-              function (error, results, fields) {
-                // When done with the connection, release it.
-                connection.release();
+          //   connection.query(
+          //     "DELETE FROM user WHERE id = " + deletesingleuserbyid,
+          //     function (error, results, fields) {
+          //       // When done with the connection, release it.
+          //       connection.release();
 
-                // Handle error after the release.
-                if (error) throw error;
+          //       // Handle error after the release.
+          //       if (error) throw error;
 
-                // Don't use the connection here, it has been returned to the pool.
-                console.log("results = ", results);
+          //       // Don't use the connection here, it has been returned to the pool.
+          //       console.log("results = ", results);
 
-                res.status(201).json({
-                  result: deletedUser,
-                });
-              }
-            );
-          } else {
-            res.status(403).send("Forbidden, no access.");
-          }
+          //       res.status(201).json({
+          //         result: deletedUser,
+          //       });
+          //     }
+          //   );
+          // } else {
+          //   res.status(403).send("Forbidden, no access.");
+          // }
         }
       );
     });
