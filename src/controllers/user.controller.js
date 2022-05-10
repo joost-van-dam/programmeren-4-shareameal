@@ -18,7 +18,7 @@ let controller = {
       next();
     } catch (err) {
       const error = {
-        status: 404,
+        status: 400,
         result: err.message,
       };
 
@@ -26,8 +26,47 @@ let controller = {
     }
   },
 
+  validateUpdate: (req, res, next) => {
+    let user = req.body;
+    let {
+      firstName,
+      lastName,
+      isActive,
+      emailAdress,
+      password,
+      phoneNumber,
+      street,
+      city,
+    } = user;
+
+    try {
+      assert(typeof firstName === "string", "First name must be a string");
+      assert(typeof lastName === "string", "Last name must be a string");
+      assert(typeof isActive === "boolean", "Is active must be a boolean");
+      assert(typeof emailAdress === "string", "Email must be a string");
+      assert(typeof password === "string", "Password must be a string");
+      assert(typeof phoneNumber === "string", "Phonenumber must be a string");
+      assert(typeof street === "string", "Street must be a string");
+      assert(typeof city === "string", "City must be a string");
+
+      next();
+    } catch (err) {
+      const error = {
+        status: 400,
+        result: err.message,
+      };
+
+      next(error);
+    }
+  },
+
+  // UC-201 Registreren als nieuwe gebruiker
   addUser: (req, res) => {
     let user = req.body;
+
+    // // if (user.city == undefined) {
+    // console.log("TEST@@@@@@@@@@@@@@@");
+    // // }
 
     pool.getConnection(function (err, connection) {
       if (err) throw err;
@@ -41,9 +80,10 @@ let controller = {
             console.log(error);
             let errorMessage = error.message;
 
-            return res.status(400).json({
-              status: 400,
-              error: errorMessage,
+            return res.status(409).json({
+              status: 409,
+              message: "Gebruiker bestaat al",
+              // error: errorMessage,
             });
           } else {
             connection.query(

@@ -27,7 +27,11 @@ router.get("/api/user/profile", (req, res) => {
 router.get("/api/user/:id", userController.getUserById);
 
 // UC-205 Update a single user
-router.put("/api/user/:id", userController.updateUserById);
+router.put(
+  "/api/user/:id",
+  userController.validateUpdate,
+  userController.updateUserById
+);
 
 // UC-206 Delete an user
 router.delete("/api/user/:id", userController.deleteUserById);
