@@ -200,12 +200,6 @@ let controller = {
                 });
               }
             );
-
-            // res.status(200).json({
-            //   status: 200,
-            //   result: "Done.",
-            //   // affectedRows: results.affectedRows,
-            // });
           }
         }
       );
@@ -244,14 +238,14 @@ let controller = {
           }
 
           if (results.affectedRows === 0) {
-            res.status(201).json({
-              result:
-                "Nothing has changed, user already deleted or has not existed.",
+            res.status(400).json({
+              status: 400,
+              result: "Gebruiker bestaat niet.",
             });
           } else {
-            res.status(201).json({
-              result: "Done.",
-              affectedRows: results.affectedRows,
+            res.status(200).json({
+              status: 200,
+              result: "Gebruiker verwijderd.",
             });
           }
         }
