@@ -181,10 +181,32 @@ let controller = {
             });
           }
 
-          res.status(201).json({
-            result: "Done.",
-            affectedRows: results.affectedRows,
-          });
+          if (results.affectedRows === 0) {
+            res.status(400).json({
+              status: 400,
+              result: "Gebruiker bestaat niet.",
+            });
+          } else {
+            connection.query(
+              `SELECT * FROM user WHERE id = '${putsingleuserbyid}'`,
+              function (error, results, fields) {
+                connection.release();
+
+                if (error) throw error;
+
+                res.status(200).json({
+                  status: 200,
+                  result: results,
+                });
+              }
+            );
+
+            // res.status(200).json({
+            //   status: 200,
+            //   result: "Done.",
+            //   // affectedRows: results.affectedRows,
+            // });
+          }
         }
       );
     });
@@ -221,7 +243,7 @@ let controller = {
             });
           }
 
-          if (results.affectedRows > 0) {
+          if (results.affectedRows === 0) {
             res.status(201).json({
               result:
                 "Nothing has changed, user already deleted or has not existed.",
