@@ -82,7 +82,7 @@ let controller = {
 
             return res.status(409).json({
               status: 409,
-              message: "Gebruiker bestaat al",
+              result: "Gebruiker bestaat al",
               // error: errorMessage,
             });
           } else {
