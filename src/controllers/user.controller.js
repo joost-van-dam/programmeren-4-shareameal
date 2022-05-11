@@ -52,7 +52,7 @@ let controller = {
       next();
     } catch (err) {
       const error = {
-        status: 401,
+        status: 400,
         result: err.message,
       };
 
@@ -86,8 +86,8 @@ let controller = {
                 result: "Gebruiker bestaat al",
               });
             } else {
-              return res.status(401).json({
-                status: 401,
+              return res.status(400).json({
+                status: 400,
                 error: errorMessage,
               });
             }
