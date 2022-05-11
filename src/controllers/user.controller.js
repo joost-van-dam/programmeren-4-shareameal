@@ -305,8 +305,8 @@ let controller = {
           connection.release();
           // if (error) throw error;
           if (error) {
-            console.log("HENK LET OP!: " + JSON.stringify(error));
-            console.log("HANS LET OP!: " + error);
+            // console.log("HENK LET OP!: " + JSON.stringify(error));
+            // console.log("HENK LET OP!: " + JSON.stringify(error));
 
             if (error.errno == 1054) {
               console.log("NUMMER 1054 ERROR LET OP DEZE: " + error);
