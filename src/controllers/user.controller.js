@@ -80,11 +80,17 @@ let controller = {
             // console.log(error);
             let errorMessage = error.message;
 
-            return res.status(409).json({
-              status: 409,
-              result: "Gebruiker bestaat al",
-              // error: errorMessage,
-            });
+            if (error.errno == 1062) {
+              return res.status(409).json({
+                status: 409,
+                result: "Gebruiker bestaat al",
+              });
+            } else {
+              return res.status(400).json({
+                status: 400,
+                error: errorMessage,
+              });
+            }
           } else {
             connection.query(
               `SELECT * FROM user WHERE emailAdress = '${user.emailAdress}'`,

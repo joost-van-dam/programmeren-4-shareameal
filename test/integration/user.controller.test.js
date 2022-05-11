@@ -71,8 +71,8 @@ describe("Manage movies /api/user", () => {
         .request(server)
         .post("/api/user")
         .send({
-          firstName: "John",
-          lastName: "Doe",
+          firstName: "Joost",
+          lastName: "van Dam",
           street: "Lovensdijkstraat 61",
           city: "Breda",
           isActive: true,
@@ -87,7 +87,30 @@ describe("Manage movies /api/user", () => {
           result.should.be.a("string").that.equals("Gebruiker bestaat al");
           done();
         });
-      // done();
+    });
+
+    it("TC-201-5 Gebruiker succesvol geregistreerd", (done) => {
+      chai
+        .request(server)
+        .post("/api/user")
+        .send({
+          firstName: "Thijs",
+          lastName: "van Dam",
+          street: "Lovensdijkstraat 61",
+          city: "Breda",
+          isActive: true,
+          emailAdress: "thijs.vandam@avans.nl",
+          password: "secret",
+          phoneNumber: "06 12425475",
+        })
+        .end((err, res) => {
+          res.should.be.an("Object");
+          let { status } = res.body;
+          // let { status, result } = res.body;
+          status.should.equals(201);
+          // result.should.be.a("string").that.equals("Gebruiker bestaat al");
+          done();
+        });
     });
 
     // it("TC-202", (done) => {});
