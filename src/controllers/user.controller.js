@@ -29,25 +29,25 @@ let controller = {
   validateUpdate: (req, res, next) => {
     let user = req.body;
     let {
-      firstName,
-      lastName,
-      isActive,
+      // firstName,
+      // lastName,
+      // isActive,
       emailAdress,
-      password,
-      phoneNumber,
-      street,
-      city,
+      // password,
+      // phoneNumber,
+      // street,
+      // city,
     } = user;
 
     try {
-      assert(typeof firstName === "string", "First name must be a string");
-      assert(typeof lastName === "string", "Last name must be a string");
-      assert(typeof isActive === "boolean", "Is active must be a boolean");
+      // assert(typeof firstName === "string", "First name must be a string");
+      // assert(typeof lastName === "string", "Last name must be a string");
+      // assert(typeof isActive === "boolean", "Is active must be a boolean");
       assert(typeof emailAdress === "string", "Email must be a string");
-      assert(typeof password === "string", "Password must be a string");
-      assert(typeof phoneNumber === "string", "Phonenumber must be a string");
-      assert(typeof street === "string", "Street must be a string");
-      assert(typeof city === "string", "City must be a string");
+      // assert(typeof password === "string", "Password must be a string");
+      // assert(typeof phoneNumber === "string", "Phonenumber must be a string");
+      // assert(typeof street === "string", "Street must be a string");
+      // assert(typeof city === "string", "City must be a string");
 
       next();
     } catch (err) {
