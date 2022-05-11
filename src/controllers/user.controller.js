@@ -345,6 +345,8 @@ let controller = {
               });
             }
 
+            console.log("ALS HIJ HIER KOMT LET OP!!!:" + results);
+
             return res.status(200).json({
               status: 200,
               message: results[0],
