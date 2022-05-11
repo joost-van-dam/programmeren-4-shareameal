@@ -304,11 +304,11 @@ let controller = {
   deleteUserById: (req, res) => {
     console.log("HELP 1");
 
-    try {
-      const deletesingleuserbyid = req.params.id;
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    const deletesingleuserbyid = req.params.id;
+    // } catch (error) {
+    //   console.log(error);
+    // }
 
     // const deletesingleuserbyid = req.params.id;
     console.log("HELP 2");
