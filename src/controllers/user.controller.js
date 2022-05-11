@@ -171,7 +171,7 @@ let controller = {
 
             return res.status(200).json({
               status: 200,
-              message: results[0],
+              result: results[0],
             });
           } else {
             return res.status(400).json({
@@ -247,7 +247,7 @@ let controller = {
                 if (results) {
                   res.status(200).json({
                     status: 200,
-                    message: results,
+                    result: results,
                   });
                 }
               }
