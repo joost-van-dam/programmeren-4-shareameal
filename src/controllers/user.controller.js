@@ -102,7 +102,7 @@ let controller = {
 
                 res.status(201).json({
                   status: 201,
-                  message: results,
+                  result: results,
                 });
               }
             );
@@ -151,7 +151,7 @@ let controller = {
             if (results.length === 0) {
               return res.status(404).json({
                 status: 404,
-                message: "Gebruiker-ID bestaat niet",
+                message: "User does not exist",
               });
             }
 
@@ -217,7 +217,7 @@ let controller = {
             if (results.length === 0) {
               return res.status(404).json({
                 status: 404,
-                message: "Gebruiker-ID bestaat niet",
+                message: "User does not exist",
               });
             }
 
@@ -334,7 +334,7 @@ let controller = {
           if (results.length === 0) {
             return res.status(400).json({
               status: 400,
-              message: "Gebruiker-ID bestaat niet",
+              message: "User does not exist",
             });
           }
 
@@ -342,7 +342,7 @@ let controller = {
             if (results.length === 0) {
               return res.status(400).json({
                 status: 400,
-                message: "Gebruiker-ID bestaat niet",
+                message: "User does not exist",
               });
             }
 
