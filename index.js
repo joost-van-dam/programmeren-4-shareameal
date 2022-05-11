@@ -25,6 +25,9 @@ app.all("*", (req, res) => {
 
 // Error handler
 app.use((err, req, res, next) => {
+  console.log(
+    "De error status: " + err.status + "\nDe error message: " + err.message
+  );
   res.status(err.status).json(err);
 });
 

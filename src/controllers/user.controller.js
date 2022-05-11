@@ -79,7 +79,7 @@ let controller = {
 
           if (error) {
             // console.log(error);
-            let errorMessage = error.message;
+            // let errorMessage = error.message;
 
             if (error.errno == 1062) {
               // if (error) throw error;
@@ -308,7 +308,7 @@ let controller = {
             // console.log(error);
 
             if (error.errno == 1054) {
-              console.log("NUMMER 1292 ERROR LET OP DEZE: " + error);
+              console.log("NUMMER 1054 ERROR LET OP DEZE: " + error);
               return res.status(400).json({
                 status: 400,
               });
