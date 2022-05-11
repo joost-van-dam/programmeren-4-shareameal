@@ -88,7 +88,6 @@ let controller = {
             } else {
               return res.status(400).json({
                 status: 400,
-                error: errorMessage,
               });
             }
           } else {
@@ -132,11 +131,14 @@ let controller = {
   getUserById: (req, res) => {
     const getsingleuserbyid = req.params.id;
     // console.log(`User met ID ${getsingleuserbyid} gezocht`);
+    console.log("ID" + getsingleuserbyid);
+
     pool.getConnection(function (err, connection) {
       connection.query(
         "SELECT * FROM user WHERE id = " + getsingleuserbyid,
         function (error, results, fields) {
           connection.release();
+          if (error) throw error;
 
           if (results.length === 0) {
             res.status(404).json({

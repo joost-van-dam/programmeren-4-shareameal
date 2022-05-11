@@ -17,8 +17,8 @@ app.all("*", (req, res, next) => {
 app.use(router);
 
 app.all("*", (req, res) => {
-  res.status(401).json({
-    status: 401,
+  res.status(400).json({
+    status: 400,
     result: "End-point not found",
   });
 });
