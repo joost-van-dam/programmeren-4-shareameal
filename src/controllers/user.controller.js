@@ -131,7 +131,7 @@ let controller = {
 
   getUserById: (req, res) => {
     const getsingleuserbyid = req.params.id;
-    console.log(`User met ID ${getsingleuserbyid} gezocht`);
+    // console.log(`User met ID ${getsingleuserbyid} gezocht`);
     pool.getConnection(function (err, connection) {
       connection.query(
         "SELECT * FROM user WHERE id = " + getsingleuserbyid,
@@ -146,7 +146,7 @@ let controller = {
           } else {
             res.status(200).json({
               status: 200,
-              result: results,
+              result: results[0],
             });
           }
         }

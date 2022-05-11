@@ -16,6 +16,8 @@ const CLEAR_DB =
 
 const TEST_USERS =
   "INSERT INTO user (firstName, lastName, isActive, emailAdress, password, street, city) VALUES ('Joost' ,'van Dam' ,1 ,'joost.vandam@avans.nl' ,'wachtwoord123' ,'Lovensdijkstraat', 'Breda'), ('Robin' ,'Schellius' ,1 ,'robin.schellius@avans.nl' ,'wachtwoord456' ,'Hogeschoollaan', 'Breda')";
+const TEST_USER_AT_ID_IS_1000000 =
+  "INSERT INTO user (id, firstName, lastName, isActive, emailAdress, password, street, city) VALUES (1000000, 'Joost' ,'van Dam' ,1 ,'joost.vandam@avans.nl' ,'wachtwoord123' ,'Lovensdijkstraat', 'Breda')";
 
 describe("Share-a-meal API Tests", () => {
   describe("UC-201 Registreren als nieuwe gebruiker", () => {
@@ -169,6 +171,55 @@ describe("Share-a-meal API Tests", () => {
           let { status, results } = res.body;
           status.should.equals(200);
           results.should.be.an("array").that.has.length(2);
+          done();
+        });
+    });
+  });
+
+  describe("UC-204 Details van gebruiker", () => {
+    it("TC-204-2 Gebruiker-ID bestaat niet", (done) => {
+      chai
+        .request(server)
+        .get("/api/user/0")
+        .end((err, res) => {
+          res.should.be.an("Object");
+          let { status, result } = res.body;
+          status.should.equals(404);
+          result.should.be.a("string").that.equals("Gebruiker-ID bestaat niet");
+          done();
+        });
+    });
+
+    it("TC-204-3 Gebruiker-ID bestaat", (done) => {
+      pool.getConnection(function (err, connection) {
+        if (err) throw err;
+        connection.query(CLEAR_DB, function (error, result, field) {
+          if (error) throw error;
+          connection.query(
+            TEST_USER_AT_ID_IS_1000000,
+            function (error, result, field) {
+              if (error) throw error;
+              // connection.query(
+              //   "SELECT * FROM user",
+              //   function (error, result, field) {
+              //     if (error) throw error;
+              //     console.log(result);
+              connection.release();
+              //   }
+              // );
+            }
+          );
+        });
+      });
+
+      chai
+        .request(server)
+        .get("/api/user/1000000")
+        .end((err, res) => {
+          res.should.be.an("Object");
+          let { status, result } = res.body;
+          status.should.equals(200);
+          result.should.be.an("Object").that.deep.equals(result);
           done();
         });
     });
