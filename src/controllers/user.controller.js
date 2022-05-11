@@ -347,6 +347,13 @@ let controller = {
 
             console.log("ALS HIJ HIER KOMT LET OP!!!:" + results);
 
+            if (results.affectedRows === 0) {
+              res.status(400).json({
+                status: 400,
+                message: "Gebruiker bestaat niet.",
+              });
+            }
+
             return res.status(200).json({
               status: 200,
               message: results[0],
