@@ -75,6 +75,7 @@ let controller = {
         `INSERT INTO user (firstName, lastName, isActive, emailAdress, password, street, city) VALUES ('${user.firstName}' ,'${user.lastName}' ,1 ,'${user.emailAdress}' ,'${user.password}' ,'${user.street}', '${user.city}')`,
         function (error, results, fields) {
           connection.release();
+          if (error) throw error;
 
           if (error) {
             // console.log(error);
@@ -230,6 +231,7 @@ let controller = {
         "DELETE FROM user WHERE id = " + deletesingleuserbyid,
         function (error, results, fields) {
           connection.release();
+          if (error) throw error;
           if (error) {
             console.log(error);
 
