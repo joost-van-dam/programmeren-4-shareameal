@@ -130,44 +130,44 @@ let controller = {
     });
   },
 
-  getUserById: (req, res) => {
-    const getsingleuserbyid = req.params.id;
-    // console.log(`User met ID ${getsingleuserbyid} gezocht`);
-    console.log("ID" + getsingleuserbyid);
+  // getUserById: (req, res) => {
+  //   const getsingleuserbyid = req.params.id;
+  //   // console.log(`User met ID ${getsingleuserbyid} gezocht`);
+  //   console.log("ID" + getsingleuserbyid);
 
-    pool.getConnection(function (err, connection) {
-      if (err) throw err;
-      connection.query(
-        "SELECT * FROM user WHERE id = " + getsingleuserbyid,
-        function (error, results, fields) {
-          connection.release();
-          // if (error) throw error;
+  //   pool.getConnection(function (err, connection) {
+  //     if (err) throw err;
+  //     connection.query(
+  //       "SELECT * FROM user WHERE id = " + getsingleuserbyid,
+  //       function (error, results, fields) {
+  //         connection.release();
+  //         // if (error) throw error;
 
-          if (!results) {
-            console.log("DE ERROR IS: " + error);
-          }
+  //         if (!results) {
+  //           console.log("DE ERROR IS: " + error);
+  //         }
 
-          if (results) {
-            if (results.length === 0) {
-              return res.status(404).json({
-                status: 404,
-                message: "Gebruiker-ID bestaat niet",
-              });
-            }
+  //         if (results) {
+  //           if (results.length === 0) {
+  //             return res.status(404).json({
+  //               status: 404,
+  //               message: "Gebruiker-ID bestaat niet",
+  //             });
+  //           }
 
-            return res.status(200).json({
-              status: 200,
-              message: results[0],
-            });
-          } else {
-            return res.status(400).json({
-              status: 400,
-            });
-          }
-        }
-      );
-    });
-  },
+  //           return res.status(200).json({
+  //             status: 200,
+  //             message: results[0],
+  //           });
+  //         } else {
+  //           return res.status(400).json({
+  //             status: 400,
+  //           });
+  //         }
+  //       }
+  //     );
+  //   });
+  // },
 
   updateUserById: (req, res) => {
     const putsingleuserbyid = req.params.id;
