@@ -144,7 +144,7 @@ let controller = {
           // if (error) throw error;
 
           if (!results) {
-            console.log("DE ERROR IS: " + error.message);
+            console.log("DE ERROR IS: " + error);
           }
 
           if (results.length === 0) {
@@ -197,7 +197,7 @@ let controller = {
           }
 
           if (!results) {
-            console.log("DE ERROR IS: " + error.message);
+            console.log("DE ERROR IS: " + error);
           }
 
           if (results.affectedRows === 0) {
