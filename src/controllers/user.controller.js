@@ -330,6 +330,13 @@ let controller = {
             console.log("DE ERROR IS: " + error);
           }
 
+          if (results.length === 0) {
+            return res.status(400).json({
+              status: 400,
+              message: "Gebruiker-ID bestaat niet",
+            });
+          }
+
           if (results) {
             if (results.length === 0) {
               return res.status(400).json({
