@@ -5,8 +5,7 @@ const pool = require("../../databaseconnectie/dbtest");
 let controller = {
   validateUser: (req, res, next) => {
     let user = req.body;
-    let { firstName, lastName, isActive, emailAdress, password, street, city } =
-      user;
+    let { firstName, lastName, emailAdress, password, street, city } = user;
 
     try {
       assert(typeof firstName === "string", "First name must be a string");
@@ -106,10 +105,10 @@ let controller = {
                 console.log("Joost dit is de user: " + user);
                 console.log("Joost dit is de user: " + JSON.stringify(user));
 
-                if (user[isActive] == 1) {
-                  user[isActive] = true;
+                if (user.isActive == 1) {
+                  user.isActive = true;
                 } else {
-                  user[isActive] = false;
+                  user.isActive = false;
                 }
 
                 // user[isActive] = user[isActive] == 1;
