@@ -238,7 +238,7 @@ let controller = {
                 if (results) {
                   res.status(200).json({
                     status: 200,
-                    message: results,
+                    result: results,
                   });
                 }
               }
