@@ -75,13 +75,14 @@ let controller = {
         `INSERT INTO user (firstName, lastName, isActive, emailAdress, password, street, city) VALUES ('${user.firstName}' ,'${user.lastName}' ,1 ,'${user.emailAdress}' ,'${user.password}' ,'${user.street}', '${user.city}')`,
         function (error, results, fields) {
           connection.release();
-          if (error) throw error;
+          // if (error) throw error;
 
           if (error) {
             // console.log(error);
             let errorMessage = error.message;
 
             if (error.errno == 1062) {
+              if (error) throw error;
               return res.status(409).json({
                 status: 409,
                 result: "Gebruiker bestaat al",
