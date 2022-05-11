@@ -302,7 +302,16 @@ let controller = {
   },
 
   deleteUserById: (req, res) => {
-    const deletesingleuserbyid = req.params.id;
+    console.log("HELP 1");
+
+    try {
+      const deletesingleuserbyid = req.params.id;
+    } catch (error) {
+      console.log(error);
+    }
+
+    // const deletesingleuserbyid = req.params.id;
+    console.log("HELP 2");
     console.log(`User met ID ${deletesingleuserbyid} verwijderd`);
 
     pool.getConnection(function (err, connection) {
@@ -319,6 +328,7 @@ let controller = {
           connection.release();
           // if (error) throw error;
           if (error) {
+            console.log("HELP 3");
             // console.log("HENK LET OP!: " + JSON.stringify(error));
             // console.log("HENK LET OP!: " + JSON.stringify(error));
 
