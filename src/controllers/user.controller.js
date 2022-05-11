@@ -141,7 +141,11 @@ let controller = {
         "SELECT * FROM user WHERE id = " + getsingleuserbyid,
         function (error, results, fields) {
           connection.release();
-          // if (error) throw error;
+          if (error) throw error;
+
+          if (results === undefined) {
+            console.log("DE ERROR IS: " + results);
+          }
 
           if (results.length === 0) {
             return res.status(404).json({
