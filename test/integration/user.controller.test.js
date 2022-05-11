@@ -57,9 +57,9 @@ describe("Share-a-meal API Tests", () => {
         })
         .end((err, res) => {
           res.should.be.an("Object");
-          let { status, result } = res.body;
+          let { status, message } = res.body;
           status.should.equals(400);
-          result.should.be.a("string").that.equals("Email must be a string");
+          message.should.be.a("string").that.equals("Email must be a string");
           done();
         });
     });
