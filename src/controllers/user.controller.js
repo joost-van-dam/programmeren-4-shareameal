@@ -383,7 +383,7 @@ let controller = {
 
             return res.status(200).json({
               status: 200,
-              message: results[0],
+              message: "Deleted",
             });
           } else {
             return res.status(400).json({
