@@ -77,7 +77,7 @@ let controller = {
           connection.release();
 
           if (error) {
-            console.log(error);
+            // console.log(error);
             let errorMessage = error.message;
 
             return res.status(409).json({
