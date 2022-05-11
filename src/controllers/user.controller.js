@@ -143,8 +143,8 @@ let controller = {
           connection.release();
           // if (error) throw error;
 
-          if (results === undefined) {
-            console.log("DE ERROR IS: " + results);
+          if (!results) {
+            console.log("DE ERROR IS: " + error.message);
           }
 
           if (results.length === 0) {
@@ -196,8 +196,8 @@ let controller = {
             });
           }
 
-          if (results === undefined) {
-            console.log("DE ERROR IS: " + results);
+          if (!results) {
+            console.log("DE ERROR IS: " + error.message);
           }
 
           if (results.affectedRows === 0) {
@@ -257,8 +257,8 @@ let controller = {
             });
           }
 
-          if (results === undefined) {
-            console.log("DE ERROR IS: " + results);
+          if (!results) {
+            console.log("DE ERROR IS: " + error.message);
           }
 
           if (results.affectedRows === 0) {
