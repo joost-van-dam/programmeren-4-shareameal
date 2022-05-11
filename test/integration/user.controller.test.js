@@ -8,37 +8,35 @@ const { Test } = require("mocha");
 chai.should();
 chai.use(chaiHttp);
 
-const CLEAR_MEAL_TABLE = "DELETE IGNORE FROM `meal`";
-const CLEAR_PARTICIPANTS_TABLE = "DELETE IGNORE FROM `meal_participants_user`";
-const CLEAR_USERS_TABLE = "DELETE IGNORE FROM `user`";
+const CLEAR_MEAL_TABLE = "DELETE IGNORE FROM `meal`;";
+const CLEAR_PARTICIPANTS_TABLE = "DELETE IGNORE FROM `meal_participants_user`;";
+const CLEAR_USERS_TABLE = "DELETE IGNORE FROM `user`;";
 const CLEAR_DB =
   CLEAR_MEAL_TABLE + CLEAR_PARTICIPANTS_TABLE + CLEAR_USERS_TABLE;
 
-const TEST_USER1 =
-  "INSERT INTO user (firstName, lastName, isActive, emailAdress, password, street, city) VALUES ('Joost' ,'van Dam' ,1 ,'joost.vandam@avans.nl' ,'wachtwoord123' ,'Lovensdijkstraat', 'Breda')";
-const TEST_USER2 =
-  "INSERT INTO user (firstName, lastName, isActive, emailAdress, password, street, city) VALUES ('Robin' ,'Schellius' ,1 ,'robin.schellius@avans.nl' ,'wachtwoord456' ,'Hogeschoollaan', 'Breda')";
-const TEST_USER3 =
-  "INSERT INTO user (firstName, lastName, isActive, emailAdress, password, street, city) VALUES ('Davide' ,'Ambesi' ,1 ,'davide.ambesi@avans.nl' ,'wachtwoord789' ,'Bijster', 'Breda')";
+const TEST_USERS =
+  "INSERT INTO user (firstName, lastName, isActive, emailAdress, password, street, city) VALUES ('Joost' ,'van Dam' ,1 ,'joost.vandam@avans.nl' ,'wachtwoord123' ,'Lovensdijkstraat', 'Breda'), ('Robin' ,'Schellius' ,1 ,'robin.schellius@avans.nl' ,'wachtwoord456' ,'Hogeschoollaan', 'Breda'), ('Davide' ,'Ambesi' ,1 ,'davide.ambesi@avans.nl' ,'wachtwoord789' ,'Bijster', 'Breda')";
 
-const TEST_USERS = TEST_USER1 + TEST_USER2 + TEST_USER3;
-// hier komen alle chai testen, 500+ regels
-
-describe("Manage movies /api/user", () => {
+describe("Share-a-meal API Tests", () => {
   describe("UC-201 Registreren als nieuwe gebruiker", () => {
     beforeEach((done) => {
       pool.getConnection(function (err, connection) {
         if (err) throw err;
         connection.query(CLEAR_DB, function (error, result, field) {
+          if (error) throw error;
           connection.query(TEST_USERS, function (error, result, field) {
+            if (error) throw error;
+            // connection.query(
+            //   "SELECT * FROM user",
+            //   function (error, result, field) {
+            //     if (error) throw error;
+            //     console.log(result);
             connection.release();
+            done();
+            //   }
+            // );
           });
         });
-        // connection.release();
-
-        // Dummy user toevoegen
-
-        done();
       });
     });
 
