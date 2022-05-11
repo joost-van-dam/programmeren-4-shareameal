@@ -312,7 +312,7 @@ let controller = {
 
     // const deletesingleuserbyid = req.params.id;
     console.log("HELP 2");
-    console.log(`User met ID ${deletesingleuserbyid} verwijderd`);
+    // console.log(`User met ID ${deletesingleuserbyid} verwijderd`);
 
     pool.getConnection(function (err, connection) {
       if (err) {
