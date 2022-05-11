@@ -351,7 +351,7 @@ let controller = {
             if (results.affectedRows === 0) {
               res.status(400).json({
                 status: 400,
-                message: "Gebruiker bestaat niet.",
+                message: "User does not exist",
               });
             }
 
