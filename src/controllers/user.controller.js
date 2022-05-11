@@ -141,15 +141,15 @@ let controller = {
         "SELECT * FROM user WHERE id = " + getsingleuserbyid,
         function (error, results, fields) {
           connection.release();
-          if (error) throw error;
+          // if (error) throw error;
 
           if (results.length === 0) {
-            res.status(404).json({
+            return res.status(404).json({
               status: 404,
               result: "Gebruiker-ID bestaat niet",
             });
           } else {
-            res.status(200).json({
+            return res.status(200).json({
               status: 200,
               result: results[0],
             });
