@@ -355,20 +355,20 @@ let controller = {
             console.log("DE ERROR IS: " + error);
           }
 
-          if (results.length === 0) {
-            return res.status(400).json({
-              status: 400,
-              message: "User does not exist",
-            });
-          }
+          // if (results.length === 0) {
+          //   return res.status(400).json({
+          //     status: 400,
+          //     message: "User does not exist",
+          //   });
+          // }
 
           if (results) {
-            if (results.length === 0) {
-              return res.status(400).json({
-                status: 400,
-                message: "User does not exist",
-              });
-            }
+            // if (results.length === 0) {
+            //   return res.status(400).json({
+            //     status: 400,
+            //     message: "User does not exist",
+            //   });
+            // }
 
             console.log("ALS HIJ HIER KOMT LET OP!!!:" + results);
 
