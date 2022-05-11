@@ -206,10 +206,17 @@ let controller = {
             console.log("DE ERROR IS: " + error);
           }
 
-          if (results.affectedRows === 0) {
-            res.status(400).json({
-              status: 400,
-              result: "Gebruiker bestaat niet.",
+          if (results) {
+            if (results.length === 0) {
+              return res.status(404).json({
+                status: 404,
+                result: "Gebruiker-ID bestaat niet",
+              });
+            }
+
+            return res.status(200).json({
+              status: 200,
+              result: results[0],
             });
           } else {
             connection.query(
@@ -226,6 +233,27 @@ let controller = {
               }
             );
           }
+
+          // if (results.affectedRows === 0) {
+          //   res.status(400).json({
+          //     status: 400,
+          //     result: "Gebruiker bestaat niet.",
+          //   });
+          // } else {
+          //   connection.query(
+          //     `SELECT * FROM user WHERE id = '${putsingleuserbyid}'`,
+          //     function (error, results, fields) {
+          //       connection.release();
+
+          //       if (error) throw error;
+
+          //       res.status(200).json({
+          //         status: 200,
+          //         result: results,
+          //       });
+          //     }
+          //   );
+          // }
         }
       );
     });
@@ -267,17 +295,35 @@ let controller = {
             console.log("DE ERROR IS: " + error);
           }
 
-          if (results.affectedRows === 0) {
-            res.status(400).json({
-              status: 400,
-              result: "Gebruiker bestaat niet.",
+          if (results) {
+            if (results.length === 0) {
+              return res.status(400).json({
+                status: 400,
+                result: "Gebruiker-ID bestaat niet",
+              });
+            }
+
+            return res.status(200).json({
+              status: 200,
+              result: results[0],
             });
           } else {
-            res.status(200).json({
-              status: 200,
-              result: "Gebruiker verwijderd.",
+            return res.status(400).json({
+              status: 400,
             });
           }
+
+          // if (results.affectedRows === 0) {
+          //   res.status(400).json({
+          //     status: 400,
+          //     result: "Gebruiker bestaat niet.",
+          //   });
+          // } else {
+          //   res.status(200).json({
+          //     status: 200,
+          //     result: "Gebruiker verwijderd.",
+          //   });
+          // }
         }
       );
     });
