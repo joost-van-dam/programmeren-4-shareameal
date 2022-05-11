@@ -305,7 +305,14 @@ let controller = {
           connection.release();
           // if (error) throw error;
           if (error) {
-            console.log(error);
+            // console.log(error);
+
+            if (error.errno == 1054) {
+              console.log("NUMMER 1292 ERROR LET OP DEZE: " + error);
+              return res.status(400).json({
+                status: 400,
+              });
+            }
 
             let errorMessage = error.message;
 
