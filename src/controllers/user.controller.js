@@ -136,6 +136,7 @@ let controller = {
     console.log("ID" + getsingleuserbyid);
 
     pool.getConnection(function (err, connection) {
+      if (err) throw err;
       connection.query(
         "SELECT * FROM user WHERE id = " + getsingleuserbyid,
         function (error, results, fields) {
@@ -232,7 +233,7 @@ let controller = {
         "DELETE FROM user WHERE id = " + deletesingleuserbyid,
         function (error, results, fields) {
           connection.release();
-          if (error) throw error;
+          // if (error) throw error;
           if (error) {
             console.log(error);
 
