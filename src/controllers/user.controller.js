@@ -82,7 +82,7 @@ let controller = {
             let errorMessage = error.message;
 
             if (error.errno == 1062) {
-              if (error) throw error;
+              // if (error) throw error;
               return res.status(409).json({
                 status: 409,
                 result: "Gebruiker bestaat al",
