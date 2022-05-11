@@ -102,6 +102,9 @@ let controller = {
 
                 let user = results[0];
 
+                console.log("Joost dit is de user: " + user);
+                console.log("Joost dit is de user: " + JSON.stringify(user));
+
                 if (user[isActive] == 1) {
                   user[isActive] = true;
                 } else {
