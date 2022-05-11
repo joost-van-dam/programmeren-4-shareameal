@@ -193,9 +193,9 @@ let controller = {
           connection.release();
           if (error) {
             if (error.errno == 1292) {
+              console.log("NUMMER 1292 ERROR LET OP DEZE: " + error);
               return res.status(400).json({
                 status: 400,
-                error: errorMessage,
               });
             }
 
