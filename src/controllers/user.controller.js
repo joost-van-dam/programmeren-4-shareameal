@@ -119,7 +119,7 @@ let controller = {
         connection.release();
         if (error) throw error;
 
-        console.log("results = ", results);
+        // console.log("results = ", results);
 
         res.status(200).json({
           status: 200,

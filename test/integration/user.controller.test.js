@@ -15,7 +15,7 @@ const CLEAR_DB =
   CLEAR_MEAL_TABLE + CLEAR_PARTICIPANTS_TABLE + CLEAR_USERS_TABLE;
 
 const TEST_USERS =
-  "INSERT INTO user (firstName, lastName, isActive, emailAdress, password, street, city) VALUES ('Joost' ,'van Dam' ,1 ,'joost.vandam@avans.nl' ,'wachtwoord123' ,'Lovensdijkstraat', 'Breda'), ('Robin' ,'Schellius' ,1 ,'robin.schellius@avans.nl' ,'wachtwoord456' ,'Hogeschoollaan', 'Breda'), ('Davide' ,'Ambesi' ,1 ,'davide.ambesi@avans.nl' ,'wachtwoord789' ,'Bijster', 'Breda')";
+  "INSERT INTO user (firstName, lastName, isActive, emailAdress, password, street, city) VALUES ('Joost' ,'van Dam' ,1 ,'joost.vandam@avans.nl' ,'wachtwoord123' ,'Lovensdijkstraat', 'Breda'), ('Robin' ,'Schellius' ,1 ,'robin.schellius@avans.nl' ,'wachtwoord456' ,'Hogeschoollaan', 'Breda')";
 
 describe("Share-a-meal API Tests", () => {
   describe("UC-201 Registreren als nieuwe gebruiker", () => {
@@ -118,5 +118,40 @@ describe("Share-a-meal API Tests", () => {
 
     // //Deze overslaan
     // it.skip("TC-202", (done) => {});
+  });
+  describe("UC-202 Overzicht van gebruikers", () => {
+    beforeEach((done) => {
+      pool.getConnection(function (err, connection) {
+        if (err) throw err;
+        connection.query(CLEAR_DB, function (error, result, field) {
+          if (error) throw error;
+          // connection.query(TEST_USERS, function (error, result, field) {
+          // if (error) throw error;
+          // connection.query(
+          //   "SELECT * FROM user",
+          //   function (error, result, field) {
+          //     if (error) throw error;
+          //     console.log(result);
+          connection.release();
+          done();
+          //   }
+          // );
+          // });
+        });
+      });
+    });
+
+    it("TC-202-1 Toon nul gebruikers", (done) => {
+      chai
+        .request(server)
+        .get("/api/user")
+        .end((err, res) => {
+          res.should.be.an("Object");
+          let { status, results } = res.body;
+          status.should.equals(200);
+          results.should.be.an("array").that.has.length(0);
+          done();
+        });
+    });
   });
 });
