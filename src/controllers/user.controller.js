@@ -100,14 +100,20 @@ let controller = {
 
                 if (error) throw error;
 
-                // let user = results[0];
+                let user = results[0];
+
+                if (user[isActive] == 1) {
+                  user[isActive] = true;
+                } else {
+                  user[isActive] = false;
+                }
 
                 // user[isActive] = user[isActive] == 1;
 
                 res.status(201).json({
                   status: 201,
-                  // result: user,
-                  result: results[0],
+                  result: user,
+                  // result: results[0],
                 });
               }
             );
