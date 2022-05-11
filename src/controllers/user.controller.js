@@ -154,10 +154,14 @@ let controller = {
                 result: "Gebruiker-ID bestaat niet",
               });
             }
-          } else {
+
             return res.status(200).json({
               status: 200,
               result: results[0],
+            });
+          } else {
+            return res.status(400).json({
+              status: 400,
             });
           }
         }
