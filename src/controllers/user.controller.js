@@ -379,6 +379,8 @@ let controller = {
               });
             }
 
+            console.log("HELP 4");
+
             return res.status(200).json({
               status: 200,
               message: results[0],
