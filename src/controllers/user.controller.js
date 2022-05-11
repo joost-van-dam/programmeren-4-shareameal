@@ -196,6 +196,10 @@ let controller = {
             });
           }
 
+          if (results === undefined) {
+            console.log("DE ERROR IS: " + results);
+          }
+
           if (results.affectedRows === 0) {
             res.status(400).json({
               status: 400,
@@ -251,6 +255,10 @@ let controller = {
               status: 400,
               error: errorMessage,
             });
+          }
+
+          if (results === undefined) {
+            console.log("DE ERROR IS: " + results);
           }
 
           if (results.affectedRows === 0) {
