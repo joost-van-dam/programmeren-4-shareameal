@@ -53,7 +53,7 @@ let controller = {
     } catch (err) {
       const error = {
         status: 400,
-        result: err.message,
+        message: err.message,
       };
 
       next(error);
@@ -85,7 +85,7 @@ let controller = {
               // if (error) throw error;
               return res.status(409).json({
                 status: 409,
-                result: "Gebruiker bestaat al",
+                message: "Gebruiker bestaat al",
               });
             } else {
               return res.status(400).json({
@@ -102,7 +102,7 @@ let controller = {
 
                 res.status(201).json({
                   status: 201,
-                  result: results,
+                  message: results,
                 });
               }
             );
@@ -151,13 +151,13 @@ let controller = {
             if (results.length === 0) {
               return res.status(404).json({
                 status: 404,
-                result: "Gebruiker-ID bestaat niet",
+                message: "Gebruiker-ID bestaat niet",
               });
             }
 
             return res.status(200).json({
               status: 200,
-              result: results[0],
+              message: results[0],
             });
           } else {
             return res.status(400).json({
@@ -210,7 +210,7 @@ let controller = {
             if (results.length === 0) {
               return res.status(404).json({
                 status: 404,
-                result: "Gebruiker-ID bestaat niet",
+                message: "Gebruiker-ID bestaat niet",
               });
             }
 
@@ -226,7 +226,7 @@ let controller = {
                 if (results) {
                   res.status(200).json({
                     status: 200,
-                    result: results,
+                    message: results,
                   });
                 }
               }
@@ -234,7 +234,7 @@ let controller = {
 
             // return res.status(200).json({
             //   status: 200,
-            //   result: results[0],
+            //   message: results[0],
             // });
           } else {
             return res.status(400).json({
@@ -249,7 +249,7 @@ let controller = {
 
             //     res.status(200).json({
             //       status: 200,
-            //       result: results,
+            //       message: results,
             //     });
             //   }
             // );
@@ -258,7 +258,7 @@ let controller = {
           // if (results.affectedRows === 0) {
           //   res.status(400).json({
           //     status: 400,
-          //     result: "Gebruiker bestaat niet.",
+          //     message: "Gebruiker bestaat niet.",
           //   });
           // } else {
           //   connection.query(
@@ -270,7 +270,7 @@ let controller = {
 
           //       res.status(200).json({
           //         status: 200,
-          //         result: results,
+          //         message: results,
           //       });
           //     }
           //   );
@@ -320,13 +320,13 @@ let controller = {
             if (results.length === 0) {
               return res.status(400).json({
                 status: 400,
-                result: "Gebruiker-ID bestaat niet",
+                message: "Gebruiker-ID bestaat niet",
               });
             }
 
             return res.status(200).json({
               status: 200,
-              result: results[0],
+              message: results[0],
             });
           } else {
             return res.status(400).json({
@@ -337,12 +337,12 @@ let controller = {
           // if (results.affectedRows === 0) {
           //   res.status(400).json({
           //     status: 400,
-          //     result: "Gebruiker bestaat niet.",
+          //     message: "Gebruiker bestaat niet.",
           //   });
           // } else {
           //   res.status(200).json({
           //     status: 200,
-          //     result: "Gebruiker verwijderd.",
+          //     message: "Gebruiker verwijderd.",
           //   });
           // }
         }
