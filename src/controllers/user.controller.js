@@ -214,6 +214,8 @@ let controller = {
               });
             }
 
+            console.log("LET OP DIT ZIJN DE RESULTS!!!: " + results);
+
             connection.query(
               `SELECT * FROM user WHERE id = '${putsingleuserbyid}'`,
               function (error, results, fields) {
@@ -228,10 +230,10 @@ let controller = {
               }
             );
 
-            return res.status(200).json({
-              status: 200,
-              result: results[0],
-            });
+            // return res.status(200).json({
+            //   status: 200,
+            //   result: results[0],
+            // });
           } else {
             return res.status(400).json({
               status: 400,
