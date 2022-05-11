@@ -214,11 +214,6 @@ let controller = {
               });
             }
 
-            return res.status(200).json({
-              status: 200,
-              result: results[0],
-            });
-          } else {
             connection.query(
               `SELECT * FROM user WHERE id = '${putsingleuserbyid}'`,
               function (error, results, fields) {
@@ -232,6 +227,28 @@ let controller = {
                 });
               }
             );
+
+            return res.status(200).json({
+              status: 200,
+              result: results[0],
+            });
+          } else {
+            return res.status(400).json({
+              status: 400,
+            });
+            // connection.query(
+            //   `SELECT * FROM user WHERE id = '${putsingleuserbyid}'`,
+            //   function (error, results, fields) {
+            //     connection.release();
+
+            //     if (error) throw error;
+
+            //     res.status(200).json({
+            //       status: 200,
+            //       result: results,
+            //     });
+            //   }
+            // );
           }
 
           // if (results.affectedRows === 0) {
