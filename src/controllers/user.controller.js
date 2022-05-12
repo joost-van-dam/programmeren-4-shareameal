@@ -130,23 +130,29 @@ let controller = {
     const queryParams = req.query;
     console.log(queryParams);
 
-    const { name, isActive } = queryParams;
-    console.log(`name = ${name} isActive = ${isActive}`);
+    const { firstName, isActive } = req.query;
+    console.log(`firstName = ${firstName} isActive = ${isActive}`);
 
-    let queryString = "SELECT id, `name` FROM `user`";
+    let queryString = "SELECT * FROM user ";
+    if (firstName || isActive) {
+      queryString += "WHERE ";
+      if (firstName) {
+        queryString += `firstName = '${firstName}'`;
+      }
 
-    if (name || isActive) {
-      queryString += " WHERE ";
+      if (firstName && isActive) {
+        queryString += " AND ";
+      }
 
-      if (name) {
-        queryString += `name = '${name}'`;
-      } else {
+      if (isActive) {
         queryString += `isActive = '${isActive}'`;
       }
     }
+    queryString += ";";
+    console.log(queryString);
 
     pool.getConnection(function (err, connection) {
-      if (err) throw err; // not connected!
+      if (err) next(err);
 
       connection.query(queryString, function (error, results, fields) {
         connection.release();
