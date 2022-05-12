@@ -1,5 +1,5 @@
 const assert = require("assert");
-const { all } = require("express/lib/application");
+// const { all } = require("express/lib/application");
 const pool = require("../../databaseconnectie/dbtest");
 
 let controller = {

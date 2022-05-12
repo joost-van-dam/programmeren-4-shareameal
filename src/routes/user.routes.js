@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/user.controller");
+const authController = require("../controllers/auth.controller");
 
 // let databaseUser = [];
 // let idUser = 0;
