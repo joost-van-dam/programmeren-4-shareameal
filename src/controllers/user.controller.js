@@ -130,50 +130,59 @@ let controller = {
     const queryParams = req.query;
     console.log(queryParams);
 
-    const { firstName, isActive } = req.query;
-    console.log(`firstName = ${firstName} isActive = ${isActive}`);
+    let { firstName, isActive } = req.query;
+    console.log(`name = ${firstName} isActive = ${isActive}`);
 
     let queryString = "SELECT * FROM user ";
     if (firstName || isActive) {
       queryString += "WHERE ";
       if (firstName) {
-        // queryString += `firstName = '${firstName}'`;
-        queryString += `firstName LIKE '%${firstName}%'`;
+        queryString += `firstName LIKE ?`;
       }
-
       if (firstName && isActive) {
         queryString += " AND ";
       }
-
       if (isActive) {
-        queryString += `isActive = '${isActive}'`;
+        queryString += `isActive = ?`;
       }
     }
     queryString += ";";
     console.log(queryString);
 
+    firstName = "%" + firstName + "%";
+
+    if (isActive) {
+      isActive = 1;
+    } else {
+      isActive = 0;
+    }
+
     pool.getConnection(function (err, connection) {
       if (err) next(err);
 
-      connection.query(queryString, function (error, results, fields) {
-        connection.release();
-        // if (error) {
-        //   if (error.errno == 1146) {
-        //     return res.status(400).json({
-        //       status: 400,
-        //     });
-        //   }
-        // }
+      connection.query(
+        queryString,
+        [firstName, isActive],
+        function (error, results, fields) {
+          connection.release();
+          // if (error) {
+          //   if (error.errno == 1146) {
+          //     return res.status(400).json({
+          //       status: 400,
+          //     });
+          //   }
+          // }
 
-        if (error) throw error;
+          if (error) throw error;
 
-        // console.log("results = ", results);
+          // console.log("results = ", results);
 
-        res.status(200).json({
-          status: 200,
-          results: results,
-        });
-      });
+          res.status(200).json({
+            status: 200,
+            results: results,
+          });
+        }
+      );
     });
   },
 
