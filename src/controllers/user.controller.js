@@ -127,11 +127,37 @@ let controller = {
   },
 
   getAllUsers: (req, res) => {
+    const queryParams = req.query;
+    console.log(queryParams);
+
+    const { name, isActive } = queryParams;
+    console.log(`name = ${name} isActive = ${isActive}`);
+
+    let queryString = "SELECT id, `name` FROM `user`";
+
+    if (name || isActive) {
+      queryString += " WHERE ";
+
+      if (name) {
+        queryString += `name = '${name}'`;
+      } else {
+        queryString += `isActive = '${isActive}'`;
+      }
+    }
+
     pool.getConnection(function (err, connection) {
       if (err) throw err; // not connected!
 
-      connection.query("SELECT * FROM user", function (error, results, fields) {
+      connection.query(queryString, function (error, results, fields) {
         connection.release();
+        // if (error) {
+        //   if (error.errno == 1146) {
+        //     return res.status(400).json({
+        //       status: 400,
+        //     });
+        //   }
+        // }
+
         if (error) throw error;
 
         // console.log("results = ", results);
