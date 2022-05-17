@@ -9,6 +9,7 @@ let controller = {
   validate: (req, res, next) => {
     const token = req.header;
     console.log(token);
+    next();
   },
 
   login: (req, res, next) => {
@@ -23,7 +24,8 @@ let controller = {
 
       connection.query(
         queryString,
-        [emailAdress],
+        // [emailAdress],
+        [req.body.emailAdress],
         function (error, results, fields) {
           connection.release();
 

@@ -1,12 +1,12 @@
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 
-const privateKey = "secretstring";
+// const privateKey = "secretstring";
 
-jwt.sign(
-  { foo: "bar" },
-  privateKey,
-  //   { algorithm: "RS256" },
-  function (err, token) {
-    console.log(token);
-  }
-);
+// jwt.sign(
+//   { foo: "bar" },
+//   privateKey,
+//   //   { algorithm: "RS256" },
+//   function (err, token) {
+//     console.log(token);
+//   }
+// );
