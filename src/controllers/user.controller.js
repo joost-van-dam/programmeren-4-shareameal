@@ -64,10 +64,6 @@ let controller = {
   addUser: (req, res) => {
     let user = req.body;
 
-    // // if (user.city == undefined) {
-    // console.log("TEST@@@@@@@@@@@@@@@");
-    // // }
-
     pool.getConnection(function (err, connection) {
       if (err) throw err;
 
