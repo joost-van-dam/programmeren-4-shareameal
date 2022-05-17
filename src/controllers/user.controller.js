@@ -144,6 +144,29 @@ let controller = {
     });
   },
 
+  getUserProfile: (req, res) => {
+    const getprofilebyid = req.userId;
+    console.log("De getprofilebyid = " + getprofilebyid);
+    pool.getConnection(function (err, connection) {
+      if (err) throw err; // not connected!
+
+      connection.query(
+        `SELECT * FROM user WHERE id = ${getprofilebyid}`,
+        function (error, results, fields) {
+          connection.release();
+          if (error) throw error;
+
+          // console.log("results = ", results);
+
+          res.status(200).json({
+            status: 200,
+            results: results,
+          });
+        }
+      );
+    });
+  },
+
   getUserById: (req, res) => {
     const getsingleuserbyid = req.params.id;
     // console.log(`User met ID ${getsingleuserbyid} gezocht`);

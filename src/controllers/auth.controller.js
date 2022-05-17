@@ -8,9 +8,9 @@ const jwtSecretKey = require("../config/config").jwtSecretKey;
 
 let controller = {
   login(req, res, next) {
-    dbconnection.getConnection((err, connection) => {
+    pool.getConnection((err, connection) => {
       if (err) {
-        logger.error("Error getting connection from dbconnection");
+        logger.error("Error getting connection from database-pool-connection");
         res.status(500).json({
           error: err.toString(),
           datetime: new Date().toISOString(),

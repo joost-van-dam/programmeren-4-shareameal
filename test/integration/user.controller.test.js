@@ -6,6 +6,8 @@ const server = require("../../index");
 const pool = require("../../databaseconnectie/dbtest");
 const { Test } = require("mocha");
 // const database = [];
+const jwt = require("jsonwebtoken");
+const { jwtSecretKey, logger } = require("../../src/config/config");
 
 chai.should();
 chai.use(chaiHttp);
@@ -44,32 +46,31 @@ describe("Share-a-meal API Tests", () => {
       });
     });
 
-    //TC-201-1 Verplicht veld ontbreekt
-    // it("TC-201-1 Verplicht veld ontbreekt", (done) => {
-    //   chai
-    //     .request(server)
-    //     .post("/api/user")
-    //     .send({
-    //       firstName: "John",
-    //       lastName: "Doe",
-    //       street: "Lovensdijkstraat 61",
-    //       city: "Breda",
-    //       isActive: true,
-    //       // "emailAdress": "h.doe@server.com",
-    //       password: "secret",
-    //       phoneNumber: "06 12425475",
-    //     })
-    //     .end((err, res) => {
-    //       res.should.be.an("Object");
-    //       let { status, message } = res.body;
-    //       console.log("HIER IS DE BODY!!!!: " + JSON.stringify(res.body));
-    //       console.log("HIER IS DE message!!!!: " + JSON.stringify(message));
+    it.skip("TC-201-1 Verplicht veld ontbreekt", (done) => {
+      chai
+        .request(server)
+        .post("/api/user")
+        .send({
+          firstName: "John",
+          lastName: "Doe",
+          street: "Lovensdijkstraat 61",
+          city: "Breda",
+          isActive: true,
+          // "emailAdress": "h.doe@server.com",
+          password: "secret",
+          phoneNumber: "06 12425475",
+        })
+        .end((err, res) => {
+          res.should.be.an("Object");
+          let { status, message } = res.body;
+          console.log("HIER IS DE BODY!!!!: " + JSON.stringify(res.body));
+          console.log("HIER IS DE message!!!!: " + JSON.stringify(message));
 
-    //       status.should.equals(400);
-    //       message.should.be.a("string").that.equals("Email must be a string");
-    //       done();
-    //     });
-    // });
+          status.should.equals(400);
+          message.should.be.a("string").that.equals("Email must be a string");
+          done();
+        });
+    });
 
     it("TC-201-4 Gebruiker bestaat al", (done) => {
       chai
@@ -98,6 +99,7 @@ describe("Share-a-meal API Tests", () => {
       chai
         .request(server)
         .post("/api/user")
+        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
         .send({
           firstName: "Thijs",
           lastName: "van Dam",
@@ -152,6 +154,7 @@ describe("Share-a-meal API Tests", () => {
       chai
         .request(server)
         .get("/api/user")
+        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
         .end((err, res) => {
           res.should.be.an("Object");
           let { status, results } = res.body;
@@ -171,6 +174,7 @@ describe("Share-a-meal API Tests", () => {
       chai
         .request(server)
         .get("/api/user")
+        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
         .end((err, res) => {
           res.should.be.an("Object");
           let { status, results } = res.body;
@@ -185,6 +189,7 @@ describe("Share-a-meal API Tests", () => {
       chai
         .request(server)
         .get("/api/user/0")
+        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
         .end((err, res) => {
           res.should.be.an("Object");
           let { status, message } = res.body;
@@ -219,6 +224,7 @@ describe("Share-a-meal API Tests", () => {
       chai
         .request(server)
         .get("/api/user/1000000")
+        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
         .end((err, res) => {
           res.should.be.an("Object");
           let { status, result } = res.body;
