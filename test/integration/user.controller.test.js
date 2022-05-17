@@ -46,7 +46,7 @@ describe("Share-a-meal API Tests", () => {
       });
     });
 
-    it.skip("TC-201-1 Verplicht veld ontbreekt", (done) => {
+    it("TC-201-1 Verplicht veld ontbreekt", (done) => {
       chai
         .request(server)
         .post("/api/user")
@@ -63,8 +63,10 @@ describe("Share-a-meal API Tests", () => {
         .end((err, res) => {
           res.should.be.an("Object");
           let { status, message } = res.body;
-          console.log("HIER IS DE BODY!!!!: " + JSON.stringify(res.body));
-          console.log("HIER IS DE message!!!!: " + JSON.stringify(message));
+          // console.log("Hier is de res.body: " + JSON.stringify(res.body));
+          // console.log("Hier is de message: " + JSON.stringify(message));
+          // console.log("Hier is de message: " + message.values);
+          // console.log("Hier is de error: " + err);
 
           status.should.equals(400);
           message.should.be.a("string").that.equals("Email must be a string");

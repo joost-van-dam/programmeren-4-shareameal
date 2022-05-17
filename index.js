@@ -30,9 +30,17 @@ app.all("*", (req, res) => {
 // Hier moet je nog je Express errorhandler toevoegen.
 app.use((err, req, res, next) => {
   console.log("Error: " + err.toString());
-  res.status(500).json({
-    statusCode: 500,
-    message: err.toString(),
+  console.log("Laten we dit even testen");
+  // res.status(500).json({
+  //   statusCode: 500,
+  //   message: err.toString(),
+  //   error: err.message,
+  //   error2: err,
+  // });
+
+  res.status(err.status).json({
+    status: err.status,
+    message: err.message,
   });
 });
 

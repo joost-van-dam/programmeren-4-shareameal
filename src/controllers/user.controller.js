@@ -51,12 +51,11 @@ let controller = {
 
       next();
     } catch (err) {
-      const error = {
-        status: 400,
-        message: err.message,
-      };
-
-      next(error);
+      // const error = {
+      //   status: 400,
+      //   message: err.message,
+      // };
+      // next(error);
     }
   },
 
