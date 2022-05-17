@@ -84,9 +84,9 @@ describe("Share-a-meal API Tests", () => {
         })
         .end((err, res) => {
           res.should.be.an("Object");
-          let { status, result } = res.body;
+          let { status, message } = res.body;
           status.should.equals(409);
-          result.should.be.a("string").that.equals("Gebruiker bestaat al");
+          message.should.be.a("string").that.equals("Gebruiker bestaat al");
           done();
         });
     });
@@ -178,15 +178,15 @@ describe("Share-a-meal API Tests", () => {
     });
   });
   describe("UC-204 Details van gebruiker", () => {
-    it("TC-204-2 Gebruiker-ID bestaat niet", (done) => {
+    it("TC-204-2 User does not exist", (done) => {
       chai
         .request(server)
         .get("/api/user/0")
         .end((err, res) => {
           res.should.be.an("Object");
-          let { status, result } = res.body;
+          let { status, message } = res.body;
           status.should.equals(404);
-          result.should.be.a("string").that.equals("Gebruiker-ID bestaat niet");
+          message.should.be.a("string").that.equals("User does not exist");
           done();
         });
     });
