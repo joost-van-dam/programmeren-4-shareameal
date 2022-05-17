@@ -3,7 +3,8 @@ require("dotenv").config();
 const app = express();
 const port = process.env.PORT;
 // const port = 3000;
-const router = require("./src/routes/user.routes");
+const userRoutes = require("./src/routes/user.routes");
+const authRoutes = require("./src/routes/auth.routes");
 // require("dotenv").config();
 const bodyParser = require("body-parser");
 app.use(bodyParser.json());
@@ -14,12 +15,22 @@ app.all("*", (req, res, next) => {
   next();
 });
 
-app.use(router);
+app.use(userRoutes);
+app.use(authRoutes);
 
 app.all("*", (req, res) => {
   res.status(400).json({
     status: 400,
     result: "End-point not found",
+  });
+});
+
+// Hier moet je nog je Express errorhandler toevoegen.
+app.use((err, req, res, next) => {
+  console.log("Error: " + err.toString());
+  res.status(500).json({
+    statusCode: 500,
+    message: err.toString(),
   });
 });
 
