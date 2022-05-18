@@ -8,8 +8,8 @@ let controller = {
     let { firstName, lastName, emailAdress, password, street, city } = user;
 
     try {
-      assert(typeof firstName === "string", "First name must be a string");
-      assert(typeof lastName === "string", "Last name must be a string");
+      assert(typeof firstName === "string", "First firstName must be a string");
+      assert(typeof lastName === "string", "Last firstName must be a string");
       assert(typeof emailAdress === "string", "Email must be a string");
       assert(typeof password === "string", "Password must be a string");
       assert(typeof street === "string", "Street must be a string");
@@ -40,8 +40,8 @@ let controller = {
     } = user;
 
     try {
-      assert(typeof firstName === "string", "First name must be a string");
-      assert(typeof lastName === "string", "Last name must be a string");
+      assert(typeof firstName === "string", "First firstName must be a string");
+      assert(typeof lastName === "string", "Last firstName must be a string");
       assert(typeof isActive === "boolean", "Is active must be a boolean");
       assert(typeof emailAdress === "string", "Email must be a string");
       assert(typeof password === "string", "Password must be a string");
@@ -122,20 +122,41 @@ let controller = {
   },
 
   getAllUsers: (req, res) => {
+    const queryParams = req.query;
+
+    let { firstName, isActive } = req.query;
+    let queryString = "SELECT * FROM `user`";
+    if (firstName || isActive) {
+      queryString += " WHERE ";
+      if (firstName) {
+        queryString += "`firstName` LIKE ?";
+        firstName = "%" + firstName + "%";
+      }
+      if (firstName && isActive) queryString += " AND ";
+      if (isActive) {
+        queryString += "`isActive` = ?";
+      }
+    }
+    queryString += ";";
+
     pool.getConnection(function (err, connection) {
       if (err) throw err; // not connected!
 
-      connection.query("SELECT * FROM user", function (error, results, fields) {
-        connection.release();
-        if (error) throw error;
+      connection.query(
+        queryString,
+        [firstName, isActive],
+        function (error, results, fields) {
+          connection.release();
+          if (error) throw error;
 
-        // console.log("results = ", results);
+          // console.log("results = ", results);
 
-        res.status(200).json({
-          status: 200,
-          results: results,
-        });
-      });
+          res.status(200).json({
+            status: 200,
+            results: results,
+          });
+        }
+      );
     });
   },
 
