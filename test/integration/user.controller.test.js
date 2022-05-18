@@ -186,6 +186,26 @@ describe("Share-a-meal API Tests", () => {
         });
     });
   });
+
+  describe("UC-203 Gebruikersprofiel opvragen", () => {
+    it.skip("TC-203-1 Ongeldig token", (done) => {
+      chai
+        .request(server)
+        .get("/api/user")
+        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
+        .end((err, res) => {
+          console.log("Hier is het res: " + res);
+          console.log("Hier is het res.body: " + res.body);
+          console.log("Hier is de error: " + err);
+          res.should.be.an("Object");
+          // let { status, results } = res.body;
+          // status.should.equals(200);
+          // results.should.be.an("array").that.has.length(1);
+          done();
+        });
+    });
+  });
+
   describe("UC-204 Details van gebruiker", () => {
     it("TC-204-2 User does not exist", (done) => {
       chai
