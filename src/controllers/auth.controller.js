@@ -19,7 +19,7 @@ let controller = {
         });
       }
 
-      console.log("Login called");
+      // console.log("Login called");
       if (connection) {
         // 1. Kijk of deze useraccount bestaat.
         connection.query(
@@ -56,7 +56,7 @@ let controller = {
                   jwtSecretKey,
                   { expiresIn: "12d" },
                   function (err, token) {
-                    console.log("sign called!");
+                    // console.log("sign called!");
                     logger.debug("User logged in, sending: ", userinfo);
                     res.status(200).json({
                       status: 200,
@@ -84,7 +84,7 @@ let controller = {
   //
   validateLogin(req, res, next) {
     // Verify that we receive the expected input
-    console.log("validate login called");
+    // console.log("validate login called");
     try {
       assert(
         typeof req.body.emailAdress === "string",

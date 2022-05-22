@@ -150,7 +150,7 @@ describe("Share-a-meal API Tests", () => {
               "SELECT * FROM user",
               function (error, result, field) {
                 if (error) throw error;
-                console.log(result);
+                // console.log(result);
                 connection.release();
                 done();
               }
@@ -179,7 +179,7 @@ describe("Share-a-meal API Tests", () => {
           let { status, message } = res.body;
           // console.log("Hier is de res.body: " + JSON.stringify(res.body));
           // console.log("Hier is de message: " + JSON.stringify(message));
-          console.log("Hier is de message: " + message);
+          // console.log("Hier is de message: " + message);
           // console.log("Hier is de error: " + err);
 
           status.should.equals(400);
@@ -207,7 +207,7 @@ describe("Share-a-meal API Tests", () => {
           let { status, message } = res.body;
           // console.log("Hier is de res.body: " + JSON.stringify(res.body));
           // console.log("Hier is de message: " + JSON.stringify(message));
-          console.log("Hier is de message: " + message);
+          // console.log("Hier is de message: " + message);
           // console.log("Hier is de error: " + err);
 
           status.should.equals(400);
@@ -235,7 +235,7 @@ describe("Share-a-meal API Tests", () => {
           let { status, message } = res.body;
           // console.log("Hier is de res.body: " + JSON.stringify(res.body));
           // console.log("Hier is de message: " + JSON.stringify(message));
-          console.log("Hier is de message: " + message);
+          // console.log("Hier is de message: " + message);
           // console.log("Hier is de error: " + err);
 
           status.should.equals(400);
@@ -430,9 +430,9 @@ describe("Share-a-meal API Tests", () => {
         .get("/api/user")
         .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
         .end((err, res) => {
-          console.log("Hier is het res: " + res);
-          console.log("Hier is het res.body: " + res.body);
-          console.log("Hier is de error: " + err);
+          // console.log("Hier is het res: " + res);
+          // console.log("Hier is het res.body: " + res.body);
+          // console.log("Hier is de error: " + err);
           res.should.be.an("Object");
           // let { status, results } = res.body;
           // status.should.equals(200);
@@ -544,7 +544,7 @@ describe("Share-a-meal API Tests", () => {
           // console.log("Hier is de message: " + JSON.stringify(message));
           // console.log("Hier is de message: " + message.values);
           // console.log("Hier is de error: " + err);
-          console.log("Hier is de message: " + message);
+          // console.log("Hier is de message: " + message);
           status.should.equals(400);
           message.should.be.a("string").that.equals("Email must be a string");
           done();
@@ -573,7 +573,7 @@ describe("Share-a-meal API Tests", () => {
           // console.log("Hier is de message: " + JSON.stringify(message));
           // console.log("Hier is de message: " + message.values);
           // console.log("Hier is de error: " + err);
-          console.log("Hier is de message: " + message);
+          // console.log("Hier is de message: " + message);
           status.should.equals(400);
           message.should.be.a("string").that.equals("Invalid phonenumber");
           done();
@@ -602,7 +602,7 @@ describe("Share-a-meal API Tests", () => {
           // console.log("Hier is de message: " + JSON.stringify(message));
           // console.log("Hier is de message: " + message.values);
           // console.log("Hier is de error: " + err);
-          console.log("Hier is de message: " + message);
+          // console.log("Hier is de message: " + message);
           status.should.equals(400);
           message.should.be.a("string").that.equals("User does not exist");
           done();
@@ -630,7 +630,7 @@ describe("Share-a-meal API Tests", () => {
           // console.log("Hier is de message: " + JSON.stringify(message));
           // console.log("Hier is de message: " + message.values);
           // console.log("Hier is de error: " + err);
-          console.log("Hier is de message: " + message);
+          // console.log("Hier is de message: " + message);
           status.should.equals(401);
           message.should.be
             .a("string")
@@ -707,9 +707,9 @@ describe("Share-a-meal API Tests", () => {
         .end((err, res) => {
           res.should.be.an("Object");
           let { status, message } = res.body;
-          console.log(
-            "TC-206-1 Gebruiker bestaat niet heeft een message met: " + message
-          );
+          // console.log(
+          //   "TC-206-1 Gebruiker bestaat niet heeft een message met: " + message
+          // );
           status.should.equals(400);
           message.should.be.a("string").that.equals("User does not exist");
           done();
@@ -723,7 +723,7 @@ describe("Share-a-meal API Tests", () => {
         .end((err, res) => {
           res.should.be.an("Object");
           let { status, message } = res.body;
-          console.log("Hier is de message: " + message);
+          // console.log("Hier is de message: " + message);
           status.should.equals(401);
           message.should.be
             .a("string")
@@ -742,7 +742,7 @@ describe("Share-a-meal API Tests", () => {
         .end((err, res) => {
           res.should.be.an("Object");
           let { status, message } = res.body;
-          console.log("Gebruiker succesvol verwijderd message: " + message);
+          // console.log("Gebruiker succesvol verwijderd message: " + message);
           status.should.equals(200);
           message.should.be.a("string").that.equals("Deleted");
           done();

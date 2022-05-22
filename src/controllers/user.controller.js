@@ -10,8 +10,6 @@ let controller = {
     let user = req.body;
     let { firstName, lastName, emailAdress, password, street, city } = user;
 
-    console.log("Validate user aangeroepen");
-
     try {
       assert(typeof firstName === "string", "First firstName must be a string");
       assert(typeof lastName === "string", "Last firstName must be a string");
@@ -22,15 +20,8 @@ let controller = {
       assert(emailRegex.test(emailAdress), "Invalid email");
       assert(passwordRegex.test(password), "Invalid password");
 
-      const testRegex = passwordRegex.test(password);
-
-      console.log(testRegex);
-
-      assert(testRegex, "Invalid password");
-
       next();
     } catch (err) {
-      console.log("Henk123");
       const error = {
         status: 400,
         message: err.message,
@@ -41,7 +32,7 @@ let controller = {
   },
 
   validateUpdate: (req, res, next) => {
-    console.log("validateUpdate aangeroepen!");
+    // console.log("validateUpdate aangeroepen!");
     let user = req.body;
     let {
       firstName,
@@ -67,7 +58,6 @@ let controller = {
 
       next();
     } catch (err) {
-      console.log("Henk12345");
       const error = {
         status: 400,
         message: err.message,
@@ -78,7 +68,7 @@ let controller = {
 
   // UC-201 Registreren als nieuwe gebruiker
   addUser: (req, res) => {
-    console.log("Add user aangeroepen");
+    // console.log("Add user aangeroepen");
     let user = req.body;
 
     pool.getConnection(function (err, connection) {
@@ -90,7 +80,7 @@ let controller = {
           connection.release();
           // if (error) throw error;
 
-          console.log("Add user aangeroepen1");
+          // console.log("Add user aangeroepen1");
 
           if (error) {
             // console.log(error);
@@ -116,9 +106,6 @@ let controller = {
                 if (error) throw error;
 
                 let user = results[0];
-
-                console.log("Joost dit is de user: " + user);
-                console.log("Joost dit is de user: " + JSON.stringify(user));
 
                 if (user.isActive == 1) {
                   user.isActive = true;
@@ -182,7 +169,7 @@ let controller = {
 
   getUserProfile: (req, res) => {
     const getprofilebyid = req.userId;
-    console.log("De getprofilebyid = " + getprofilebyid);
+    // console.log("De getprofilebyid = " + getprofilebyid);
     pool.getConnection(function (err, connection) {
       if (err) throw err; // not connected!
 
@@ -217,7 +204,7 @@ let controller = {
           // if (error) throw error;
 
           if (!results) {
-            console.log("DE ERROR IS: " + error);
+            // console.log("DE ERROR IS: " + error);
           }
 
           if (results) {
@@ -245,7 +232,7 @@ let controller = {
   updateUserById: (req, res) => {
     const putsingleuserbyid = req.params.id;
     let updatedUser = { idUser: putsingleuserbyid, ...req.body };
-    console.log(`User met ID ${putsingleuserbyid} aangepast`);
+    // console.log(`User met ID ${putsingleuserbyid} aangepast`);
 
     pool.getConnection(function (err, connection) {
       if (err) throw err;
@@ -272,7 +259,7 @@ let controller = {
               });
             }
 
-            console.log(error);
+            // console.log(error);
             return res.status(400).json({
               status: 400,
               error: error.message,
@@ -287,7 +274,7 @@ let controller = {
               });
             }
 
-            console.log("LET OP DIT ZIJN DE RESULTS!!!: " + results);
+            // console.log("LET OP DIT ZIJN DE RESULTS!!!: " + results);
 
             connection.query(
               `SELECT * FROM user WHERE id = '${putsingleuserbyid}'`,
@@ -315,8 +302,6 @@ let controller = {
   },
 
   deleteUserById: (req, res) => {
-    console.log("HELP 1");
-
     // try {
     const deletesingleuserbyid = req.params.id;
     // } catch (error) {
@@ -324,7 +309,6 @@ let controller = {
     // }
 
     // const deletesingleuserbyid = req.params.id;
-    console.log("HELP 2");
     // console.log(`User met ID ${deletesingleuserbyid} verwijderd`);
 
     pool.getConnection(function (err, connection) {
@@ -341,10 +325,6 @@ let controller = {
           connection.release();
           // if (error) throw error;
           if (error) {
-            console.log("HELP 3");
-            // console.log("HENK LET OP!: " + JSON.stringify(error));
-            // console.log("HENK LET OP!: " + JSON.stringify(error));
-
             if (error.errno == 1054) {
               console.log("NUMMER 1054 ERROR LET OP DEZE: " + error);
               return res.status(400).json({
@@ -364,10 +344,6 @@ let controller = {
             });
           }
 
-          if (!results) {
-            console.log("DE ERROR IS: " + error);
-          }
-
           // if (results.length === 0) {
           //   return res.status(400).json({
           //     status: 400,
@@ -383,16 +359,12 @@ let controller = {
             //   });
             // }
 
-            console.log("ALS HIJ HIER KOMT LET OP!!!:" + results);
-
             if (results.affectedRows === 0) {
               return res.status(400).json({
                 status: 400,
                 message: "User does not exist",
               });
             }
-
-            console.log("HELP 4");
 
             return res.status(200).json({
               status: 200,
