@@ -340,7 +340,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it.only("TC-205-4 Gebruiker bestaat niet", (done) => {
+    it("TC-205-4 Gebruiker bestaat niet", (done) => {
       chai
         .request(server)
         .put("/api/user/999999")
@@ -365,6 +365,36 @@ describe("Share-a-meal API Tests", () => {
           console.log("Hier is de message: " + message);
           status.should.equals(400);
           message.should.be.a("string").that.equals("User does not exist");
+          done();
+        });
+    });
+
+    it("TC-205-5 Niet ingelogd", (done) => {
+      chai
+        .request(server)
+        .put("/api/user/1000000")
+        .send({
+          firstName: "John",
+          lastName: "Doe",
+          street: "Lovensdijkstraat 61",
+          city: "Breda",
+          isActive: true,
+          emailAdress: "h.doe@server.com",
+          password: "secret",
+          phoneNumber: "06 12425475",
+        })
+        .end((err, res) => {
+          res.should.be.an("Object");
+          let { status, message } = res.body;
+          // console.log("Hier is de res.body: " + JSON.stringify(res.body));
+          // console.log("Hier is de message: " + JSON.stringify(message));
+          // console.log("Hier is de message: " + message.values);
+          // console.log("Hier is de error: " + err);
+          console.log("Hier is de message: " + message);
+          status.should.equals(401);
+          message.should.be
+            .a("string")
+            .that.equals("Authorization header missing!");
           done();
         });
     });
