@@ -19,9 +19,9 @@ const CLEAR_DB =
   CLEAR_MEAL_TABLE + CLEAR_PARTICIPANTS_TABLE + CLEAR_USERS_TABLE;
 
 const TEST_USERS =
-  "INSERT INTO user (firstName, lastName, isActive, emailAdress, password, street, city) VALUES ('Joost' ,'van Dam' ,1 ,'joost.vandam@avans.nl' ,'wachtwoord123' ,'Lovensdijkstraat', 'Breda'), ('Robin' ,'Schellius' ,1 ,'robin.schellius@avans.nl' ,'wachtwoord456' ,'Hogeschoollaan', 'Breda')";
+  "INSERT INTO user (firstName, lastName, isActive, emailAdress, password, street, city) VALUES ('Joost' ,'van Dam' ,1 ,'joost.vandam@avans.nl' ,'wachtwoord1DD23@$##' ,'Lovensdijkstraat', 'Breda'), ('Robin' ,'Schellius' ,1 ,'robin.schellius@avans.nl' ,'wachtwoord456FDSD@$##' ,'Hogeschoollaan', 'Breda')";
 const TEST_USER_AT_ID_IS_1000000 =
-  "INSERT INTO user (id, firstName, lastName, isActive, emailAdress, password, street, city) VALUES (1000000, 'Joost' ,'van Dam' ,1 ,'joost.vandam@avans.nl' ,'wachtwoord123' ,'Lovensdijkstraat', 'Breda')";
+  "INSERT INTO user (id, firstName, lastName, isActive, emailAdress, password, street, city) VALUES (1000000, 'Joost' ,'van Dam' ,1 ,'joost.vandam@avans.nl' ,'wachtwoord12DSF3@$##' ,'Lovensdijkstraat', 'Breda')";
 
 describe("Share-a-meal API Tests", () => {
   describe("UC-201 Registreren als nieuwe gebruiker", () => {
@@ -57,7 +57,7 @@ describe("Share-a-meal API Tests", () => {
           city: "Breda",
           isActive: true,
           // "emailAdress": "h.doe@server.com",
-          password: "secret",
+          password: "secret#f4Dtfeer",
           phoneNumber: "06 12425475",
         })
         .end((err, res) => {
@@ -85,7 +85,7 @@ describe("Share-a-meal API Tests", () => {
           city: "Breda",
           isActive: true,
           emailAdress: "joost.vandam@avans.nl",
-          password: "secret",
+          password: "secret#f4Dtfeer",
           phoneNumber: "06 12425475",
         })
         .end((err, res) => {
@@ -109,7 +109,7 @@ describe("Share-a-meal API Tests", () => {
           city: "Breda",
           isActive: true,
           emailAdress: "thijs.vandam@avans.nl",
-          password: "secret",
+          password: "secret#f4Dtfeer",
           phoneNumber: "06 12425475",
         })
         .end((err, res) => {
@@ -293,7 +293,7 @@ describe("Share-a-meal API Tests", () => {
           city: "Breda",
           isActive: true,
           // "emailAdress": "h.doe@server.com",
-          password: "secret",
+          password: "secret#dw@#dAwas",
           phoneNumber: "06 12425475",
         })
         .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
@@ -322,7 +322,7 @@ describe("Share-a-meal API Tests", () => {
           city: "Breda",
           isActive: true,
           emailAdress: "h.doe@server.com",
-          password: "secret",
+          password: "secret#e4!jcu83ew",
           phoneNumber: "06 1234567",
         })
         .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
@@ -351,7 +351,7 @@ describe("Share-a-meal API Tests", () => {
           city: "Breda",
           isActive: true,
           emailAdress: "h.doe@server.com",
-          password: "secret",
+          password: "secret(849f4DdR",
           phoneNumber: "06 12345678",
         })
         .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
@@ -380,7 +380,7 @@ describe("Share-a-meal API Tests", () => {
           city: "Breda",
           isActive: true,
           emailAdress: "h.doe@server.com",
-          password: "secret",
+          password: "secret*jdkD9s",
           phoneNumber: "06 12425475",
         })
         .end((err, res) => {
@@ -410,7 +410,7 @@ describe("Share-a-meal API Tests", () => {
           city: "Breda",
           isActive: true,
           emailAdress: "joost@server.com",
-          password: "secret",
+          password: "secret635f#w2s2",
           phoneNumber: "06 12425475",
         })
         .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
@@ -426,7 +426,7 @@ describe("Share-a-meal API Tests", () => {
             city: "Breda",
             isActive: 1,
             emailAdress: "joost@server.com",
-            password: "secret",
+            password: "secret635f#w2s2",
             phoneNumber: "06 12425475",
           });
           done();

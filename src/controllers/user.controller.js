@@ -2,11 +2,15 @@ const assert = require("assert");
 const { all } = require("express/lib/application");
 const pool = require("../../databaseconnectie/dbtest");
 const phoneRegex = /(06)(\s|\-|)\d{8}|31(\s6|\-6|6)\d{8}/;
+const emailRegex = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{1,3})+$/;
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
 
 let controller = {
   validateUser: (req, res, next) => {
     let user = req.body;
     let { firstName, lastName, emailAdress, password, street, city } = user;
+
+    console.log("Validate user aangeroepen");
 
     try {
       assert(typeof firstName === "string", "First firstName must be a string");
@@ -15,6 +19,15 @@ let controller = {
       assert(typeof password === "string", "Password must be a string");
       assert(typeof street === "string", "Street must be a string");
       assert(typeof city === "string", "City must be a string");
+      assert(emailRegex.test(emailAdress), "Invalid email");
+      // assert(passwordRegex.test(password), "Invalid password");
+
+      const testRegex = passwordRegex.test(password);
+
+      console.log(testRegex);
+
+      assert(testRegex, "Invalid password");
+
       next();
     } catch (err) {
       console.log("Henk123");
@@ -50,16 +63,7 @@ let controller = {
       assert(typeof phoneNumber === "string", "Phonenumber must be a string");
       assert(typeof street === "string", "Street must be a string");
       assert(typeof city === "string", "City must be a string");
-      console.log("phone regex before");
-
-      const regexTest = phoneRegex.test(phoneNumber);
-
-      console.log(regexTest);
-
-      assert(regexTest, "Invalid phonenumber");
-
-      // assert(phoneRegex.test(phoneNumber), "Invalid phonenumber");
-      console.log("phone regex after");
+      assert(phoneRegex.test(phoneNumber), "Invalid phonenumber");
 
       next();
     } catch (err) {
@@ -74,6 +78,7 @@ let controller = {
 
   // UC-201 Registreren als nieuwe gebruiker
   addUser: (req, res) => {
+    console.log("Add user aangeroepen");
     let user = req.body;
 
     pool.getConnection(function (err, connection) {
@@ -84,6 +89,8 @@ let controller = {
         function (error, results, fields) {
           connection.release();
           // if (error) throw error;
+
+          console.log("Add user aangeroepen1");
 
           if (error) {
             // console.log(error);
