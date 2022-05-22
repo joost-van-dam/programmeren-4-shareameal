@@ -5,6 +5,7 @@ const port = process.env.PORT;
 // const port = 3000;
 const userRoutes = require("./src/routes/user.routes");
 const authRoutes = require("./src/routes/auth.routes");
+const mealRoutes = require("./src/routes/meal.routes");
 // const jwt = require("./src/jwt-test");
 // require("dotenv").config();
 const bodyParser = require("body-parser");
@@ -18,6 +19,7 @@ app.all("*", (req, res, next) => {
 
 app.use(userRoutes);
 app.use(authRoutes);
+app.use(mealRoutes);
 // jwt.sign;
 
 app.all("*", (req, res) => {

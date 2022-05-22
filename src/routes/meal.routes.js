@@ -12,6 +12,7 @@ router.get("/", (req, res) => {
 
 // UC-201 Register as a new meal
 router.post("/api/meal", mealController.validateMeal, mealController.addMeal);
+// router.post("/api/meal", mealController.addMeal);
 
 // UC-202 Get all meals
 router.get(
@@ -37,15 +38,15 @@ router.get(
   mealController.getMealById
 );
 
-// UC-205 Update a single meal
-router.put(
-  "/api/meal/:id",
-  authController.validateToken,
-  mealController.validateUpdate,
-  mealController.updateMealById
-);
+// // UC-205 Update a single meal
+// router.put(
+//   "/api/meal/:id",
+//   authController.validateToken,
+//   mealController.validateUpdate,
+//   mealController.updateMealById
+// );
 
-// UC-206 Delete a meal
+// UC-305 Delete a meal
 router.delete(
   "/api/meal/:id",
   authController.validateToken,

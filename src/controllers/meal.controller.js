@@ -4,6 +4,7 @@ const pool = require("../../databaseconnectie/dbtest");
 
 let controller = {
   validateMeal: (req, res, next) => {
+    console.log("valide meal function called");
     const meal = req.body;
 
     try {
@@ -46,11 +47,38 @@ let controller = {
 
   // UC-201 Registreren als nieuwe gebruiker
   addMeal: (req, res) => {
-    // console.log("Add meal aangeroepen");
+    console.log("Add meal aangeroepen");
     let meal = req.body;
+    console.log("Add meal #1");
 
     pool.getConnection(function (err, connection) {
+      console.log("Add meal #2");
       if (err) throw err;
+
+      console.log("Add meal #3");
+
+      //   console.log(`Meal name: ${meal.name} `);
+      //   console.log(`Meal description: ${meal.description} `);
+      //   console.log(`Meal isVega: ${meal.isVega} `);
+      //   console.log(`Meal isVegan: ${meal.isVegan} `);
+      //   console.log(`Meal: ${meal.isToTakeHome} `);
+      //   console.log(`Meal: ${meal.dateTime} `);
+      //   console.log(`Meal: ${meal.imageUrl} `);
+      //   console.log(`Meal: ${meal.maxAmountOfParticipants} `);
+
+      //   console.log(
+      //     "Query: " +
+      //       `INSERT INTO meal (name,
+      //     description,
+      //     isVega,
+      //     isVegan,
+      //     isToTakeHome,
+      //     dateTime,
+      //     imageUrl,
+      //     maxAmountOfParticipants) VALUES ('${meal.name}' ,'${meal.description}' ,'${meal.isVega}' ,'${meal.isVegan}' ,'${meal.isToTakeHome}', '${meal.dateTime}', '${meal.imageUrl}', '${meal.maxAmountOfParticipants}')`
+      //   );
+
+      console.log("Add meal #5");
 
       connection.query(
         `INSERT INTO meal (name,
@@ -60,7 +88,7 @@ let controller = {
             isToTakeHome,
             dateTime,
             imageUrl,
-            maxAmountOfParticipants) VALUES ('${meal.name}' ,'${meal.description}' ,1 ,'${meal.isVega}' ,'${meal.isVegan}' ,'${meal.isToTakeHome}', '${meal.dateTime}', '${$meals.imageUrl}', '${$meals.maxAmountOfParticipants}')`,
+            maxAmountOfParticipants) VALUES ('${meal.name}' ,'${meal.description}' ,'${meal.isVega}' ,'${meal.isVegan}' ,'${meal.isToTakeHome}', '${meal.dateTime}', '${meal.imageUrl}', '${meal.maxAmountOfParticipants}')`,
         function (error, results, fields) {
           connection.release();
           // if (error) throw error;
@@ -90,14 +118,19 @@ let controller = {
 
                 if (error) throw error;
 
-                let id = results[0];
+                // let id = results[0];
+
+                // console.log("Results" + results[0]);
+
+                let { id } = results[0];
+
+                // let id = 1;
 
                 // meal[isActive] = meal[isActive] == 1;
 
                 res.status(201).json({
                   status: 201,
-                  result: id,
-                  ...meal,
+                  result: { id, ...meal },
                   // result: results[0],
                 });
               }
