@@ -94,6 +94,7 @@ let controller = {
       );
 
       assert(emailRegex.test(req.body.emailAdress), "Invalid email");
+      assert(passwordRegex.test(req.body.password), "Invalid password");
 
       next();
     } catch (error) {

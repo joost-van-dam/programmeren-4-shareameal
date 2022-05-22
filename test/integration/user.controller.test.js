@@ -59,6 +59,23 @@ describe("Share-a-meal API Tests", () => {
           done();
         });
     });
+
+    it.only("TC-101-3 Niet-valide wachtwoord", (done) => {
+      chai
+        .request(server)
+        .post("/api/auth/login")
+        .send({
+          emailAdress: "Joost@server.com",
+          password: "wachtwoord",
+        })
+        .end((err, res) => {
+          res.should.be.an("Object");
+          let { status, message } = res.body;
+          status.should.equals(400);
+          message.should.be.a("string").that.equals("Invalid password");
+          done();
+        });
+    });
   });
 
   describe("UC-201 Registreren als nieuwe gebruiker", () => {
