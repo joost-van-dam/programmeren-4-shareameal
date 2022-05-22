@@ -3,7 +3,7 @@ const { all } = require("express/lib/application");
 const pool = require("../../databaseconnectie/dbtest");
 const phoneRegex = /(06)(\s|\-|)\d{8}|31(\s6|\-6|6)\d{8}/;
 const emailRegex = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{1,3})+$/;
-const passwordRegex = /^[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
 
 let controller = {
   validateUser: (req, res, next) => {

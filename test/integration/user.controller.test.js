@@ -188,7 +188,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-201-1 Verplicht veld ontbreekt", (done) => {
+    it("TC-201-2 Niet-valide email adres", (done) => {
       chai
         .request(server)
         .post("/api/user")
@@ -212,6 +212,34 @@ describe("Share-a-meal API Tests", () => {
 
           status.should.equals(400);
           message.should.be.a("string").that.equals("Invalid email");
+          done();
+        });
+    });
+
+    it("TC-201-3 Niet-valide wachtwoord", (done) => {
+      chai
+        .request(server)
+        .post("/api/user")
+        .send({
+          firstName: "John",
+          lastName: "Doe",
+          street: "Lovensdijkstraat 61",
+          city: "Breda",
+          isActive: true,
+          emailAdress: "nieuweuser@gmail.com",
+          password: "wachtwoord",
+          phoneNumber: "06 12425475",
+        })
+        .end((err, res) => {
+          res.should.be.an("Object");
+          let { status, message } = res.body;
+          // console.log("Hier is de res.body: " + JSON.stringify(res.body));
+          // console.log("Hier is de message: " + JSON.stringify(message));
+          console.log("Hier is de message: " + message);
+          // console.log("Hier is de error: " + err);
+
+          status.should.equals(400);
+          message.should.be.a("string").that.equals("Invalid password");
           done();
         });
     });
