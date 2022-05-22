@@ -475,5 +475,21 @@ describe("Share-a-meal API Tests", () => {
           done();
         });
     });
+
+    it("TC-206-2 Niet ingelogd", (done) => {
+      chai
+        .request(server)
+        .delete("/api/user/1000000")
+        .end((err, res) => {
+          res.should.be.an("Object");
+          let { status, message } = res.body;
+          console.log("Hier is de message: " + message);
+          status.should.equals(401);
+          message.should.be
+            .a("string")
+            .that.equals("Authorization header missing!");
+          done();
+        });
+    });
   });
 });
