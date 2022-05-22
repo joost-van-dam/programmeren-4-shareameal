@@ -491,5 +491,20 @@ describe("Share-a-meal API Tests", () => {
           done();
         });
     });
+
+    it("TC-206-4 Gebruiker succesvol verwijderd", (done) => {
+      chai
+        .request(server)
+        .delete("/api/user/1000000")
+        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
+        .end((err, res) => {
+          res.should.be.an("Object");
+          let { status, message } = res.body;
+          console.log("Gebruiker succesvol verwijderd message: " + message);
+          status.should.equals(200);
+          message.should.be.a("string").that.equals("Deleted");
+          done();
+        });
+    });
   });
 });
