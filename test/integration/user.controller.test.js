@@ -24,6 +24,26 @@ const TEST_USER_AT_ID_IS_1000000 =
   "INSERT INTO user (id, firstName, lastName, isActive, emailAdress, password, street, city) VALUES (1000000, 'Joost' ,'van Dam' ,1 ,'joost.vandam@avans.nl' ,'wachtwoord12DSF3@$##' ,'Lovensdijkstraat', 'Breda')";
 
 describe("Share-a-meal API Tests", () => {
+  describe("UC-101 Login", () => {
+    it.only("TC-101-1 Verplicht veld ontbreekt", (done) => {
+      chai
+        .request(server)
+        .post("/api/auth/login")
+        .send({
+          emailAdress: "Joost@server.com",
+        })
+        .end((err, res) => {
+          res.should.be.an("Object");
+          let { status, message } = res.body;
+          status.should.equals(400);
+          message.should.be
+            .a("string")
+            .that.equals("password must be a string.");
+          done();
+        });
+    });
+  });
+
   describe("UC-201 Registreren als nieuwe gebruiker", () => {
     beforeEach((done) => {
       pool.getConnection(function (err, connection) {

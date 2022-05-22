@@ -16,6 +16,8 @@ let controller = {
           datetime: new Date().toISOString(),
         });
       }
+
+      console.log("Login called");
       if (connection) {
         // 1. Kijk of deze useraccount bestaat.
         connection.query(
@@ -78,6 +80,7 @@ let controller = {
   //
   validateLogin(req, res, next) {
     // Verify that we receive the expected input
+    console.log("validate login called");
     try {
       assert(
         typeof req.body.emailAdress === "string",
@@ -88,10 +91,10 @@ let controller = {
         "password must be a string."
       );
       next();
-    } catch (ex) {
-      res.status(422).json({
-        error: ex.toString(),
-        datetime: new Date().toISOString(),
+    } catch (error) {
+      res.status(400).json({
+        status: 400,
+        message: error.message,
       });
     }
   },
