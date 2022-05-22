@@ -66,9 +66,10 @@ let controller = {
                 );
               } else {
                 logger.info("User not found or password invalid");
-                res.status(401).json({
+                res.status(404).json({
+                  status: 404,
                   message: "User not found or password invalid",
-                  datetime: new Date().toISOString(),
+                  // datetime: new Date().toISOString(),
                 });
               }
             }

@@ -101,6 +101,25 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
+    it.only("TC-101-4 user does not exist", (done) => {
+      chai
+        .request(server)
+        .post("/api/auth/login")
+        .send({
+          emailAdress: "bestaatniet@server.com",
+          password: "wachtwoord32DSF3@$##",
+        })
+        .end((err, res) => {
+          res.should.be.an("object");
+          let { status, message } = res.body;
+          status.should.equals(404);
+          message.should.be
+            .a("string")
+            .that.equals("User not found or password invalid");
+          done();
+        });
+    });
+
     it("TC-101-5 Gebruiker succesvol ingelogd", (done) => {
       chai
         .request(server)
