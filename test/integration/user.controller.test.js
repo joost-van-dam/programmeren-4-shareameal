@@ -19,7 +19,7 @@ const CLEAR_DB =
   CLEAR_MEAL_TABLE + CLEAR_PARTICIPANTS_TABLE + CLEAR_USERS_TABLE;
 
 const TEST_USERS =
-  "INSERT INTO user (firstName, lastName, isActive, emailAdress, password, street, city) VALUES ('Joost' ,'van Dam' ,1 ,'joost.vandam@avans.nl' ,'wachtwoord1DD23@$##' ,'Lovensdijkstraat', 'Breda'), ('Robin' ,'Schellius' ,1 ,'robin.schellius@avans.nl' ,'wachtwoord456FDSD@$##' ,'Hogeschoollaan', 'Breda')";
+  "INSERT INTO user (firstName, lastName, isActive, emailAdress, password, street, city) VALUES ('Joost' ,'van Dam' ,1 ,'joost.vandam@avans.nl' ,'wachtwoord1DD23@$##' ,'Lovensdijkstraat', 'Breda'), ('Robin' ,'Schellius' ,0 ,'robin.schellius@avans.nl' ,'wachtwoord456FDSD@$##' ,'Hogeschoollaan', 'Breda')";
 const TEST_USER_AT_ID_IS_1000000 =
   "INSERT INTO user (id, firstName, lastName, isActive, emailAdress, password, street, city) VALUES (1000000, 'Joost' ,'van Dam' ,1 ,'joost.vandam@avans.nl' ,'wachtwoord12DSF3@$##' ,'Lovensdijkstraat', 'Breda')";
 
@@ -146,15 +146,15 @@ describe("Share-a-meal API Tests", () => {
           if (error) throw error;
           connection.query(TEST_USERS, function (error, result, field) {
             if (error) throw error;
-            // connection.query(
-            //   "SELECT * FROM user",
-            //   function (error, result, field) {
-            //     if (error) throw error;
-            //     console.log(result);
-            connection.release();
-            done();
-            //   }
-            // );
+            connection.query(
+              "SELECT * FROM user",
+              function (error, result, field) {
+                if (error) throw error;
+                console.log(result);
+                connection.release();
+                done();
+              }
+            );
           });
         });
       });
@@ -307,7 +307,7 @@ describe("Share-a-meal API Tests", () => {
         connection.query(CLEAR_DB, function (error, result, field) {
           if (error) throw error;
           // connection.query(TEST_USERS, function (error, result, field) {
-          // if (error) throw error;
+          //   if (error) throw error;
           // connection.query(
           //   "SELECT * FROM user",
           //   function (error, result, field) {
@@ -317,8 +317,8 @@ describe("Share-a-meal API Tests", () => {
           done();
           //   }
           // );
-          // });
         });
+        // });
       });
     });
 
@@ -355,6 +355,72 @@ describe("Share-a-meal API Tests", () => {
           done();
         });
     });
+
+    it("TC-202-3 Toon gebruikers met zoekterm op niet-bestaande naam", (done) => {
+      chai
+        .request(server)
+        .get("/api/user?firstName=USERVANANDEREPLANEET")
+        .set("authorization", "Bearer " + jwt.sign({ userId: 1 }, jwtSecretKey))
+        .end(function (err, res) {
+          res.should.be.an("object");
+          const { status, results } = res.body;
+          status.should.equals(200);
+          results.should.be.an("array").that.has.length(0);
+          done();
+        });
+    });
+
+    it("TC-202-4 Toon gebruikers met gebruik van de zoekterm op het veld ‘isActive’=false", (done) => {
+      chai
+        .request(server)
+        .get("/api/user?isActive=false")
+        .set("authorization", "Bearer " + jwt.sign({ userId: 1 }, jwtSecretKey))
+        .end(function (err, res) {
+          res.should.be.an("object");
+          const { status, results } = res.body;
+          status.should.equals(200);
+          results.should.be.an("array").that.has.length(0);
+          done();
+        });
+    });
+
+    it("TC-202-5 Toon gebruikers met gebruik van de zoekterm op het veld ‘isActive’=true", (done) => {
+      chai
+        .request(server)
+        .get("/api/user?isActive=true")
+        .set("authorization", "Bearer " + jwt.sign({ userId: 1 }, jwtSecretKey))
+        .end(function (err, res) {
+          res.should.be.an("object");
+          const { status, results } = res.body;
+          status.should.equals(200);
+          results.should.be.an("array").that.has.length(0);
+          done();
+        });
+    });
+    // });
+
+    it("TC-202-6 Toon gebruikers met zoekterm op bestaande naam", (done) => {
+      // pool.getConnection(function (err, connection) {
+      //   connection.query("SELECT * FROM user", function (error, result, field) {
+      //     if (error) throw error;
+      //     console.log(result);
+      //     connection.release();
+      //     // done();
+      //   });
+      // });
+
+      chai
+        .request(server)
+        .get("/api/user?firstName=Robin")
+        .set("authorization", "Bearer " + jwt.sign({ userId: 1 }, jwtSecretKey))
+        .end(function (err, res) {
+          res.should.be.an("object");
+          const { status, results } = res.body;
+          status.should.equals(200);
+          results.should.be.an("array").that.has.length(0);
+          done();
+        });
+    });
   });
 
   describe("UC-203 Gebruikersprofiel opvragen", () => {
@@ -374,9 +440,13 @@ describe("Share-a-meal API Tests", () => {
           done();
         });
     });
+
+    it.skip("TC-203-2 Valide token en gebruiker bestaat.", (done) => {});
   });
 
   describe("UC-204 Details van gebruiker", () => {
+    it.skip("TC-204-1 Ongeldig token", (done) => {});
+
     it("TC-204-2 User does not exist", (done) => {
       chai
         .request(server)
@@ -661,6 +731,8 @@ describe("Share-a-meal API Tests", () => {
           done();
         });
     });
+
+    it.skip("TC-206-3 Actor is geen eigenaar", (done) => {});
 
     it("TC-206-4 Gebruiker succesvol verwijderd", (done) => {
       chai
