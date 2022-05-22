@@ -56,10 +56,11 @@ let controller = {
                   jwtSecretKey,
                   { expiresIn: "12d" },
                   function (err, token) {
+                    console.log("sign called!");
                     logger.debug("User logged in, sending: ", userinfo);
                     res.status(200).json({
-                      statusCode: 200,
-                      results: { ...userinfo, token },
+                      status: 200,
+                      message: { ...userinfo, token },
                     });
                   }
                 );

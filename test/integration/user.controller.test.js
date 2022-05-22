@@ -25,6 +25,30 @@ const TEST_USER_AT_ID_IS_1000000 =
 
 describe("Share-a-meal API Tests", () => {
   describe("UC-101 Login", () => {
+    before((done) => {
+      pool.getConnection(function (err, connection) {
+        if (err) throw err;
+        connection.query(CLEAR_DB, function (error, result, field) {
+          if (error) throw error;
+          connection.query(
+            TEST_USER_AT_ID_IS_1000000,
+            function (error, result, field) {
+              if (error) throw error;
+              // connection.query(
+              //   "SELECT * FROM user",
+              //   function (error, result, field) {
+              //     if (error) throw error;
+              //     console.log(result);
+              connection.release();
+              done();
+            }
+            //   );
+            // }
+          );
+        });
+      });
+    });
+
     it("TC-101-1 Verplicht veld ontbreekt", (done) => {
       chai
         .request(server)
@@ -43,7 +67,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it.only("TC-101-2 Niet-valide email adres", (done) => {
+    it("TC-101-2 Niet-valide email adres", (done) => {
       chai
         .request(server)
         .post("/api/auth/login")
@@ -60,7 +84,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it.only("TC-101-3 Niet-valide wachtwoord", (done) => {
+    it("TC-101-3 Niet-valide wachtwoord", (done) => {
       chai
         .request(server)
         .post("/api/auth/login")
@@ -73,6 +97,23 @@ describe("Share-a-meal API Tests", () => {
           let { status, message } = res.body;
           status.should.equals(400);
           message.should.be.a("string").that.equals("Invalid password");
+          done();
+        });
+    });
+
+    it("TC-101-5 Gebruiker succesvol ingelogd", (done) => {
+      chai
+        .request(server)
+        .post("/api/auth/login")
+        .send({
+          emailAdress: "joost.vandam@avans.nl",
+          password: "wachtwoord12DSF3@$##",
+        })
+        .end((err, res) => {
+          res.should.be.an("Object");
+          let { status, message } = res.body;
+          status.should.equals(200);
+          // message.should.be.a("string").that.equals("Invalid password");
           done();
         });
     });
