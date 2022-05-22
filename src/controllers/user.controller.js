@@ -1,6 +1,7 @@
 const assert = require("assert");
 const { all } = require("express/lib/application");
 const pool = require("../../databaseconnectie/dbtest");
+const phoneRegex = /(06)(\s|\-|)\d{8}|31(\s6|\-6|6)\d{8}/;
 
 let controller = {
   validateUser: (req, res, next) => {
@@ -50,6 +51,16 @@ let controller = {
       assert(typeof phoneNumber === "string", "Phonenumber must be a string");
       assert(typeof street === "string", "Street must be a string");
       assert(typeof city === "string", "City must be a string");
+      console.log("phone regex before");
+
+      const regexTest = phoneRegex.test(phoneNumber);
+
+      console.log(regexTest);
+
+      assert(regexTest, "Invalid phonenumber");
+
+      // assert(phoneRegex.test(phoneNumber), "Invalid phonenumber");
+      console.log("phone regex after");
 
       next();
     } catch (err) {
