@@ -311,10 +311,39 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it.only("TC-205-3 Niet-valide telefoonnummer", (done) => {
+    it("TC-205-3 Niet-valide telefoonnummer", (done) => {
       chai
         .request(server)
         .put("/api/user/1000000")
+        .send({
+          firstName: "John",
+          lastName: "Doe",
+          street: "Lovensdijkstraat 61",
+          city: "Breda",
+          isActive: true,
+          emailAdress: "h.doe@server.com",
+          password: "secret",
+          phoneNumber: "06 1234567",
+        })
+        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
+        .end((err, res) => {
+          res.should.be.an("Object");
+          let { status, message } = res.body;
+          // console.log("Hier is de res.body: " + JSON.stringify(res.body));
+          // console.log("Hier is de message: " + JSON.stringify(message));
+          // console.log("Hier is de message: " + message.values);
+          // console.log("Hier is de error: " + err);
+          console.log("Hier is de message: " + message);
+          status.should.equals(400);
+          message.should.be.a("string").that.equals("Invalid phonenumber");
+          done();
+        });
+    });
+
+    it.skip("TC-205-4 Gebruiker bestaat niet", (done) => {
+      chai
+        .request(server)
+        .put("/api/user/999999")
         .send({
           firstName: "John",
           lastName: "Doe",

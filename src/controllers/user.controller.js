@@ -15,7 +15,6 @@ let controller = {
       assert(typeof password === "string", "Password must be a string");
       assert(typeof street === "string", "Street must be a string");
       assert(typeof city === "string", "City must be a string");
-
       next();
     } catch (err) {
       console.log("Henk123");
@@ -267,23 +266,16 @@ let controller = {
             }
 
             console.log(error);
-
-            let errorMessage = error.message;
-
             return res.status(400).json({
               status: 400,
-              error: errorMessage,
+              error: error.message,
             });
           }
 
-          if (!results) {
-            console.log("DE ERROR IS: " + error);
-          }
-
           if (results) {
-            if (results.length === 0) {
-              return res.status(404).json({
-                status: 404,
+            if (results.affectedRows === 0) {
+              return res.status(400).json({
+                status: 400,
                 message: "User does not exist",
               });
             }
@@ -305,50 +297,11 @@ let controller = {
                 }
               }
             );
-
-            // return res.status(200).json({
-            //   status: 200,
-            //   message: results[0],
-            // });
           } else {
             return res.status(400).json({
               status: 400,
             });
-            // connection.query(
-            //   `SELECT * FROM user WHERE id = '${putsingleuserbyid}'`,
-            //   function (error, results, fields) {
-            //     connection.release();
-
-            //     if (error) throw error;
-
-            //     res.status(200).json({
-            //       status: 200,
-            //       message: results,
-            //     });
-            //   }
-            // );
           }
-
-          // if (results.affectedRows === 0) {
-          //   res.status(400).json({
-          //     status: 400,
-          //     message: "Gebruiker bestaat niet.",
-          //   });
-          // } else {
-          //   connection.query(
-          //     `SELECT * FROM user WHERE id = '${putsingleuserbyid}'`,
-          //     function (error, results, fields) {
-          //       connection.release();
-
-          //       if (error) throw error;
-
-          //       res.status(200).json({
-          //         status: 200,
-          //         message: results,
-          //       });
-          //     }
-          //   );
-          // }
         }
       );
     });
