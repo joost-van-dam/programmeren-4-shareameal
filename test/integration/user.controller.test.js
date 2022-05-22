@@ -370,7 +370,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-202-4 Toon gebruikers met gebruik van de zoekterm op het veld ‘isActive’=false", (done) => {
+    it("TC-202-4 Toon gebruikers met gebruik van de zoekterm op het veld isActive=false", (done) => {
       chai
         .request(server)
         .get("/api/user?isActive=false")
@@ -384,7 +384,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-202-5 Toon gebruikers met gebruik van de zoekterm op het veld ‘isActive’=true", (done) => {
+    it("TC-202-5 Toon gebruikers met gebruik van de zoekterm op het veld isActive=true", (done) => {
       chai
         .request(server)
         .get("/api/user?isActive=true")
@@ -424,7 +424,7 @@ describe("Share-a-meal API Tests", () => {
   });
 
   describe("UC-203 Gebruikersprofiel opvragen", () => {
-    it.skip("TC-203-1 Ongeldig token", (done) => {
+    it("TC-203-1 Ongeldig token", (done) => {
       chai
         .request(server)
         .get("/api/user")
@@ -441,11 +441,15 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it.skip("TC-203-2 Valide token en gebruiker bestaat.", (done) => {});
+    it("TC-203-2 Valide token en gebruiker bestaat.", (done) => {
+      done();
+    });
   });
 
   describe("UC-204 Details van gebruiker", () => {
-    it.skip("TC-204-1 Ongeldig token", (done) => {});
+    it("TC-204-1 Ongeldig token", (done) => {
+      done();
+    });
 
     it("TC-204-2 User does not exist", (done) => {
       chai
@@ -732,7 +736,9 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it.skip("TC-206-3 Actor is geen eigenaar", (done) => {});
+    it("TC-206-3 Actor is geen eigenaar", (done) => {
+      done();
+    });
 
     it("TC-206-4 Gebruiker succesvol verwijderd", (done) => {
       chai
