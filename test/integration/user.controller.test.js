@@ -399,7 +399,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it.only("TC-205-6 Gebruiker succesvol gewijzigd", (done) => {
+    it("TC-205-6 Gebruiker succesvol gewijzigd", (done) => {
       chai
         .request(server)
         .put("/api/user/1000000")
@@ -429,6 +429,49 @@ describe("Share-a-meal API Tests", () => {
             password: "secret",
             phoneNumber: "06 12425475",
           });
+          done();
+        });
+    });
+  });
+
+  describe("UC-206 Gebruiker verwijderen", () => {
+    beforeEach((done) => {
+      pool.getConnection(function (err, connection) {
+        if (err) throw err;
+        connection.query(CLEAR_DB, function (error, result, field) {
+          if (error) throw error;
+          connection.query(
+            TEST_USER_AT_ID_IS_1000000,
+            function (error, result, field) {
+              if (error) throw error;
+              // connection.query(
+              //   "SELECT * FROM user",
+              //   function (error, result, field) {
+              //     if (error) throw error;
+              //     console.log(result);
+              connection.release();
+              done();
+            }
+            //   );
+            // }
+          );
+        });
+      });
+    });
+
+    it("TC-206-1 Gebruiker bestaat niet", (done) => {
+      chai
+        .request(server)
+        .delete("/api/user/0")
+        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
+        .end((err, res) => {
+          res.should.be.an("Object");
+          let { status, message } = res.body;
+          console.log(
+            "TC-206-1 Gebruiker bestaat niet heeft een message met: " + message
+          );
+          status.should.equals(400);
+          message.should.be.a("string").that.equals("User does not exist");
           done();
         });
     });
