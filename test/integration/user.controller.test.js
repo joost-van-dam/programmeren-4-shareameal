@@ -340,7 +340,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it.skip("TC-205-4 Gebruiker bestaat niet", (done) => {
+    it.only("TC-205-4 Gebruiker bestaat niet", (done) => {
       chai
         .request(server)
         .put("/api/user/999999")
@@ -352,7 +352,7 @@ describe("Share-a-meal API Tests", () => {
           isActive: true,
           emailAdress: "h.doe@server.com",
           password: "secret",
-          phoneNumber: "06 1234567",
+          phoneNumber: "06 12345678",
         })
         .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
         .end((err, res) => {
@@ -364,7 +364,7 @@ describe("Share-a-meal API Tests", () => {
           // console.log("Hier is de error: " + err);
           console.log("Hier is de message: " + message);
           status.should.equals(400);
-          message.should.be.a("string").that.equals("Invalid phonenumber");
+          message.should.be.a("string").that.equals("User does not exist");
           done();
         });
     });
