@@ -398,5 +398,39 @@ describe("Share-a-meal API Tests", () => {
           done();
         });
     });
+
+    it.only("TC-205-6 Gebruiker succesvol gewijzigd", (done) => {
+      chai
+        .request(server)
+        .put("/api/user/1000000")
+        .send({
+          firstName: "Joost",
+          lastName: "Doe",
+          street: "Lovensdijkstraat 61",
+          city: "Breda",
+          isActive: true,
+          emailAdress: "joost@server.com",
+          password: "secret",
+          phoneNumber: "06 12425475",
+        })
+        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
+        .end((err, res) => {
+          res.should.be.an("Object");
+          let { status, result } = res.body;
+          status.should.equals(200);
+          result.should.be.a("object").that.contains({
+            id: result.id,
+            firstName: "Joost",
+            lastName: "Doe",
+            street: "Lovensdijkstraat 61",
+            city: "Breda",
+            isActive: 1,
+            emailAdress: "joost@server.com",
+            password: "secret",
+            phoneNumber: "06 12425475",
+          });
+          done();
+        });
+    });
   });
 });
