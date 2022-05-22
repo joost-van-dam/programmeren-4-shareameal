@@ -20,7 +20,7 @@ let controller = {
       assert(typeof street === "string", "Street must be a string");
       assert(typeof city === "string", "City must be a string");
       assert(emailRegex.test(emailAdress), "Invalid email");
-      // assert(passwordRegex.test(password), "Invalid password");
+      assert(passwordRegex.test(password), "Invalid password");
 
       const testRegex = passwordRegex.test(password);
 

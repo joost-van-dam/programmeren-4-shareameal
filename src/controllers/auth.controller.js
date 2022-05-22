@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 
 const logger = require("../config/config").logger;
 const jwtSecretKey = require("../config/config").jwtSecretKey;
+const emailRegex = /^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{1,3})+$/;
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
 
 let controller = {
   login(req, res, next) {
@@ -90,6 +92,9 @@ let controller = {
         typeof req.body.password === "string",
         "password must be a string."
       );
+
+      assert(emailRegex.test(req.body.emailAdress), "Invalid email");
+
       next();
     } catch (error) {
       res.status(400).json({

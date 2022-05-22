@@ -25,7 +25,7 @@ const TEST_USER_AT_ID_IS_1000000 =
 
 describe("Share-a-meal API Tests", () => {
   describe("UC-101 Login", () => {
-    it.only("TC-101-1 Verplicht veld ontbreekt", (done) => {
+    it("TC-101-1 Verplicht veld ontbreekt", (done) => {
       chai
         .request(server)
         .post("/api/auth/login")
@@ -39,6 +39,23 @@ describe("Share-a-meal API Tests", () => {
           message.should.be
             .a("string")
             .that.equals("password must be a string.");
+          done();
+        });
+    });
+
+    it.only("TC-101-2 Niet-valide email adres", (done) => {
+      chai
+        .request(server)
+        .post("/api/auth/login")
+        .send({
+          emailAdress: "emailvanjoost",
+          password: "secret#f4Dtfeer",
+        })
+        .end((err, res) => {
+          res.should.be.an("Object");
+          let { status, message } = res.body;
+          status.should.equals(400);
+          message.should.be.a("string").that.equals("Invalid email");
           done();
         });
     });
