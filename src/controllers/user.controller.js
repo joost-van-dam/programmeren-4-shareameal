@@ -17,6 +17,7 @@ let controller = {
 
       next();
     } catch (err) {
+      console.log("Henk123");
       const error = {
         status: 400,
         message: err.message,
@@ -27,6 +28,7 @@ let controller = {
   },
 
   validateUpdate: (req, res, next) => {
+    console.log("validateUpdate aangeroepen!");
     let user = req.body;
     let {
       firstName,
@@ -51,11 +53,12 @@ let controller = {
 
       next();
     } catch (err) {
-      // const error = {
-      //   status: 400,
-      //   message: err.message,
-      // };
-      // next(error);
+      console.log("Henk12345");
+      const error = {
+        status: 400,
+        message: err.message,
+      };
+      next(error);
     }
   },
 

@@ -65,7 +65,7 @@ describe("Share-a-meal API Tests", () => {
           let { status, message } = res.body;
           // console.log("Hier is de res.body: " + JSON.stringify(res.body));
           // console.log("Hier is de message: " + JSON.stringify(message));
-          // console.log("Hier is de message: " + message.values);
+          console.log("Hier is de message: " + message);
           // console.log("Hier is de error: " + err);
 
           status.should.equals(400);
@@ -252,6 +252,61 @@ describe("Share-a-meal API Tests", () => {
           let { status, result } = res.body;
           status.should.equals(200);
           result.should.be.an("Object").that.deep.equals(result);
+          done();
+        });
+    });
+  });
+
+  describe("UC-205 Gebruiker wijzigen", () => {
+    beforeEach((done) => {
+      pool.getConnection(function (err, connection) {
+        if (err) throw err;
+        connection.query(CLEAR_DB, function (error, result, field) {
+          if (error) throw error;
+          connection.query(
+            TEST_USER_AT_ID_IS_1000000,
+            function (error, result, field) {
+              if (error) throw error;
+              // connection.query(
+              //   "SELECT * FROM user",
+              //   function (error, result, field) {
+              //     if (error) throw error;
+              //     console.log(result);
+              connection.release();
+              done();
+            }
+            //   );
+            // }
+          );
+        });
+      });
+    });
+
+    it("TC-205-1 Verplicht veld “emailAdress” ontbreekt", (done) => {
+      chai
+        .request(server)
+        .put("/api/user/1000000")
+        .send({
+          firstName: "John",
+          lastName: "Doe",
+          street: "Lovensdijkstraat 61",
+          city: "Breda",
+          isActive: true,
+          // "emailAdress": "h.doe@server.com",
+          password: "secret",
+          phoneNumber: "06 12425475",
+        })
+        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
+        .end((err, res) => {
+          res.should.be.an("Object");
+          let { status, message } = res.body;
+          // console.log("Hier is de res.body: " + JSON.stringify(res.body));
+          // console.log("Hier is de message: " + JSON.stringify(message));
+          // console.log("Hier is de message: " + message.values);
+          // console.log("Hier is de error: " + err);
+          console.log("Hier is de message: " + message);
+          status.should.equals(400);
+          message.should.be.a("string").that.equals("Email must be a string");
           done();
         });
     });
