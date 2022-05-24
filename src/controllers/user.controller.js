@@ -179,12 +179,17 @@ let controller = {
           connection.release();
           if (error) throw error;
 
-          // console.log("results = ", results);
-
-          res.status(200).json({
-            status: 200,
-            results: results,
-          });
+          if (results.length == 0) {
+            res.status(404).json({
+              status: 404,
+              results: "User does not exist",
+            });
+          } else {
+            res.status(200).json({
+              status: 200,
+              results: results,
+            });
+          }
         }
       );
     });
