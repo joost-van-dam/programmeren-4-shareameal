@@ -273,27 +273,27 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it.skip("TC-305-3 Niet de eigenaar van de data", (done) => {
-      // Deleting meal with ID 100 that does not have cook ID 0
-      chai
-        .request(server)
-        .delete("/api/meal/1")
-        .set(
-          "authorization",
-          "Bearer " + jwt.sign({ userId: 0 }, process.env.JWTKEY)
-        )
-        .end(function (err, res) {
-          res.should.be.an("object");
-          const { status, message } = res.body;
-          status.should.equals(403);
-          message.should.be
-            .a("string")
-            .that.equals(
-              "JOOST PLAK HIER DE MESSAGE ALS JE EEN MEAL PROBEERT TE VERWIJDEREN WAARBIJ COOKID != REQ.USERID!"
-            );
-          done();
-        });
-    });
+    // it.skip("TC-305-3 Niet de eigenaar van de data", (done) => {
+    //   // Deleting meal with ID 100 that does not have cook ID 0
+    //   chai
+    //     .request(server)
+    //     .delete("/api/meal/1")
+    //     .set(
+    //       "authorization",
+    //       "Bearer " + jwt.sign({ userId: 0 }, process.env.JWTKEY)
+    //     )
+    //     .end(function (err, res) {
+    //       res.should.be.an("object");
+    //       const { status, message } = res.body;
+    //       status.should.equals(403);
+    //       message.should.be
+    //         .a("string")
+    //         .that.equals(
+    //           "JOOST PLAK HIER DE MESSAGE ALS JE EEN MEAL PROBEERT TE VERWIJDEREN WAARBIJ COOKID != REQ.USERID!"
+    //         );
+    //       done();
+    //     });
+    // });
     it("TC-305-4 Maaltijd bestaat niet", (done) => {
       // Meal with ID 1234 does not exist
       chai
