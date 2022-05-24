@@ -34,8 +34,8 @@ describe("Share-a-meal API Tests", () => {
           dateTime: "2022-05-24T16:00:00.000Z",
           imageUrl:
             "https://www.leukerecepten.nl/wp-content/uploads/2019/03/pizza_recepten-432x432.jpg",
-          maxAmountOfParticipants: 4,
           allergenes: ["cheese", "gluten"],
+          maxAmountOfParticipants: 4,
           price: 7.49,
         })
         .end((err, res) => {

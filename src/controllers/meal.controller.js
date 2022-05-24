@@ -47,6 +47,7 @@ let controller = {
   addMeal: (req, res) => {
     console.log("Add meal aangeroepen");
     const meal = req.body;
+    console.log("KIJK HIER!!!!!!!!!!!!" + meal.allergenes);
     console.log("Add meal #1");
 
     // Valideren dat een user ID is meegegeven
@@ -92,14 +93,14 @@ let controller = {
             maxAmountOfParticipants, allergenes, price) VALUES ('
              ${meal.name}',
             '${meal.description}',
-          ${meal.isVega} ,
-          ${meal.isVegan} ,
-          ${meal.isToTakeHome},
-       '${meal.dateTime.replace("T", " ").substring(0, 19)}',
-        '${meal.imageUrl}',
-         '${meal.maxAmountOfParticipants}',
-        '${meal.allergenes.join()}',
-         ${meal.price})`,
+            ${meal.isVega} ,
+            ${meal.isVegan} ,
+            ${meal.isToTakeHome},
+            '${meal.dateTime.replace("T", " ").substring(0, 19)}',
+           '${meal.imageUrl}',
+            '${meal.maxAmountOfParticipants}',
+          '${meal.allergenes.join()}',
+          ${meal.price})`,
         function (error, results, fields) {
           connection.release();
           // if (error) throw error;
