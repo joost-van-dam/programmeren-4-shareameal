@@ -5,7 +5,6 @@ const chaiHttp = require("chai-http");
 const server = require("../../index");
 const pool = require("../../databaseconnectie/dbtest");
 const { Test } = require("mocha");
-// const database = [];
 const jwt = require("jsonwebtoken");
 const { jwtSecretKey, logger } = require("../../src/config/config");
 
@@ -284,10 +283,20 @@ describe("Share-a-meal API Tests", () => {
         })
         .end((err, res) => {
           res.should.be.an("Object");
-          let { status } = res.body;
-          // let { status, result } = res.body;
+          let { status, result } = res.body;
           status.should.equals(201);
-          // result.should.be.a("string").that.equals("Gebruiker bestaat al");
+          result.firstName.should.be.a("string").that.equals("Thijs");
+          result.lastName.should.be.a("string").that.equals("van Dam");
+          result.street.should.be
+            .a("string")
+            .that.equals("Lovensdijkstraat 61");
+          result.city.should.be.a("string").that.equals("Breda");
+          result.isActive.should.be.a("boolean").that.equals(true);
+          result.emailAdress.should.be
+            .a("string")
+            .that.equals("thijs.vandam@avans.nl");
+          result.password.should.be.a("string").that.equals("secret#f4Dtfeer");
+          result.phoneNumber.should.be.a("string").that.equals("06 12425475");
           done();
         });
     });

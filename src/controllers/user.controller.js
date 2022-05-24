@@ -75,7 +75,7 @@ let controller = {
       if (err) throw err;
 
       connection.query(
-        `INSERT INTO user (firstName, lastName, isActive, emailAdress, password, street, city) VALUES ('${user.firstName}' ,'${user.lastName}' ,1 ,'${user.emailAdress}' ,'${user.password}' ,'${user.street}', '${user.city}')`,
+        `INSERT INTO user (firstName, lastName, isActive, emailAdress, password, street, city, phoneNumber) VALUES ('${user.firstName}' ,'${user.lastName}' ,1 ,'${user.emailAdress}' ,'${user.password}' ,'${user.street}', '${user.city}', '${user.phoneNumber}')`,
         function (error, results, fields) {
           connection.release();
           // if (error) throw error;
