@@ -19,7 +19,7 @@ const CLEAR_DB =
 
 describe("Share-a-meal API Tests", () => {
   describe("UC-301 Maaltijd aanmaken", () => {
-    it.only("TC 301-1: verplicht veld ontbreek", (done) => {
+    it("TC 301-1: verplicht veld ontbreek", (done) => {
       chai
         .request(server)
         .post("/api/meal")
