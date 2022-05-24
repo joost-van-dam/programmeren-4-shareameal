@@ -1,9 +1,11 @@
 process.env.DB_DATABASE = process.env.DB_DATABASE || "share-a-meal-testdb";
+process.env.LOGLEVEL = "error";
 
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const server = require("../../index");
 const pool = require("../../databaseconnectie/dbtest");
+require("dotenv").config();
 const { Test } = require("mocha");
 const jwt = require("jsonwebtoken");
 const { jwtSecretKey, logger } = require("../../src/config/config");

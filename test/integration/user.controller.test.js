@@ -1,8 +1,10 @@
 process.env.DB_DATABASE = process.env.DB_DATABASE || "share-a-meal-testdb";
+process.env.LOGLEVEL = "error";
 
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const server = require("../../index");
+require("dotenv").config();
 const pool = require("../../databaseconnectie/dbtest");
 const { Test } = require("mocha");
 const jwt = require("jsonwebtoken");
@@ -270,7 +272,6 @@ describe("Share-a-meal API Tests", () => {
       chai
         .request(server)
         .post("/api/user")
-        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
         .send({
           firstName: "Thijs",
           lastName: "van Dam",
@@ -335,7 +336,7 @@ describe("Share-a-meal API Tests", () => {
       chai
         .request(server)
         .get("/api/user")
-        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
+        .set("authorization", "Bearer " + jwt.sign({ userId: 1 }, jwtSecretKey))
         .end((err, res) => {
           res.should.be.an("Object");
           let { status, results } = res.body;
@@ -355,7 +356,7 @@ describe("Share-a-meal API Tests", () => {
       chai
         .request(server)
         .get("/api/user")
-        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
+        .set("authorization", "Bearer " + jwt.sign({ userId: 1 }, jwtSecretKey))
         .end((err, res) => {
           res.should.be.an("Object");
           let { status, results } = res.body;
@@ -437,7 +438,7 @@ describe("Share-a-meal API Tests", () => {
       chai
         .request(server)
         .get("/api/user")
-        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
+        .set("authorization", "Bearer " + jwt.sign({ userId: 1 }, jwtSecretKey))
         .end((err, res) => {
           // console.log("Hier is het res: " + res);
           // console.log("Hier is het res.body: " + res.body);
@@ -464,7 +465,7 @@ describe("Share-a-meal API Tests", () => {
       chai
         .request(server)
         .get("/api/user/0")
-        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
+        .set("authorization", "Bearer " + jwt.sign({ userId: 1 }, jwtSecretKey))
         .end((err, res) => {
           res.should.be.an("Object");
           let { status, message } = res.body;
@@ -499,7 +500,7 @@ describe("Share-a-meal API Tests", () => {
       chai
         .request(server)
         .get("/api/user/1000000")
-        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
+        .set("authorization", "Bearer " + jwt.sign({ userId: 1 }, jwtSecretKey))
         .end((err, res) => {
           res.should.be.an("Object");
           let { status, result } = res.body;
@@ -549,7 +550,7 @@ describe("Share-a-meal API Tests", () => {
           password: "secret#dw@#dAwas",
           phoneNumber: "06 12425475",
         })
-        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
+        .set("authorization", "Bearer " + jwt.sign({ userId: 1 }, jwtSecretKey))
         .end((err, res) => {
           res.should.be.an("Object");
           let { status, message } = res.body;
@@ -578,7 +579,7 @@ describe("Share-a-meal API Tests", () => {
           password: "secret#e4!jcu83ew",
           phoneNumber: "06 1234567",
         })
-        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
+        .set("authorization", "Bearer " + jwt.sign({ userId: 1 }, jwtSecretKey))
         .end((err, res) => {
           res.should.be.an("Object");
           let { status, message } = res.body;
@@ -607,7 +608,7 @@ describe("Share-a-meal API Tests", () => {
           password: "secret(849f4DdR",
           phoneNumber: "06 12345678",
         })
-        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
+        .set("authorization", "Bearer " + jwt.sign({ userId: 1 }, jwtSecretKey))
         .end((err, res) => {
           res.should.be.an("Object");
           let { status, message } = res.body;
@@ -666,7 +667,7 @@ describe("Share-a-meal API Tests", () => {
           password: "secret635f#w2s2",
           phoneNumber: "06 12425475",
         })
-        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
+        .set("authorization", "Bearer " + jwt.sign({ userId: 1 }, jwtSecretKey))
         .end((err, res) => {
           res.should.be.an("Object");
           let { status, result } = res.body;
@@ -716,7 +717,7 @@ describe("Share-a-meal API Tests", () => {
       chai
         .request(server)
         .delete("/api/user/0")
-        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
+        .set("authorization", "Bearer " + jwt.sign({ userId: 1 }, jwtSecretKey))
         .end((err, res) => {
           res.should.be.an("Object");
           let { status, message } = res.body;
@@ -753,7 +754,7 @@ describe("Share-a-meal API Tests", () => {
       chai
         .request(server)
         .delete("/api/user/1000000")
-        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
+        .set("authorization", "Bearer " + jwt.sign({ userId: 1 }, jwtSecretKey))
         .end((err, res) => {
           res.should.be.an("Object");
           let { status, message } = res.body;
