@@ -248,7 +248,7 @@ describe("Share-a-meal API Tests", () => {
   describe("UC-305 Maaltijd verwijderen", () => {
     before((done) => {
       pool.query(
-        DB_CLEAR,
+        CLEAR_DB,
         TEST_USER_AT_ID_IS_1000000,
         TEST_MEAL_WITH_COOK_ID_1000000,
         (err) => {
@@ -301,7 +301,7 @@ describe("Share-a-meal API Tests", () => {
         .delete("/api/meal/1234")
         .set(
           "authorization",
-          "Bearer " + jwt.sign({ userId: 1234 }, process.env.JWTKEY)
+          "Bearer " + jwt.sign({ userId: 1000000 }, process.env.JWTKEY)
         )
         .end(function (err, res) {
           res.should.be.an("object");
