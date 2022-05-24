@@ -98,7 +98,7 @@ let controller = {
             ${meal.isToTakeHome},
             '${meal.dateTime.replace("T", " ").substring(0, 19)}',
            '${meal.imageUrl}',
-            '${meal.maxAmountOfParticipants}',
+            ${meal.maxAmountOfParticipants},
           ${meal.allergenes.join()},
           ${meal.price})`,
         function (error, results, fields) {

@@ -19,7 +19,38 @@ const CLEAR_DB =
 
 describe("Share-a-meal API Tests", () => {
   describe("UC-301 Maaltijd aanmaken", () => {
-    it("TC-301-1 Verplicht veld ontbreekt", (done) => {
+    it.only("TC 301-1: verplicht veld ontbreek", function (done) {
+      chai.request(server).post("/api/meal");
+      chai
+        .request(server)
+        .post("/api/meal")
+        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
+        .send({
+          description: "pizza met tomaat",
+          isVega: true,
+          isVegan: true,
+          isToTakeHome: true,
+          dateTime: "2022-05-24T16:00:00.000Z",
+          imageUrl:
+            "https://www.leukerecepten.nl/wp-content/uploads/2019/03/pizza_recepten-432x432.jpg",
+          allergenes: ["cheese", "gluten"],
+          maxAmountOfParticipants: 4,
+          price: 7.49,
+        })
+        .end(function (err, res) {
+          res.should.be.an("object");
+          const { status, message } = res.body;
+          status.should.equals(400);
+          message.should.be
+            .a("string")
+            .that.equals("Name must be filled in or a string");
+          done();
+        });
+    });
+    it("TC-301-2 Niet ingelogd", (done) => {
+      done();
+    });
+    it("TC-301-3 Maaltijd succesvol toegevoegd", (done) => {
       chai
         .request(server)
         .post("/api/meal")
@@ -60,12 +91,6 @@ describe("Share-a-meal API Tests", () => {
 
           done();
         });
-    });
-    it("TC-301-2 Niet ingelogd", (done) => {
-      done();
-    });
-    it("TC-301-3 Maaltijd succesvol toegevoegd", (done) => {
-      done();
     });
   });
   describe("UC-303 Lijst van maaltijden opvragen", () => {
