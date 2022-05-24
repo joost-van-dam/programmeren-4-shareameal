@@ -27,19 +27,30 @@ const TEST_MEAL_WITH_COOK_ID_1000000 =
 describe("Share-a-meal API Tests", () => {
   describe("UC-301 Maaltijd aanmaken", () => {
     before((done) => {
-      console.log("BEFORE VAN MEALS AANGEROEPEN!");
-      pool.query(CLEAR_DB + TEST_USER_AT_ID_IS_1000000, (err) => {
+      pool.getConnection(function (err, connection) {
         if (err) throw err;
-        // done();
+        connection.query(CLEAR_DB, function (error, result, field) {
+          if (error) throw error;
+          connection.query(
+            TEST_USER_AT_ID_IS_1000000,
+            function (error, result, field) {
+              if (error) throw error;
+
+              connection.query(
+                TEST_MEAL_WITH_COOK_ID_1000000,
+                function (error, result, field) {
+                  if (error) throw error;
+
+                  connection.release();
+                  done();
+                }
+              );
+            }
+            //   );
+            // }
+          );
+        });
       });
-
-      //   pool.query("SELECT * FROM user", (err, result) => {
-      //     if (err) throw err;2
-
-      //     console.log(result);
-
-      done();
-      //   });
     });
 
     it.only("TC 301-1: verplicht veld ontbreek", (done) => {
@@ -348,20 +359,20 @@ describe("Share-a-meal API Tests", () => {
         });
     });
     it.only("TC-305-5 Maaltijd succesvol verwijderd", (done) => {
-      //   chai
-      //     .request(server)
-      //     .delete("/api/meal/100")
-      //     .set(
-      //       "authorization",
-      //       "Bearer " + jwt.sign({ userId: 1000000 }, jwtSecretKey)
-      //     )
-      //     .end(function (err, res) {
-      //       res.should.be.an("object");
-      //       const { status, message } = res.body;
-      //       status.should.equals(200);
-      //       message.should.be.a("string").that.equals("Deleted");
-      done();
-      //   });
+      chai
+        .request(server)
+        .delete("/api/meal/100")
+        .set(
+          "authorization",
+          "Bearer " + jwt.sign({ userId: 1000000 }, jwtSecretKey)
+        )
+        .end(function (err, res) {
+          res.should.be.an("object");
+          const { status, message } = res.body;
+          status.should.equals(200);
+          message.should.be.a("string").that.equals("Deleted");
+          done();
+        });
     });
   });
 });
