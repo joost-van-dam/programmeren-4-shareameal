@@ -1,5 +1,6 @@
 const assert = require("assert");
 const { all } = require("express/lib/application");
+const { acceptsCharsets } = require("express/lib/request");
 const pool = require("../../databaseconnectie/dbtest");
 
 let controller = {
@@ -16,10 +17,6 @@ let controller = {
         typeof meal.description == "string",
         "Description must be filled in or a string"
       );
-      assert(
-        typeof meal.isActive == "boolean",
-        "Is active should be a boolean"
-      );
       assert(typeof meal.isVega == "boolean", "Is vega should be a boolean");
       assert(typeof meal.isVegan == "boolean", "Is vegan should be a boolean");
       assert(
@@ -33,6 +30,7 @@ let controller = {
         typeof meal.maxAmountOfParticipants == "number",
         "Maximum amount of participants should be a number"
       );
+      assert(typeof meal.price == "number", "Price should be a number");
 
       next();
     } catch (err) {
@@ -48,8 +46,11 @@ let controller = {
   // UC-201 Registreren als nieuwe gebruiker
   addMeal: (req, res) => {
     console.log("Add meal aangeroepen");
-    let meal = req.body;
+    const meal = req.body;
     console.log("Add meal #1");
+
+    // Valideren dat een user ID is meegegeven
+    const userId = req.userId;
 
     pool.getConnection(function (err, connection) {
       console.log("Add meal #2");
@@ -88,7 +89,7 @@ let controller = {
             isToTakeHome,
             dateTime,
             imageUrl,
-            maxAmountOfParticipants) VALUES ('${meal.name}' ,'${meal.description}' ,'${meal.isVega}' ,'${meal.isVegan}' ,'${meal.isToTakeHome}', '${meal.dateTime}', '${meal.imageUrl}', '${meal.maxAmountOfParticipants}')`,
+            maxAmountOfParticipants, allergenes, price) VALUES ('${meal.name}' ,'${meal.description}' ,'${meal.isVega}' ,'${meal.isVegan}' ,'${meal.isToTakeHome}', '${meal.dateTime}', '${meal.imageUrl}', '${meal.maxAmountOfParticipants}', '${meal.allergenes}', '${meal.price}')`,
         function (error, results, fields) {
           connection.release();
           // if (error) throw error;
@@ -106,8 +107,10 @@ let controller = {
                 message: "Gebruiker bestaat al",
               });
             } else {
+              console.log("Dit gaat fout!" + error.message);
               return res.status(400).json({
                 status: 400,
+                message: error.message,
               });
             }
           } else {

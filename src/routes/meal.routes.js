@@ -11,7 +11,12 @@ router.get("/", (req, res) => {
 });
 
 // UC-201 Register as a new meal
-router.post("/api/meal", mealController.validateMeal, mealController.addMeal);
+router.post(
+  "/api/meal",
+  authController.validateToken,
+  mealController.validateMeal,
+  mealController.addMeal
+);
 // router.post("/api/meal", mealController.addMeal);
 
 // UC-202 Get all meals
