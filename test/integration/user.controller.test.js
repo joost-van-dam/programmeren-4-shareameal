@@ -477,39 +477,38 @@ describe("Share-a-meal API Tests", () => {
     });
 
     it.only("TC-204-3 Gebruiker-ID bestaat", (done) => {
-      // pool.getConnection(function (err, connection) {
-      //   if (err) throw err;
-      //   connection.query(CLEAR_DB, function (error, result, field) {
-      //     if (error) throw error;
-      //     connection.query(
-      //       TEST_USER_AT_ID_IS_1000000,
-      //       function (error, result, field) {
-      //         if (error) throw error;
-      //         // connection.query(
-      //         //   "SELECT * FROM user",
-      //         //   function (error, result, field) {
-      //         //     if (error) throw error;
-      //         //     console.log(result);
-      //         connection.release();
-      //         //   }
-      //         // );
-      //       }
-      //     );
-      //   });
-      // });
+      pool.getConnection(function (err, connection) {
+        if (err) throw err;
+        connection.query(CLEAR_DB, function (error, result, field) {
+          if (error) throw error;
+          connection.query(
+            TEST_USER_AT_ID_IS_1000000,
+            function (error, result, field) {
+              if (error) throw error;
+              // connection.query(
+              //   "SELECT * FROM user",
+              //   function (error, result, field) {
+              //     if (error) throw error;
+              //     console.log(result);
+              connection.release();
+              //   }
+              // );
+            }
+          );
+        });
+      });
 
-      // chai
-      //   .request(server)
-      //   .get("/api/user/1000000")
-      //   .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
-      //   .end((err, res) => {
-      //     res.should.be.an("Object");
-      //     let { status, result } = res.body;
-      //     status.should.equals(200);
-      //     result.should.be.an("Object").that.deep.equals(result);
-      done();
-      // });
-      // });
+      chai
+        .request(server)
+        .get("/api/user/1000000")
+        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
+        .end((err, res) => {
+          res.should.be.an("Object");
+          let { status, result } = res.body;
+          status.should.equals(200);
+          result.should.be.an("Object").that.deep.equals(result);
+          done();
+        });
     });
   });
 
