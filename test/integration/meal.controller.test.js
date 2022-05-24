@@ -321,20 +321,16 @@ describe("Share-a-meal API Tests", () => {
       //     });
     });
 
-    it.skip("TC-305-3 Niet de eigenaar van de data", (done) => {
+    it.only("TC-305-3 Niet de eigenaar van de data", (done) => {
       chai
         .request(server)
-        .delete("/api/meal/1")
+        .delete("/api/meal/100")
         .set("authorization", "Bearer " + jwt.sign({ userId: 0 }, jwtSecretKey))
         .end(function (err, res) {
           res.should.be.an("object");
           const { status, message } = res.body;
           status.should.equals(403);
-          message.should.be
-            .a("string")
-            .that.equals(
-              "JOOST PLAK HIER DE MESSAGE ALS JE EEN MEAL PROBEERT TE VERWIJDEREN WAARBIJ COOKID != REQ.USERID!"
-            );
+          message.should.be.a("string").that.equals("This meal is not yours");
           done();
         });
     });
