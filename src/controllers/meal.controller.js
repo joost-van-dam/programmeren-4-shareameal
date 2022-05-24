@@ -43,12 +43,12 @@ let controller = {
     }
   },
 
-  // UC-201 Registreren als nieuwe gebruiker
+  // UC-301 Nieuwe meal registeren
   addMeal: (req, res) => {
     const meal = req.body;
 
     // Valideren dat een user ID is meegegeven
-    if (!userId) {
+    if (!req.userId) {
       res.status(401).json({
         status: 401,
         message: "Not authorized! (user ID missing from payload).",

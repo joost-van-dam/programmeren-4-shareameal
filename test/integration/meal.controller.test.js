@@ -48,7 +48,31 @@ describe("Share-a-meal API Tests", () => {
     });
 
     it("TC-301-2 Niet ingelogd", (done) => {
-      done();
+      chai
+        .request(server)
+        .post("/api/meal")
+        .send({
+          name: "pizza",
+          description: "pizza met tomaat",
+          isVega: true,
+          isVegan: true,
+          isToTakeHome: true,
+          dateTime: "2022-05-24T16:00:00.000Z",
+          imageUrl:
+            "https://www.leukerecepten.nl/wp-content/uploads/2019/03/pizza_recepten-432x432.jpg",
+          allergenes: ["gluten", "lactose"],
+          maxAmountOfParticipants: 4,
+          price: 7.49,
+        })
+        .end((err, res) => {
+          res.should.be.an("Object");
+          const { status, message } = res.body;
+          status.should.equals(401);
+          message.should.be
+            .a("string")
+            .that.equals("Authorization header missing!");
+          done();
+        });
     });
 
     it("TC-301-3 Maaltijd succesvol toegevoegd", (done) => {
