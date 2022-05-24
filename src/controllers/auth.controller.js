@@ -14,7 +14,7 @@ let controller = {
       if (err) {
         logger.error("Error getting connection from database-pool-connection");
         res.status(500).json({
-          error: err.toString(),
+          error: err.messages,
           datetime: new Date().toISOString(),
         });
       }
@@ -28,9 +28,9 @@ let controller = {
           (err, rows, fields) => {
             connection.release();
             if (err) {
-              logger.error("Error: ", err.toString());
+              logger.error("Error on login: ", err.message);
               res.status(500).json({
-                error: err.toString(),
+                error: err.message,
                 datetime: new Date().toISOString(),
               });
             }

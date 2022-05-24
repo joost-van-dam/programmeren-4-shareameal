@@ -18,14 +18,26 @@ const CLEAR_PARTICIPANTS_TABLE = "DELETE IGNORE FROM `meal_participants_user`;";
 const CLEAR_USERS_TABLE = "DELETE IGNORE FROM `user`;";
 const CLEAR_DB =
   CLEAR_MEAL_TABLE + CLEAR_PARTICIPANTS_TABLE + CLEAR_USERS_TABLE;
+const TEST_USER_AT_ID_IS_1000000 =
+  "INSERT INTO user (id, firstName, lastName, isActive, emailAdress, password, street, city) VALUES (1000000, 'Joost' ,'van Dam' ,1 ,'joost.vandam@avans.nl' ,'wachtwoord12DSF3@$##' ,'Lovensdijkstraat', 'Breda')";
 
 describe("Share-a-meal API Tests", () => {
   describe("UC-301 Maaltijd aanmaken", () => {
+    before((done) => {
+      pool.query(CLEAR_DB + TEST_USER_AT_ID_IS_1000000, (err) => {
+        if (err) throw err;
+        done();
+      });
+    });
+
     it("TC 301-1: verplicht veld ontbreek", (done) => {
       chai
         .request(server)
         .post("/api/meal")
-        .set("authorization", "Bearer " + jwt.sign({ userId: 1 }, jwtSecretKey))
+        .set(
+          "authorization",
+          "Bearer " + jwt.sign({ userId: 1000000 }, jwtSecretKey)
+        )
         .send({
           description: "pizza met tomaat",
           isVega: true,
@@ -81,7 +93,10 @@ describe("Share-a-meal API Tests", () => {
       chai
         .request(server)
         .post("/api/meal")
-        .set("authorization", "Bearer " + jwt.sign({ userId: 1 }, jwtSecretKey))
+        .set(
+          "authorization",
+          "Bearer " + jwt.sign({ userId: 1000000 }, jwtSecretKey)
+        )
         .send({
           name: "pizza",
           description: "pizza met tomaat",
@@ -118,6 +133,12 @@ describe("Share-a-meal API Tests", () => {
     });
   });
   describe("UC-303 Lijst van maaltijden opvragen", () => {
+    before(function (done) {
+      pool.query(CLEAR_DB, (err) => {
+        if (err) throw err;
+        done();
+      });
+    });
     it("TC-303-1 Lijst van maaltijden geretourneerd", (done) => {
       done();
     });
