@@ -99,7 +99,7 @@ let controller = {
             '${meal.dateTime.replace("T", " ").substring(0, 19)}',
            '${meal.imageUrl}',
             '${meal.maxAmountOfParticipants}',
-          '${meal.allergenes.join()}',
+          ${meal.allergenes.join()},
           ${meal.price})`,
         function (error, results, fields) {
           connection.release();
