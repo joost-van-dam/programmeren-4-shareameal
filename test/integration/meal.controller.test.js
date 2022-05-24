@@ -23,7 +23,7 @@ describe("Share-a-meal API Tests", () => {
       chai
         .request(server)
         .post("/api/meal")
-        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
+        .set("authorization", "Bearer " + jwt.sign({ userId: 1 }, jwtSecretKey))
         .send({
           description: "pizza met tomaat",
           isVega: true,
@@ -79,7 +79,7 @@ describe("Share-a-meal API Tests", () => {
       chai
         .request(server)
         .post("/api/meal")
-        .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
+        .set("authorization", "Bearer " + jwt.sign({ userId: 1 }, jwtSecretKey))
         .send({
           name: "pizza",
           description: "pizza met tomaat",
