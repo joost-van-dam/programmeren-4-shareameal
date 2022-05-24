@@ -350,6 +350,7 @@ describe("Share-a-meal API Tests", () => {
       pool.getConnection(function (err, connection) {
         connection.query(TEST_USERS, function (error, result, field) {
           if (error) throw error;
+          connection.release();
         });
       });
 
