@@ -206,14 +206,7 @@ let controller = {
   },
 
   deleteMealById: (req, res) => {
-    // try {
     const deletesinglemealbyid = req.params.id;
-    // } catch (error) {
-    //   console.log(error);
-    // }
-
-    // const deletesinglemealbyid = req.params.id;
-    // console.log(`meal met ID ${deletesinglemealbyid} verwijderd`);
 
     pool.getConnection(function (err, connection) {
       if (err) {
@@ -224,73 +217,38 @@ let controller = {
       }
 
       connection.query(
-        "DELETE FROM meal WHERE id = " + deletesinglemealbyid,
-        function (error, results, fields) {
+        "SELECT cookId FROM meal WHERE id = " + deletesinglemealbyid,
+        function (error, results) {
+          if (error) throw error;
           connection.release();
-          // if (error) throw error;
-          if (error) {
-            if (error.errno == 1054) {
-              console.log("NUMMER 1054 ERROR LET OP DEZE: " + error);
-              return res.status(400).json({
-                status: 400,
-              });
-            }
 
-            let errorMessage = error.message;
-
-            if (error.errno == 1451) {
-              errorMessage = `Foreignkey error delete failed!`;
-            }
-
-            return res.status(400).json({
-              status: 400,
-              error: errorMessage,
+          if (results.length === 0) {
+            res.status(404).json({
+              status: 404,
+              message: "meal does not exist",
             });
-          }
-
-          // if (results.length === 0) {
-          //   return res.status(400).json({
-          //     status: 400,
-          //     message: "meal does not exist",
-          //   });
-          // }
-
-          if (results) {
-            // if (results.length === 0) {
-            //   return res.status(400).json({
-            //     status: 400,
-            //     message: "meal does not exist",
-            //   });
-            // }
-
-            if (results.affectedRows === 0) {
-              return res.status(400).json({
-                status: 400,
-                message: "meal does not exist",
-              });
-            }
-
-            return res.status(200).json({
-              status: 200,
-              message: "Deleted",
+          } else if (results[0].cookId != req.userId) {
+            res.status(403).json({
+              status: 403,
+              message: "This meal is not yours",
             });
           } else {
-            return res.status(400).json({
-              status: 400,
-            });
-          }
+            connection.query(
+              "DELETE FROM meal WHERE id = " + deletesinglemealbyid,
+              function (error, results, fields) {
+                connection.release();
 
-          // if (results.affectedRows === 0) {
-          //   res.status(400).json({
-          //     status: 400,
-          //     message: "Gebruiker bestaat niet.",
-          //   });
-          // } else {
-          //   res.status(200).json({
-          //     status: 200,
-          //     message: "Gebruiker verwijderd.",
-          //   });
-          // }
+                if (error && error.errno == 1451) {
+                  errorMessage = `Foreignkey error delete failed!`;
+                } else {
+                  res.status(200).json({
+                    status: 200,
+                    message: "Deleted",
+                  });
+                }
+              }
+            );
+          }
         }
       );
     });
