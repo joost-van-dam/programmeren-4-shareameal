@@ -233,7 +233,6 @@ describe("Share-a-meal API Tests", () => {
             isVega: true,
             isVegan: true,
             isToTakeHome: true,
-            dateTime: "2022-05-24T14:00:00.000Z",
             imageUrl:
               "https://images.ctfassets.net/brcxfsm84vq2/7eBkjOINljB22V9Tx2qSno/5a05656241fe2083dbd1cf20668cd862/appeltaart_met_extra_veel_deeg?w=600&fm=webp",
             maxAmountOfParticipants: 8,
