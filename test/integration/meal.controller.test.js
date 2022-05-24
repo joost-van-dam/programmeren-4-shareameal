@@ -47,9 +47,11 @@ describe("Share-a-meal API Tests", () => {
           done();
         });
     });
+
     it("TC-301-2 Niet ingelogd", (done) => {
       done();
     });
+
     it("TC-301-3 Maaltijd succesvol toegevoegd", (done) => {
       chai
         .request(server)
