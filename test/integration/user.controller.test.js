@@ -477,26 +477,28 @@ describe("Share-a-meal API Tests", () => {
     });
 
     it("TC-204-3 Gebruiker-ID bestaat", (done) => {
-      // pool.getConnection(function (err, connection) {
-      //   if (err) throw err;
-      //   connection.query(CLEAR_DB, function (error, result, field) {
-      //     if (error) throw error;
-      //     connection.query(
-      //       TEST_USER_AT_ID_IS_1000000,
-      //       function (error, result, field) {
-      //         if (error) throw error;
-      //         // connection.query(
-      //         //   "SELECT * FROM user",
-      //         //   function (error, result, field) {
-      //         //     if (error) throw error;
-      //         //     console.log(result);
-      //         connection.release();
-      //         //   }
-      //         // );
-      //       }
-      //     );
-      //   });
-      // });
+      pool.getConnection(function (err, connection) {
+        if (err) throw err;
+        connection.query(CLEAR_DB, function (error, result, field) {
+          if (error) throw error;
+          connection.query(
+            TEST_USER_AT_ID_IS_1000000,
+            function (error, result, field) {
+              if (error) throw error;
+              connection.query(
+                "SELECT * FROM user",
+                function (error, result, field) {
+                  if (error) throw error;
+                  console.log(
+                    "TC-204-3 HEEFT EEN DATATBASE MET!!!!: " + result
+                  );
+                  connection.release();
+                }
+              );
+            }
+          );
+        });
+      });
 
       // chai
       //   .request(server)
