@@ -145,14 +145,21 @@ let controller = {
   },
 
   getAllMeals: (req, res) => {
-    pool.query("SELECT * FROM `meal`", function (error, results) {
-      if (error) throw error;
+    pool.getConnection(function (err, connection) {
+      if (err) throw err; // not connected!
 
-      logic.mealConverter(results);
-      res.status(200).json({
-        status: 200,
-        results: results,
-      });
+      connection.query(
+        "SELECT * FROM `meal`",
+        function (error, results, fields) {
+          connection.release();
+          if (error) throw error;
+
+          res.status(200).json({
+            status: 200,
+            results: results,
+          });
+        }
+      );
     });
   },
 
@@ -169,9 +176,9 @@ let controller = {
           connection.release();
           // if (error) throw error;
 
-          if (!results) {
-            // console.log("DE ERROR IS: " + error);
-          }
+          // if (!results) {
+          //   // console.log("DE ERROR IS: " + error);
+          // }
 
           if (results) {
             if (results.length === 0) {
@@ -187,8 +194,10 @@ let controller = {
               result: results[0],
             });
           } else {
+            console.log("Check-point 3");
             return res.status(400).json({
               status: 400,
+              message: "Ik weet niet hoe ik hier kom",
             });
           }
         }

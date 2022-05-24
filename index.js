@@ -23,6 +23,7 @@ app.use(mealRoutes);
 // jwt.sign;
 
 app.all("*", (req, res) => {
+  console.log("Let op index.js fout handler");
   res.status(400).json({
     status: 400,
     result: "End-point not found",

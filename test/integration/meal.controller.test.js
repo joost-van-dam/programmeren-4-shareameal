@@ -172,11 +172,11 @@ describe("Share-a-meal API Tests", () => {
                 function (error, result, field) {
                   if (error) throw error;
 
-                  pool.query("SELECT * FROM meal", (err, result) => {
-                    if (err) throw err;
+                  //   pool.query("SELECT * FROM meal", (err, result) => {
+                  //     if (err) throw err;
 
-                    console.log(result);
-                  });
+                  //     console.log(result);
+                  //   });
 
                   connection.release();
                   done();
@@ -343,6 +343,7 @@ describe("Share-a-meal API Tests", () => {
     //   });
     it.skip("TC-305-4 Maaltijd bestaat niet", (done) => {
       //   Meal with ID 1234 does not exist
+      console.log("hier zijn we");
       chai
         .request(server)
         .delete("/api/meal/1234")
@@ -351,6 +352,7 @@ describe("Share-a-meal API Tests", () => {
           "Bearer " + jwt.sign({ userId: 1000000 }, jwtSecretKey)
         )
         .end(function (err, res) {
+          console.log("check-point 2");
           res.should.be.an("object");
           const { status, message } = res.body;
           status.should.equals(404);
