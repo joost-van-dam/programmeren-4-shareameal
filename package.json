@@ -22,7 +22,6 @@
     "express": "^4.17.3",
     "heroku": "^7.60.2",
     "jsonwebtoken": "^8.5.1",
-    "mysql": "^2.18.1",
     "mysql2": "^2.3.3",
     "tracer": "^1.1.5"
   }

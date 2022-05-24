@@ -21,13 +21,25 @@ const CLEAR_DB =
 const TEST_USER_AT_ID_IS_1000000 =
   "INSERT INTO user (id, firstName, lastName, isActive, emailAdress, password, street, city) VALUES (1000000, 'Joost' ,'van Dam' ,1 ,'joost.vandam@avans.nl' ,'wachtwoord12DSF3@$##' ,'Lovensdijkstraat', 'Breda')";
 
+const TEST_MEAL_WITH_COOK_ID_1000000 =
+  "INSERT INTO meal (id ,name, description, isVega, isVegan, isToTakeHome, dateTime, imageUrl, maxAmountOfParticipants, allergenes, price, cookId) VALUES (100, 'appeltaart', 'appeltaart met kaneel', true, true, true, '2022-05-24 16:00:00', 'https://images.ctfassets.net/brcxfsm84vq2/7eBkjOINljB22V9Tx2qSno/5a05656241fe2083dbd1cf20668cd862/appeltaart_met_extra_veel_deeg?w=600&fm=webp', 8, '{melk, gluten}', 3.99, 1000000)";
+
 describe("Share-a-meal API Tests", () => {
   describe("UC-301 Maaltijd aanmaken", () => {
     before((done) => {
+      console.log("BEFORE VAN MEALS AANGEROEPEN!");
       pool.query(CLEAR_DB + TEST_USER_AT_ID_IS_1000000, (err) => {
         if (err) throw err;
-        done();
+        // done();
       });
+
+      //   pool.query("SELECT * FROM user", (err, result) => {
+      //     if (err) throw err;2
+
+      //     console.log(result);
+
+      done();
+      //   });
     });
 
     it("TC 301-1: verplicht veld ontbreek", (done) => {
@@ -114,6 +126,7 @@ describe("Share-a-meal API Tests", () => {
           res.should.be.an("Object");
           const { status, result } = res.body;
           status.should.equals(201);
+          //   expect(result).to.have.key("id");
           result.name.should.be.a("string").that.equals("pizza");
           result.description.should.be
             .a("string")
@@ -126,7 +139,7 @@ describe("Share-a-meal API Tests", () => {
             .that.equals(
               "https://www.leukerecepten.nl/wp-content/uploads/2019/03/pizza_recepten-432x432.jpg"
             );
-          result.allergenes.should.be.an("array").that.length(2);
+          //   result.allergenes.should.be.an("array").that.length(2);
           result.price.should.be.a("number").that.equals(7.49);
           done();
         });
@@ -134,21 +147,102 @@ describe("Share-a-meal API Tests", () => {
   });
   describe("UC-303 Lijst van maaltijden opvragen", () => {
     before(function (done) {
-      pool.query(CLEAR_DB, (err) => {
+      //   pool.query(CLEAR_DB, (err) => {
+      //     if (err) throw err;
+      //     done();
+      //   });
+
+      pool.getConnection(function (err, connection) {
         if (err) throw err;
-        done();
+        connection.query(CLEAR_DB, function (error, result, field) {
+          if (error) throw error;
+          connection.query(
+            TEST_USER_AT_ID_IS_1000000,
+            function (error, result, field) {
+              if (error) throw error;
+              connection.query(
+                TEST_MEAL_WITH_COOK_ID_1000000,
+                function (error, result, field) {
+                  if (error) throw error;
+
+                  pool.query("SELECT * FROM meal", (err, result) => {
+                    if (err) throw err;
+
+                    console.log(result);
+                  });
+
+                  connection.release();
+                  done();
+                }
+              );
+            }
+          );
+        });
       });
     });
     it("TC-303-1 Lijst van maaltijden geretourneerd", (done) => {
-      done();
+      chai
+        .request(server)
+        .get("/api/meal")
+        .set(
+          "authorization",
+          "Bearer " + jwt.sign({ userId: 1000000 }, jwtSecretKey)
+        )
+        .end((err, res) => {
+          res.should.be.an("Object");
+          let { status, results } = res.body;
+          status.should.equals(200);
+          results.should.be.an("array").that.has.length(1);
+          done();
+        });
     });
   });
   describe("UC-304 Details van een maaltijd opvragen", () => {
     it("TC-304-1 Maaltijd bestaat niet", (done) => {
-      done();
+      chai
+        .request(server)
+        .get("/api/meal/999999")
+        .set(
+          "authorization",
+          "Bearer " + jwt.sign({ userId: 1000000 }, jwtSecretKey)
+        )
+        .end((err, res) => {
+          res.should.be.an("Object");
+          let { status, message } = res.body;
+          status.should.equals(404);
+          message.should.be.a("string").that.equals("meal does not exist");
+          done();
+        });
     });
     it("TC-304-2 Details van maaltijd geretourneerd", (done) => {
-      done();
+      chai
+        .request(server)
+        .get("/api/meal/100")
+        .set(
+          "authorization",
+          "Bearer " + jwt.sign({ userId: 1000000 }, jwtSecretKey)
+        )
+        .end((err, res) => {
+          res.should.be.an("Object");
+          let { status, result } = res.body;
+          status.should.equals(200);
+          result.should.be.a("Object").that.contains({
+            id: 100,
+            name: "appeltaart",
+            description: "appeltaart met kaneel",
+            isVega: true,
+            isVegan: true,
+            isToTakeHome: true,
+            dateTime: "2022-05-24T14:00:00.000Z",
+            imageUrl:
+              "https://images.ctfassets.net/brcxfsm84vq2/7eBkjOINljB22V9Tx2qSno/5a05656241fe2083dbd1cf20668cd862/appeltaart_met_extra_veel_deeg?w=600&fm=webp",
+            maxAmountOfParticipants: 8,
+            price: 3.99,
+            cookId: 1000000,
+          });
+
+          done();
+        });
     });
   });
   describe("UC-305 Maaltijd verwijderen", () => {

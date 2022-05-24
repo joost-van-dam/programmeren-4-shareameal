@@ -669,10 +669,9 @@ describe("Share-a-meal API Tests", () => {
         })
         .set("authorization", "Bearer " + jwt.sign({ userId: 1 }, jwtSecretKey))
         .end((err, res) => {
-          res.should.be.an("Object");
           let { status, result } = res.body;
           status.should.equals(200);
-          result.should.be.a("object").that.contains({
+          result.should.be.a("Object").that.contains({
             id: result.id,
             firstName: "Joost",
             lastName: "Doe",

@@ -3,6 +3,19 @@ const { all } = require("express/lib/application");
 const { acceptsCharsets } = require("express/lib/request");
 const pool = require("../../databaseconnectie/dbtest");
 
+let logic = {
+  mealConverter: (meals) => {
+    for (let i = 0; i < meals.length; i++) {
+      meals[i].allergenes = meals[i].allergenes.split(",");
+      meals[i].price = parseFloat(meals[i].price);
+      meals[i].isToTakeHome = meals[i].isToTakeHome == 1 ? true : false;
+      meals[i].isActive = meals[i].isActive == 1 ? true : false;
+      meals[i].isVega = meals[i].isVega == 1 ? true : false;
+      meals[i].isVegan = meals[i].isVegan == 1 ? true : false;
+    }
+  },
+};
+
 let controller = {
   validateMeal: (req, res, next) => {
     console.log("valide meal function called");
@@ -55,20 +68,28 @@ let controller = {
       });
     }
     meal.cookId = req.userId;
+    meal.allergenes = meal.allergenes.join();
 
     pool.getConnection(function (err, connection) {
       console.log("Add meal #2");
       if (err) throw err;
 
+      console.log(
+        "OKE LEES DIT!!!: " + meal.name,
+        meal.description,
+        meal.isVega,
+        meal.isVegan,
+        meal.isToTakeHome,
+        meal.dateTime.replace("T", " ").substring(0, 19),
+        meal.imageUrl,
+        meal.maxAmountOfParticipants,
+        meal.allergenes,
+        meal.price,
+        meal.cookId
+      );
+
       connection.query(
-        `INSERT INTO meal (name,
-            description,
-            isVega,
-            isVegan,
-            isToTakeHome,
-            dateTime,
-            imageUrl,
-            maxAmountOfParticipants, allergenes, price, cookId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+        "INSERT INTO meal (name, description, isVega, isVegan, isToTakeHome, dateTime, imageUrl, maxAmountOfParticipants, allergenes, price, cookId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
         [
           meal.name,
           meal.description,
@@ -78,7 +99,7 @@ let controller = {
           meal.dateTime.replace("T", " ").substring(0, 19),
           meal.imageUrl,
           meal.maxAmountOfParticipants,
-          meal.allergenes.join(),
+          meal.allergenes,
           meal.price,
           meal.cookId,
         ],
@@ -124,63 +145,14 @@ let controller = {
   },
 
   getAllMeals: (req, res) => {
-    const queryParams = req.query;
+    pool.query("SELECT * FROM `meal`", function (error, results) {
+      if (error) throw error;
 
-    // let { firstName, isActive } = req.query;
-    let queryString = "SELECT * FROM `meal`";
-    // if (firstName || isActive) {
-    //   queryString += " WHERE ";
-    //   if (firstName) {
-    //     queryString += "`firstName` LIKE ?";
-    //     firstName = "%" + firstName + "%";
-    //   }
-    //   if (firstName && isActive) queryString += " AND ";
-    //   if (isActive) {
-    //     queryString += "`isActive` = ?";
-    //   }
-    // }
-    // queryString += ";";
-
-    pool.getConnection(function (err, connection) {
-      if (err) throw err; // not connected!
-
-      connection.query(
-        "SELECT * FROM `meal`",
-        function (error, results, fields) {
-          connection.release();
-          if (error) throw error;
-
-          // console.log("results = ", results);
-
-          res.status(200).json({
-            status: 200,
-            results: results,
-          });
-        }
-      );
-    });
-  },
-
-  getMealProfile: (req, res) => {
-    const getprofilebyid = req.mealId;
-    // console.log("De getprofilebyid = " + getprofilebyid);
-    pool.getConnection(function (err, connection) {
-      if (err) throw err; // not connected!
-
-      connection.query(
-        `SELECT * FROM meal WHERE id = ${getprofilebyid}`,
-        function (error, results, fields) {
-          connection.release();
-          if (error) throw error;
-
-          // console.log("results = ", results);
-
-          res.status(200).json({
-            status: 200,
-            results: results,
-          });
-        }
-      );
+      logic.mealConverter(results);
+      res.status(200).json({
+        status: 200,
+        results: results,
+      });
     });
   },
 
@@ -209,6 +181,7 @@ let controller = {
               });
             }
 
+            logic.mealConverter(results);
             return res.status(200).json({
               status: 200,
               result: results[0],
@@ -278,6 +251,7 @@ let controller = {
                 // if (error) throw error;
 
                 if (results) {
+                  logic.mealConverter(results);
                   res.status(200).json({
                     status: 200,
                     result: results[0],
