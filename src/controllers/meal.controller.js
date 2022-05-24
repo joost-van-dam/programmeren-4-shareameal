@@ -89,7 +89,15 @@ let controller = {
             isToTakeHome,
             dateTime,
             imageUrl,
-            maxAmountOfParticipants, allergenes, price) VALUES ('${meal.name}' ,'${meal.description}' ,${meal.isVega} ,${meal.isVegan} ,${meal.isToTakeHome}, '${meal.dateTime}', '${meal.imageUrl}', '${meal.maxAmountOfParticipants}', '${meal.allergenes}', '${meal.price}')`,
+            maxAmountOfParticipants, allergenes, price) VALUES ('${
+              meal.name
+            }' ,'${meal.description}' ,${meal.isVega} ,${meal.isVegan} ,${
+          meal.isToTakeHome
+        }, '${meal.dateTime.replace("T", " ").substring(0, 19)}', '${
+          meal.imageUrl
+        }', '${meal.maxAmountOfParticipants}', '${meal.allergenes}', '${
+          meal.price
+        }')`,
         function (error, results, fields) {
           connection.release();
           // if (error) throw error;
