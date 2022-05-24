@@ -145,13 +145,9 @@ describe("Share-a-meal API Tests", () => {
         });
     });
   });
+
   describe("UC-303 Lijst van maaltijden opvragen", () => {
     before(function (done) {
-      //   pool.query(CLEAR_DB, (err) => {
-      //     if (err) throw err;
-      //     done();
-      //   });
-
       pool.getConnection(function (err, connection) {
         if (err) throw err;
         connection.query(CLEAR_DB, function (error, result, field) {
@@ -180,6 +176,7 @@ describe("Share-a-meal API Tests", () => {
         });
       });
     });
+
     it.only("TC-303-1 Lijst van maaltijden geretourneerd", (done) => {
       chai
         .request(server)
@@ -197,6 +194,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
   });
+
   describe("UC-304 Details van een maaltijd opvragen", () => {
     it.only("TC-304-1 Maaltijd bestaat niet", (done) => {
       chai
@@ -247,16 +245,6 @@ describe("Share-a-meal API Tests", () => {
 
   describe("UC-305 Maaltijd verwijderen", () => {
     before((done) => {
-      //   pool.query(
-      //     CLEAR_DB,
-      //     TEST_USER_AT_ID_IS_1000000,
-      //     TEST_MEAL_WITH_COOK_ID_1000000,
-      //     (err) => {
-      //       if (err) throw err;
-      //       done();
-      //     }
-      //   );
-
       pool.getConnection(function (err, connection) {
         if (err) throw err;
         connection.query(CLEAR_DB, function (error, result, field) {
@@ -271,26 +259,10 @@ describe("Share-a-meal API Tests", () => {
                 function (error, result, field) {
                   if (error) throw error;
 
-                  //   connection.query(
-                  //     "SELECT * FROM meal",
-                  //     function (error, result, field) {
-                  //       if (error) throw error;
-                  //       console.log(result);
-                  //     }
-                  //   );
-
                   connection.release();
                   done();
                 }
               );
-
-              // connection.query(
-              //   "SELECT * FROM user",
-              //   function (error, result, field) {
-              //     if (error) throw error;
-              //     console.log(result);
-              //   connection.release();
-              //   done();
             }
             //   );
             // }
@@ -298,6 +270,8 @@ describe("Share-a-meal API Tests", () => {
         });
       });
     });
+
+    //   });
     it.only("TC-305-2 Niet ingelogd", (done) => {
       chai
         .request(server)
@@ -312,30 +286,51 @@ describe("Share-a-meal API Tests", () => {
             .that.equals("Authorization header missing!");
           done();
         });
+      //   });
+
+      // it.skip("TC-305-3 Niet de eigenaar van de data", (done) => {
+      //   // Deleting meal with ID 100 that does not have cook ID 0
+      //   chai
+      //     .request(server)
+      //     .delete("/api/meal/1")
+      //     .set(
+      //       "authorization",
+      //       "Bearer " + jwt.sign({ userId: 0 }, jwtSecretKey)
+      //     )
+      //     .end(function (err, res) {
+      //       res.should.be.an("object");
+      //       const { status, message } = res.body;
+      //       status.should.equals(403);
+      //       message.should.be
+      //         .a("string")
+      //         .that.equals(
+      //           "JOOST PLAK HIER DE MESSAGE ALS JE EEN MEAL PROBEERT TE VERWIJDEREN WAARBIJ COOKID != REQ.USERID!"
+      //         );
+      //       done();
+      //     });
     });
 
-    // it.skip("TC-305-3 Niet de eigenaar van de data", (done) => {
-    //   // Deleting meal with ID 100 that does not have cook ID 0
-    //   chai
-    //     .request(server)
-    //     .delete("/api/meal/1")
-    //     .set(
-    //       "authorization",
-    //       "Bearer " + jwt.sign({ userId: 0 }, process.env.JWTKEY)
-    //     )
-    //     .end(function (err, res) {
-    //       res.should.be.an("object");
-    //       const { status, message } = res.body;
-    //       status.should.equals(403);
-    //       message.should.be
-    //         .a("string")
-    //         .that.equals(
-    //           "JOOST PLAK HIER DE MESSAGE ALS JE EEN MEAL PROBEERT TE VERWIJDEREN WAARBIJ COOKID != REQ.USERID!"
-    //         );
-    //       done();
-    //     });
-    // });
-    it.only("TC-305-4 Maaltijd bestaat niet", (done) => {
+    //   it.skip("TC-305-3 Niet de eigenaar van de data", (done) => {
+    // // Deleting meal with ID 100 that does not have cook ID 0
+    // chai
+    //   .request(server)
+    //   .delete("/api/meal/1")
+    //   .set(
+    //     "authorization",
+    //     "Bearer " + jwt.sign({ userId: 0 }, jwtSecretKey)
+    //   )
+    //   .end(function (err, res) {
+    //     res.should.be.an("object");
+    //     const { status, message } = res.body;
+    //     status.should.equals(403);
+    //     message.should.be
+    //       .a("string")
+    //       .that.equals(
+    //         "JOOST PLAK HIER DE MESSAGE ALS JE EEN MEAL PROBEERT TE VERWIJDEREN WAARBIJ COOKID != REQ.USERID!"
+    //       );
+    //     done();
+    //   });
+    it.skip("TC-305-4 Maaltijd bestaat niet", (done) => {
       //   Meal with ID 1234 does not exist
       chai
         .request(server)
@@ -358,7 +353,7 @@ describe("Share-a-meal API Tests", () => {
       //     .delete("/api/meal/100")
       //     .set(
       //       "authorization",
-      //       "Bearer " + jwt.sign({ userId: 1000000 }, process.env.JWTKEY)
+      //       "Bearer " + jwt.sign({ userId: 1000000 }, jwtSecretKey)
       //     )
       //     .end(function (err, res) {
       //       res.should.be.an("object");
@@ -366,7 +361,7 @@ describe("Share-a-meal API Tests", () => {
       //       status.should.equals(200);
       //       message.should.be.a("string").that.equals("Deleted");
       done();
-      // });
+      //   });
     });
   });
 });
