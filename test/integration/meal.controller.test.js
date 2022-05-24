@@ -299,19 +299,19 @@ describe("Share-a-meal API Tests", () => {
       });
     });
     it.only("TC-305-2 Niet ingelogd", (done) => {
-      //   chai
-      //     .request(server)
-      //     .delete("/api/meal/5")
-      //     .send()
-      //     .end((err, res) => {
-      //       res.should.be.an("object");
-      //       const { status, message } = res.body;
-      //       status.should.equals(401);
-      //       message.should.be
-      //         .a("string")
-      //         .that.equals("Authorization header missing!");
-      done();
-      // });
+      chai
+        .request(server)
+        .delete("/api/meal/5")
+        .send()
+        .end((err, res) => {
+          res.should.be.an("object");
+          const { status, message } = res.body;
+          status.should.equals(401);
+          message.should.be
+            .a("string")
+            .that.equals("Authorization header missing!");
+          done();
+        });
     });
 
     // it.skip("TC-305-3 Niet de eigenaar van de data", (done) => {
@@ -336,21 +336,21 @@ describe("Share-a-meal API Tests", () => {
     //     });
     // });
     it.only("TC-305-4 Maaltijd bestaat niet", (done) => {
-      // Meal with ID 1234 does not exist
-      //   chai
-      //     .request(server)
-      //     .delete("/api/meal/1234")
-      //     .set(
-      //       "authorization",
-      //       "Bearer " + jwt.sign({ userId: 1000000 }, process.env.JWTKEY)
-      //     )
-      //     .end(function (err, res) {
-      //       res.should.be.an("object");
-      //       const { status, message } = res.body;
-      //       status.should.equals(404);
-      //       message.should.be.a("string").that.equals("meal does not exist");
-      done();
-      // });
+      //   Meal with ID 1234 does not exist
+      chai
+        .request(server)
+        .delete("/api/meal/1234")
+        .set(
+          "authorization",
+          "Bearer " + jwt.sign({ userId: 1000000 }, process.env.JWTKEY)
+        )
+        .end(function (err, res) {
+          res.should.be.an("object");
+          const { status, message } = res.body;
+          status.should.equals(404);
+          message.should.be.a("string").that.equals("meal does not exist");
+          done();
+        });
     });
     it.only("TC-305-5 Maaltijd succesvol verwijderd", (done) => {
       //   chai
