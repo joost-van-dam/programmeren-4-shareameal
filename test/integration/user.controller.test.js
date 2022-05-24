@@ -50,7 +50,7 @@ describe("Share-a-meal API Tests", () => {
       });
     });
 
-    it("TC-101-1 Verplicht veld ontbreekt", (done) => {
+    it.only("TC-101-1 Verplicht veld ontbreekt", (done) => {
       chai
         .request(server)
         .post("/api/auth/login")
@@ -68,7 +68,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-101-2 Niet-valide email adres", (done) => {
+    it.only("TC-101-2 Niet-valide email adres", (done) => {
       chai
         .request(server)
         .post("/api/auth/login")
@@ -85,7 +85,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-101-3 Niet-valide wachtwoord", (done) => {
+    it.only("TC-101-3 Niet-valide wachtwoord", (done) => {
       chai
         .request(server)
         .post("/api/auth/login")
@@ -102,7 +102,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-101-4 user does not exist", (done) => {
+    it.only("TC-101-4 user does not exist", (done) => {
       chai
         .request(server)
         .post("/api/auth/login")
@@ -121,7 +121,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-101-5 Gebruiker succesvol ingelogd", (done) => {
+    it.only("TC-101-5 Gebruiker succesvol ingelogd", (done) => {
       chai
         .request(server)
         .post("/api/auth/login")
@@ -161,7 +161,7 @@ describe("Share-a-meal API Tests", () => {
       });
     });
 
-    it("TC-201-1 Verplicht veld ontbreekt", (done) => {
+    it.only("TC-201-1 Verplicht veld ontbreekt", (done) => {
       chai
         .request(server)
         .post("/api/user")
@@ -189,7 +189,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-201-2 Niet-valide email adres", (done) => {
+    it.only("TC-201-2 Niet-valide email adres", (done) => {
       chai
         .request(server)
         .post("/api/user")
@@ -217,7 +217,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-201-3 Niet-valide wachtwoord", (done) => {
+    it.only("TC-201-3 Niet-valide wachtwoord", (done) => {
       chai
         .request(server)
         .post("/api/user")
@@ -245,7 +245,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-201-4 Gebruiker bestaat al", (done) => {
+    it.only("TC-201-4 Gebruiker bestaat al", (done) => {
       chai
         .request(server)
         .post("/api/user")
@@ -268,7 +268,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-201-5 Gebruiker succesvol geregistreerd", (done) => {
+    it.only("TC-201-5 Gebruiker succesvol geregistreerd", (done) => {
       chai
         .request(server)
         .post("/api/user")
@@ -332,7 +332,7 @@ describe("Share-a-meal API Tests", () => {
       });
     });
 
-    it("TC-202-1 Toon nul gebruikers", (done) => {
+    it.only("TC-202-1 Toon nul gebruikers", (done) => {
       chai
         .request(server)
         .get("/api/user")
@@ -346,7 +346,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-202-2 Toon twee gebruikers", (done) => {
+    it.only("TC-202-2 Toon twee gebruikers", (done) => {
       pool.getConnection(function (err, connection) {
         connection.query(TEST_USERS, function (error, result, field) {
           if (error) throw error;
@@ -367,7 +367,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-202-3 Toon gebruikers met zoekterm op niet-bestaande naam", (done) => {
+    it.only("TC-202-3 Toon gebruikers met zoekterm op niet-bestaande naam", (done) => {
       chai
         .request(server)
         .get("/api/user?firstName=USERVANANDEREPLANEET")
@@ -381,7 +381,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-202-4 Toon gebruikers met gebruik van de zoekterm op het veld isActive=false", (done) => {
+    it.only("TC-202-4 Toon gebruikers met gebruik van de zoekterm op het veld isActive=false", (done) => {
       chai
         .request(server)
         .get("/api/user?isActive=false")
@@ -395,7 +395,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-202-5 Toon gebruikers met gebruik van de zoekterm op het veld isActive=true", (done) => {
+    it.only("TC-202-5 Toon gebruikers met gebruik van de zoekterm op het veld isActive=true", (done) => {
       chai
         .request(server)
         .get("/api/user?isActive=true")
@@ -410,7 +410,7 @@ describe("Share-a-meal API Tests", () => {
     });
     // });
 
-    it("TC-202-6 Toon gebruikers met zoekterm op bestaande naam", (done) => {
+    it.only("TC-202-6 Toon gebruikers met zoekterm op bestaande naam", (done) => {
       // pool.getConnection(function (err, connection) {
       //   connection.query("SELECT * FROM user", function (error, result, field) {
       //     if (error) throw error;
@@ -435,7 +435,7 @@ describe("Share-a-meal API Tests", () => {
   });
 
   describe("UC-203 Gebruikersprofiel opvragen", () => {
-    it("TC-203-1 Ongeldig token", (done) => {
+    it.only("TC-203-1 Ongeldig token", (done) => {
       chai
         .request(server)
         .get("/api/user")
@@ -452,17 +452,17 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-203-2 Valide token en gebruiker bestaat.", (done) => {
+    it.only("TC-203-2 Valide token en gebruiker bestaat.", (done) => {
       done();
     });
   });
 
   describe("UC-204 Details van gebruiker", () => {
-    it("TC-204-1 Ongeldig token", (done) => {
+    it.only("TC-204-1 Ongeldig token", (done) => {
       done();
     });
 
-    it("TC-204-2 User does not exist", (done) => {
+    it.only("TC-204-2 User does not exist", (done) => {
       chai
         .request(server)
         .get("/api/user/0")
@@ -476,7 +476,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-204-3 Gebruiker-ID bestaat", (done) => {
+    it.only("TC-204-3 Gebruiker-ID bestaat", (done) => {
       pool.getConnection(function (err, connection) {
         if (err) throw err;
         connection.query(CLEAR_DB, function (error, result, field) {
@@ -538,7 +538,7 @@ describe("Share-a-meal API Tests", () => {
       });
     });
 
-    it("TC-205-1 Verplicht veld “emailAdress” ontbreekt", (done) => {
+    it.only("TC-205-1 Verplicht veld “emailAdress” ontbreekt", (done) => {
       chai
         .request(server)
         .put("/api/user/1000000")
@@ -567,7 +567,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-205-3 Niet-valide telefoonnummer", (done) => {
+    it.only("TC-205-3 Niet-valide telefoonnummer", (done) => {
       chai
         .request(server)
         .put("/api/user/1000000")
@@ -596,7 +596,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-205-4 Gebruiker bestaat niet", (done) => {
+    it.only("TC-205-4 Gebruiker bestaat niet", (done) => {
       chai
         .request(server)
         .put("/api/user/999999")
@@ -625,7 +625,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-205-5 Niet ingelogd", (done) => {
+    it.only("TC-205-5 Niet ingelogd", (done) => {
       chai
         .request(server)
         .put("/api/user/1000000")
@@ -655,7 +655,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-205-6 Gebruiker succesvol gewijzigd", (done) => {
+    it.only("TC-205-6 Gebruiker succesvol gewijzigd", (done) => {
       chai
         .request(server)
         .put("/api/user/1000000")
@@ -714,7 +714,7 @@ describe("Share-a-meal API Tests", () => {
       });
     });
 
-    it("TC-206-1 Gebruiker bestaat niet", (done) => {
+    it.only("TC-206-1 Gebruiker bestaat niet", (done) => {
       chai
         .request(server)
         .delete("/api/user/0")
@@ -731,7 +731,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-206-2 Niet ingelogd", (done) => {
+    it.only("TC-206-2 Niet ingelogd", (done) => {
       chai
         .request(server)
         .delete("/api/user/1000000")
@@ -747,11 +747,11 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-206-3 Actor is geen eigenaar", (done) => {
+    it.only("TC-206-3 Actor is geen eigenaar", (done) => {
       done();
     });
 
-    it("TC-206-4 Gebruiker succesvol verwijderd", (done) => {
+    it.only("TC-206-4 Gebruiker succesvol verwijderd", (done) => {
       chai
         .request(server)
         .delete("/api/user/1000000")
