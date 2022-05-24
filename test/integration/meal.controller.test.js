@@ -165,11 +165,11 @@ describe("Share-a-meal API Tests", () => {
                 function (error, result, field) {
                   if (error) throw error;
 
-                  pool.query("SELECT * FROM meal", (err, result) => {
-                    if (err) throw err;
+                  //   pool.query("SELECT * FROM meal", (err, result) => {
+                  //     if (err) throw err;
 
-                    console.log(result);
-                  });
+                  //     console.log(result);
+                  //   });
 
                   connection.release();
                   done();
