@@ -45,42 +45,20 @@ let controller = {
 
   // UC-201 Registreren als nieuwe gebruiker
   addMeal: (req, res) => {
-    console.log("Add meal aangeroepen");
     const meal = req.body;
-    console.log("KIJK HIER!!!!!!!!!!!!" + meal.allergenes);
-    console.log("Add meal #1");
 
     // Valideren dat een user ID is meegegeven
-    const userId = req.userId;
+    if (!userId) {
+      res.status(401).json({
+        status: 401,
+        message: "Not authorized! (user ID missing from payload).",
+      });
+    }
+    meal.cookId = req.userId;
 
     pool.getConnection(function (err, connection) {
       console.log("Add meal #2");
       if (err) throw err;
-
-      console.log("Add meal #3");
-
-      //   console.log(`Meal name: ${meal.name} `);
-      //   console.log(`Meal description: ${meal.description} `);
-      //   console.log(`Meal isVega: ${meal.isVega} `);
-      //   console.log(`Meal isVegan: ${meal.isVegan} `);
-      //   console.log(`Meal: ${meal.isToTakeHome} `);
-      //   console.log(`Meal: ${meal.dateTime} `);
-      //   console.log(`Meal: ${meal.imageUrl} `);
-      //   console.log(`Meal: ${meal.maxAmountOfParticipants} `);
-
-      //   console.log(
-      //     "Query: " +
-      //       `INSERT INTO meal (name,
-      //     description,
-      //     isVega,
-      //     isVegan,
-      //     isToTakeHome,
-      //     dateTime,
-      //     imageUrl,
-      //     maxAmountOfParticipants) VALUES ('${meal.name}' ,'${meal.description}' ,'${meal.isVega}' ,'${meal.isVegan}' ,'${meal.isToTakeHome}', '${meal.dateTime}', '${meal.imageUrl}', '${meal.maxAmountOfParticipants}')`
-      //   );
-
-      console.log("Add meal #5");
 
       connection.query(
         `INSERT INTO meal (name,
@@ -90,7 +68,7 @@ let controller = {
             isToTakeHome,
             dateTime,
             imageUrl,
-            maxAmountOfParticipants, allergenes, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+            maxAmountOfParticipants, allergenes, price, cookId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
         [
           meal.name,
           meal.description,
@@ -102,22 +80,16 @@ let controller = {
           meal.maxAmountOfParticipants,
           meal.allergenes.join(),
           meal.price,
+          meal.cookId,
         ],
         function (error, results, fields) {
-          connection.release();
-          // if (error) throw error;
-
-          // console.log("Add meal aangeroepen1");
-
           if (error) {
-            // console.log(error);
-            // let errorMessage = error.message;
-
+            connection.release();
             if (error.errno == 1062) {
               // if (error) throw error;
               return res.status(409).json({
                 status: 409,
-                message: "Gebruiker bestaat al",
+                message: "Meal bestaat al",
               });
             } else {
               console.log("Dit gaat fout! " + error.message);
@@ -131,23 +103,17 @@ let controller = {
               `SELECT LAST_INSERT_ID() AS id;`,
               function (error, results, fields) {
                 connection.release();
-
-                if (error) throw error;
-
-                // let id = results[0];
-
-                // console.log("Results" + results[0]);
-
-                let { id } = results[0];
-
-                // let id = 1;
-
-                // meal[isActive] = meal[isActive] == 1;
+                if (error) {
+                  res.status(500).json({
+                    status: 500,
+                    message: "Database error on adding meal: " + error.message,
+                  });
+                }
+                const { id } = results[0];
 
                 res.status(201).json({
                   status: 201,
                   result: { id, ...meal },
-                  // result: results[0],
                 });
               }
             );

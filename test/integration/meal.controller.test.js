@@ -71,24 +71,22 @@ describe("Share-a-meal API Tests", () => {
         })
         .end((err, res) => {
           res.should.be.an("Object");
-          let { status, result } = res.body;
+          const { status, result } = res.body;
           status.should.equals(201);
-          //   result.name.should.be.a("string").that.equals("pizza");
-          //   result.description.should.be
-          //     .a("string")
-          //     .that.equals("pizza met tomaat");
-
-          //   result.isVega.should.be.a("boolean").that.equals(true);
-          //   result.isVegan.should.be.a("boolean").that.equals(true);
-          //   result.isToTakeHome.should.be.a("boolean").that.equals(true);
-          //   result.imageUrl.should.be
-          //     .a("string")
-          //     .that.equals(
-          //       "https://www.leukerecepten.nl/wp-content/uploads/2019/03/pizza_recepten-432x432.jpg"
-          //     );
-          //   result.allergenes.should.be.a("string").that.equals("cheese");
-          //   result.price.should.be.a("number").that.equals(7.49);
-
+          result.name.should.be.a("string").that.equals("pizza");
+          result.description.should.be
+            .a("string")
+            .that.equals("pizza met tomaat");
+          result.isVega.should.be.a("boolean").that.equals(true);
+          result.isVegan.should.be.a("boolean").that.equals(true);
+          result.isToTakeHome.should.be.a("boolean").that.equals(true);
+          result.imageUrl.should.be
+            .a("string")
+            .that.equals(
+              "https://www.leukerecepten.nl/wp-content/uploads/2019/03/pizza_recepten-432x432.jpg"
+            );
+          result.allergenes.should.be.an("array").that.length(2);
+          result.price.should.be.a("number").that.equals(7.49);
           done();
         });
     });
