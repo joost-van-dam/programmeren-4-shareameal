@@ -22,7 +22,7 @@ const TEST_USER_AT_ID_IS_1000000 =
   "INSERT INTO user (id, firstName, lastName, isActive, emailAdress, password, street, city) VALUES (1000000, 'Joost' ,'van Dam' ,1 ,'joost.vandam@avans.nl' ,'wachtwoord12DSF3@$##' ,'Lovensdijkstraat', 'Breda')";
 
 const TEST_MEAL_WITH_COOK_ID_1000000 =
-  "INSERT INTO meal (id ,name, description, isVega, isVegan, isToTakeHome, dateTime, imageUrl, maxAmountOfParticipants, allergenes, price, cookId) VALUES (100, 'appeltaart', 'appeltaart met kaneel', true, true, true, '2022-05-24 16:00:00', 'https://images.ctfassets.net/brcxfsm84vq2/7eBkjOINljB22V9Tx2qSno/5a05656241fe2083dbd1cf20668cd862/appeltaart_met_extra_veel_deeg?w=600&fm=webp', 8, '{melk, gluten}', 3.99, 1000000)";
+  "INSERT INTO meal (id ,name, description, isVega, isVegan, isToTakeHome, dateTime, imageUrl, maxAmountOfParticipants, allergenes, price, cookId) VALUES (100, 'appeltaart', 'appeltaart met kaneel', true, true, true, '2022-05-24 16:00:00', 'https://images.ctfassets.net/brcxfsm84vq2/7eBkjOINljB22V9Tx2qSno/5a05656241fe2083dbd1cf20668cd862/appeltaart_met_extra_veel_deeg?w=600&fm=webp', 8, 'lactose' , 3.99, 1000000)";
 
 describe("Share-a-meal API Tests", () => {
   describe("UC-301 Maaltijd aanmaken", () => {
@@ -165,11 +165,11 @@ describe("Share-a-meal API Tests", () => {
                 function (error, result, field) {
                   if (error) throw error;
 
-                  //   pool.query("SELECT * FROM meal", (err, result) => {
-                  //     if (err) throw err;
+                  pool.query("SELECT * FROM meal", (err, result) => {
+                    if (err) throw err;
 
-                  //     console.log(result);
-                  //   });
+                    console.log(result);
+                  });
 
                   connection.release();
                   done();
@@ -245,18 +245,88 @@ describe("Share-a-meal API Tests", () => {
         });
     });
   });
+
   describe("UC-305 Maaltijd verwijderen", () => {
-    it("TC-305-2 Niet ingelogd", (done) => {
-      done();
+    before((done) => {
+      pool.query(
+        DB_CLEAR,
+        TEST_USER_AT_ID_IS_1000000,
+        TEST_MEAL_WITH_COOK_ID_1000000,
+        (err) => {
+          if (err) throw err;
+          done();
+        }
+      );
     });
+    it("TC-305-2 Niet ingelogd", (done) => {
+      chai
+        .request(server)
+        .delete("/api/meal/5")
+        .send()
+        .end((err, res) => {
+          res.should.be.an("object");
+          const { status, message } = res.body;
+          status.should.equals(401);
+          message.should.be
+            .a("string")
+            .that.equals("Authorization header missing!");
+          done();
+        });
+    });
+
     it("TC-305-3 Niet de eigenaar van de data", (done) => {
-      done();
+      // Deleting meal with ID 100 that does not have cook ID 0
+      chai
+        .request(server)
+        .delete("/api/meal/1")
+        .set(
+          "authorization",
+          "Bearer " + jwt.sign({ userId: 0 }, process.env.JWTKEY)
+        )
+        .end(function (err, res) {
+          res.should.be.an("object");
+          const { status, message } = res.body;
+          status.should.equals(403);
+          message.should.be
+            .a("string")
+            .that.equals(
+              "JOOST PLAK HIER DE MESSAGE ALS JE EEN MEAL PROBEERT TE VERWIJDEREN WAARBIJ COOKID != REQ.USERID!"
+            );
+          done();
+        });
     });
     it("TC-305-4 Maaltijd bestaat niet", (done) => {
-      done();
+      // Meal with ID 1234 does not exist
+      chai
+        .request(server)
+        .delete("/api/meal/1234")
+        .set(
+          "authorization",
+          "Bearer " + jwt.sign({ userId: 1234 }, process.env.JWTKEY)
+        )
+        .end(function (err, res) {
+          res.should.be.an("object");
+          const { status, message } = res.body;
+          status.should.equals(404);
+          message.should.be.a("string").that.equals("meal does not exist");
+          done();
+        });
     });
     it("TC-305-5 Maaltijd succesvol verwijderd", (done) => {
-      done();
+      chai
+        .request(server)
+        .delete("/api/meal/100")
+        .set(
+          "authorization",
+          "Bearer " + jwt.sign({ userId: 1000000 }, process.env.JWTKEY)
+        )
+        .end(function (err, res) {
+          res.should.be.an("object");
+          const { status, message } = res.body;
+          status.should.equals(200);
+          message.should.be.a("string").that.equals("Deleted");
+          done();
+        });
     });
   });
 });
