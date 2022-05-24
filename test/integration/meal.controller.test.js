@@ -274,7 +274,7 @@ describe("Share-a-meal API Tests", () => {
         });
     });
 
-    it("TC-305-3 Niet de eigenaar van de data", (done) => {
+    it.skip("TC-305-3 Niet de eigenaar van de data", (done) => {
       // Deleting meal with ID 100 that does not have cook ID 0
       chai
         .request(server)
