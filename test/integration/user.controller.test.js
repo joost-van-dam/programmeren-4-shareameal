@@ -347,24 +347,24 @@ describe("Share-a-meal API Tests", () => {
     });
 
     it.only("TC-202-2 Toon twee gebruikers", (done) => {
-      // pool.getConnection(function (err, connection) {
-      //   connection.query(TEST_USERS, function (error, result, field) {
-      //     if (error) throw error;
-      //     connection.release();
-      //   });
-      // });
+      pool.getConnection(function (err, connection) {
+        connection.query(TEST_USERS, function (error, result, field) {
+          if (error) throw error;
+          connection.release();
+        });
+      });
 
-      // chai
-      //   .request(server)
-      //   .get("/api/user")
-      //   .set("authorization", "Bearer " + jwt.sign({ userId: 1 }, jwtSecretKey))
-      //   .end((err, res) => {
-      //     res.should.be.an("Object");
-      //     let { status, results } = res.body;
-      //     status.should.equals(200);
-      //     results.should.be.an("array").that.has.length(2);
-      done();
-      // });
+      chai
+        .request(server)
+        .get("/api/user")
+        .set("authorization", "Bearer " + jwt.sign({ userId: 1 }, jwtSecretKey))
+        .end((err, res) => {
+          res.should.be.an("Object");
+          let { status, results } = res.body;
+          status.should.equals(200);
+          results.should.be.an("array").that.has.length(2);
+          done();
+        });
     });
 
     it.only("TC-202-3 Toon gebruikers met zoekterm op niet-bestaande naam", (done) => {
