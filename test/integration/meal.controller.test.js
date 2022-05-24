@@ -19,8 +19,7 @@ const CLEAR_DB =
 
 describe("Share-a-meal API Tests", () => {
   describe("UC-301 Maaltijd aanmaken", () => {
-    it.only("TC 301-1: verplicht veld ontbreek", function (done) {
-      chai.request(server).post("/api/meal");
+    it.only("TC 301-1: verplicht veld ontbreek", (done) => {
       chai
         .request(server)
         .post("/api/meal")
@@ -37,7 +36,7 @@ describe("Share-a-meal API Tests", () => {
           maxAmountOfParticipants: 4,
           price: 7.49,
         })
-        .end(function (err, res) {
+        .end((err, res) => {
           res.should.be.an("object");
           const { status, message } = res.body;
           status.should.equals(400);
@@ -57,7 +56,6 @@ describe("Share-a-meal API Tests", () => {
         .request(server)
         .post("/api/meal")
         .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
-        // .set("authorization", "Bearer " + jwt.sign({ id: 1 }, jwtSecretKey))
         .send({
           name: "pizza",
           description: "pizza met tomaat",
