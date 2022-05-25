@@ -133,6 +133,7 @@ describe("Share-a-meal API Tests", () => {
           res.should.be.an("Object");
           let { status, message } = res.body;
           status.should.equals(200);
+          message.emailAdress.should.equals("joost.vandam@avans.nl");
           // message.should.be.a("string").that.equals("Invalid password");
           done();
         });
